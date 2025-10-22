@@ -228,7 +228,8 @@ gh repo view
    - Distractor selection algorithms (use `*.unit.test.ts` if pure functions, `*.int.test.ts` if database-dependent)
    - **NEVER use mocks** - always test against real test database
    - Name files appropriately: `*.int.test.ts`, `*.unit.test.ts`, or `*.api.test.ts`
-
+   - RITEWAY (eric elliot)
+   
 ## File Locations
 
 - Database schema: `docs/database.sql`

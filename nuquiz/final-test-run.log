@@ -1,0 +1,66 @@
+
+> nuquiz@0.1.0 test
+> NODE_ENV=test jest knowledge.int.test.ts
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ⚙️  enable debug logging with { debug: true }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    ✓ Jest setup complete - using test database on port 5433
+
+      at Object.<anonymous> (jest.setup.js:26:9)
+
+  console.log
+    ✓ NO MOCKS - Testing against real PostgreSQL instance
+
+      at Object.<anonymous> (jest.setup.js:27:9)
+
+ts-jest[ts-jest-transformer] (WARN) Define `ts-jest` config under `globals` is deprecated. Please do
+transform: {
+    <transform_regex>: ['ts-jest', { /* ts-jest config goes here in Jest */ }],
+},
+See more at https://kulshekhar.github.io/ts-jest/docs/getting-started/presets#advanced
+  console.log
+    [dotenv@17.2.3] injecting env (0) from .env -- tip: 👥 sync secrets across teammates & machines: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+  console.log
+    Quiz Question Data: {
+      category: 'Left-sided',
+      attribute: 'Symptoms',
+      correctAnswers: [ 'Pulmonary edema', 'Dyspnea' ]
+    }
+
+      at Object.<anonymous> (src/db/__tests__/knowledge.int.test.ts:324:15)
+
+PASS src/db/__tests__/knowledge.int.test.ts
+  Knowledge DAL - Integration Tests (NO MOCKS)
+    Hierarchy Validation (ENFORCED BY DATABASE)
+      ✓ should create a topic at root level (9 ms)
+      ✓ should create nested topics (5 ms)
+      ✓ should create category under topic (valid hierarchy) (5 ms)
+      ✓ should REJECT category without topic parent (10 ms)
+      ✓ should create full hierarchy: topic → category → attribute → fact (9 ms)
+      ✓ should REJECT attribute under topic (invalid hierarchy) (3 ms)
+    Query Functions (REAL DATABASE QUERIES)
+      ✓ should find knowledge by ID (2 ms)
+      ✓ should find all knowledge of a specific type (5 ms)
+      ✓ should find all children of a parent node (6 ms)
+      ✓ should find facts by category + attribute path (QUIZ GENERATION) (11 ms)
+      ✓ should build path notation for quiz questions (7 ms)
+      ✓ should get entire subtree recursively (8 ms)
+    Mutation Functions (REAL DATABASE WRITES)
+      ✓ should update a knowledge node (4 ms)
+      ✓ should delete a knowledge node (CASCADE) (6 ms)
+      ✓ should reorder children (8 ms)
+    Aggregate Queries (REAL DATABASE ANALYTICS)
+      ✓ should count knowledge nodes by type (4 ms)
+
+Test Suites: 1 passed, 1 total
+Tests:       16 passed, 16 total
+Snapshots:   0 total
+Time:        0.547 s, estimated 1 s
+Ran all test suites matching knowledge.int.test.ts.
