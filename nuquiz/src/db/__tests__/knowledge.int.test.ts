@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeAll, afterEach, afterAll } from '@jest/globals';
 import * as knowledge from '../knowledge.js';
-import { testLifecycle, buildContentPack, buildUser } from './helpers/index.js';
+import { testLifecycle, buildContentPack, buildUser, generateEmail, generateUsername } from './helpers/index.js';
 import { query } from '../connection.js';
 
 describe('Knowledge DAL - Integration Tests (NO MOCKS)', () => {
@@ -17,10 +17,10 @@ describe('Knowledge DAL - Integration Tests (NO MOCKS)', () => {
   beforeAll(async () => {
     await testLifecycle.beforeAll();
 
-    // Create a user and content pack for testing
+    // Create a user and content pack for testing (using unique generators to avoid conflicts)
     const user = await query(
       'INSERT INTO users (email, username) VALUES ($1, $2) RETURNING *',
-      ['test@example.com', 'testuser']
+      [generateEmail('knowledge-test'), generateUsername('knowledge-test')]
     );
     userId = user.rows[0].id;
 
@@ -33,11 +33,13 @@ describe('Knowledge DAL - Integration Tests (NO MOCKS)', () => {
   });
 
   afterEach(async () => {
-    // Clean up knowledge nodes after each test
+    // Clean up ONLY knowledge nodes after each test
+    // Keep user and content_pack for the entire test suite
     await query('DELETE FROM knowledge');
   });
 
   afterAll(async () => {
+    // Clean up everything at the end
     await testLifecycle.afterAll();
   });
 

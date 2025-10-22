@@ -10,12 +10,15 @@
     "lint": "eslint",
     "migrate": "./db/migrate-docker.sh",
     "migrate:test": "NODE_ENV=test ./db/migrate-docker.sh",
-    "test": "NODE_ENV=test jest",
-    "test:watch": "NODE_ENV=test jest --watch",
-    "test:coverage": "NODE_ENV=test jest --coverage",
-    "test:int": "NODE_ENV=test jest --testMatch='**/*.int.test.ts'",
+    "db:reset": "./db/reset-test-db.sh",
+    "db:seed": "./db/load-sample-data.sh",
+    "db:seed:test": "NODE_ENV=test ./db/load-sample-data.sh",
+    "test": "NODE_ENV=test jest --runInBand",
+    "test:watch": "NODE_ENV=test jest --watch --runInBand",
+    "test:coverage": "NODE_ENV=test jest --coverage --runInBand",
+    "test:int": "NODE_ENV=test jest --testMatch='**/*.int.test.ts' --runInBand",
     "test:unit": "NODE_ENV=test jest --testMatch='**/*.unit.test.ts'",
-    "test:api": "NODE_ENV=test jest --testMatch='**/*.api.test.ts'"
+    "test:api": "NODE_ENV=test jest --testMatch='**/*.api.test.ts' --runInBand"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
