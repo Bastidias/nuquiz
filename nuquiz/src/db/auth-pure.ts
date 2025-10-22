@@ -7,7 +7,82 @@
  * Following Eric Elliott's functional programming principles.
  */
 
-import type { AuthEventType, NewAuthEvent } from './types.js';
+import type { AuthEventType, NewAuthEvent, UserRole } from './types.js';
+
+// ============================================================================
+// Environment Admin Credentials
+// ============================================================================
+
+/**
+ * Check if credentials match environment admin credentials
+ *
+ * Pure function - compares provided credentials against expected values.
+ * Used to allow .env-based admin login without database.
+ *
+ * @param email - Email to check
+ * @param password - Password to check
+ * @param adminEmail - Admin email from environment
+ * @param adminPassword - Admin password from environment
+ * @returns true if credentials match admin, false otherwise
+ *
+ * @example
+ * const isAdmin = isEnvAdminCredentials(
+ *   'admin@nuquiz.com',
+ *   'secret123',
+ *   process.env.ADMIN_EMAIL,
+ *   process.env.ADMIN_PASSWORD
+ * );
+ * // true if matches
+ */
+export const isEnvAdminCredentials = (
+  email: string,
+  password: string,
+  adminEmail: string | undefined,
+  adminPassword: string | undefined
+): boolean => {
+  if (!adminEmail || !adminPassword) {
+    return false;
+  }
+
+  // Case-insensitive email comparison
+  const emailMatches = email.toLowerCase() === adminEmail.toLowerCase();
+  // Exact password comparison
+  const passwordMatches = password === adminPassword;
+
+  return emailMatches && passwordMatches;
+};
+
+/**
+ * Create admin user object for .env-based admin login
+ *
+ * Pure function - constructs user object with admin/superadmin role.
+ *
+ * @param email - Admin email
+ * @param role - Role to assign (default: superadmin)
+ * @returns User object for session
+ *
+ * @example
+ * const adminUser = createEnvAdminUser('admin@nuquiz.com');
+ * // { id: 'env-admin', email: 'admin@nuquiz.com', role: 'superadmin', ... }
+ */
+export const createEnvAdminUser = (
+  email: string,
+  role: UserRole = 'superadmin'
+): {
+  id: string;
+  email: string;
+  name: string | null;
+  role: UserRole;
+  email_verified: boolean;
+} => {
+  return {
+    id: 'env-admin', // Special ID to indicate this is not a DB user
+    email,
+    name: 'Environment Admin',
+    role,
+    email_verified: true, // Env admin is always verified
+  };
+};
 
 // ============================================================================
 // Auth Event Building

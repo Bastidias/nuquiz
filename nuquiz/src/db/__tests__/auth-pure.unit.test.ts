@@ -8,6 +8,8 @@
 import { strict as assert } from 'assert';
 import { describe, it } from '@jest/globals';
 import {
+  isEnvAdminCredentials,
+  createEnvAdminUser,
   buildAuthEvent,
   buildFailedLoginEvent,
   buildSuccessfulLoginEvent,
@@ -27,6 +29,135 @@ import {
   getPasswordStrengthLabel,
   getAuthFailureReason,
 } from '../auth-pure.js';
+
+// ============================================================================
+// isEnvAdminCredentials()
+// ============================================================================
+
+describe('isEnvAdminCredentials()', () => {
+  it('given matching email and password, returns true', () => {
+    const result = isEnvAdminCredentials(
+      'admin@nuquiz.local',
+      'admin123',
+      'admin@nuquiz.local',
+      'admin123'
+    );
+
+    assert.equal(result, true);
+  });
+
+  it('given case-insensitive email match, returns true', () => {
+    const result = isEnvAdminCredentials(
+      'ADMIN@nuquiz.local',
+      'admin123',
+      'admin@nuquiz.local',
+      'admin123'
+    );
+
+    assert.equal(result, true);
+  });
+
+  it('given wrong email, returns false', () => {
+    const result = isEnvAdminCredentials(
+      'user@example.com',
+      'admin123',
+      'admin@nuquiz.local',
+      'admin123'
+    );
+
+    assert.equal(result, false);
+  });
+
+  it('given wrong password, returns false', () => {
+    const result = isEnvAdminCredentials(
+      'admin@nuquiz.local',
+      'wrongpassword',
+      'admin@nuquiz.local',
+      'admin123'
+    );
+
+    assert.equal(result, false);
+  });
+
+  it('given undefined adminEmail, returns false', () => {
+    const result = isEnvAdminCredentials(
+      'admin@nuquiz.local',
+      'admin123',
+      undefined,
+      'admin123'
+    );
+
+    assert.equal(result, false);
+  });
+
+  it('given undefined adminPassword, returns false', () => {
+    const result = isEnvAdminCredentials(
+      'admin@nuquiz.local',
+      'admin123',
+      'admin@nuquiz.local',
+      undefined
+    );
+
+    assert.equal(result, false);
+  });
+
+  it('given both undefined, returns false', () => {
+    const result = isEnvAdminCredentials(
+      'admin@nuquiz.local',
+      'admin123',
+      undefined,
+      undefined
+    );
+
+    assert.equal(result, false);
+  });
+
+  it('given empty string adminEmail, returns false', () => {
+    const result = isEnvAdminCredentials(
+      'admin@nuquiz.local',
+      'admin123',
+      '',
+      'admin123'
+    );
+
+    assert.equal(result, false);
+  });
+});
+
+describe('createEnvAdminUser()', () => {
+  it('given email, returns admin user with superadmin role', () => {
+    const result = createEnvAdminUser('admin@nuquiz.local');
+
+    assert.equal(result.id, 'env-admin');
+    assert.equal(result.email, 'admin@nuquiz.local');
+    assert.equal(result.name, 'Environment Admin');
+    assert.equal(result.role, 'superadmin');
+    assert.equal(result.email_verified, true);
+  });
+
+  it('given email and admin role, returns admin user with admin role', () => {
+    const result = createEnvAdminUser('admin@nuquiz.local', 'admin');
+
+    assert.equal(result.id, 'env-admin');
+    assert.equal(result.email, 'admin@nuquiz.local');
+    assert.equal(result.role, 'admin');
+    assert.equal(result.email_verified, true);
+  });
+
+  it('given email and student role, returns admin user with student role', () => {
+    const result = createEnvAdminUser('admin@nuquiz.local', 'student');
+
+    assert.equal(result.id, 'env-admin');
+    assert.equal(result.role, 'student');
+  });
+
+  it('given different email, uses that email', () => {
+    const result = createEnvAdminUser('custom@example.com');
+
+    assert.equal(result.email, 'custom@example.com');
+    assert.equal(result.id, 'env-admin');
+  });
+});
 
 // ============================================================================
 // buildAuthEvent()

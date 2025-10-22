@@ -9,6 +9,7 @@ import NextAuth, { type DefaultSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { findByEmail, findById } from './db/users.js';
 import { verifyPassword } from './db/auth.js';
+import { isEnvAdminCredentials, createEnvAdminUser } from './db/auth-pure.js';
 import type { User as DbUser, UserRole } from './db/types.js';
 
 // Extend NextAuth types to include our custom fields
@@ -52,7 +53,20 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = credentials.email as string;
         const password = credentials.password as string;
 
-        // Find user by email
+        // Check environment admin credentials first
+        if (
+          isEnvAdminCredentials(
+            email,
+            password,
+            process.env.ADMIN_EMAIL,
+            process.env.ADMIN_PASSWORD
+          )
+        ) {
+          // Return admin user from environment
+          return createEnvAdminUser(email);
+        }
+
+        // Fall through to database authentication
         const user = await findByEmail(email);
 
         if (!user || !user.password_hash) {
@@ -84,6 +98,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         token.id = user.id;
         token.role = user.role;
         token.email_verified = user.email_verified;
+      }
+
+      // Skip database refresh for environment admin (no DB record)
+      if (token.id === 'env-admin') {
+        return token;
       }
 
       // Refresh user data from database on each request
