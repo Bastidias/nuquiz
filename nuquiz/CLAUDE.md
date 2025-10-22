@@ -228,11 +228,46 @@ gh repo view
    - Distractor selection algorithms (use `*.unit.test.ts` if pure functions, `*.int.test.ts` if database-dependent)
    - **NEVER use mocks** - always test against real test database
    - Name files appropriately: `*.int.test.ts`, `*.unit.test.ts`, or `*.api.test.ts`
-   - RITEWAY (eric elliot)
-   
+   - Follow RITEway principles (Eric Elliott)
+
+7. **Authentication & Authorization**:
+   - Use NextAuth.js for authentication (v5 beta, credentials provider)
+   - Three-tier role system: `student`, `admin`, `superadmin`
+   - Protect API routes with middleware: `withAuth()`, `withAdmin()`, `withSuperAdmin()`
+   - All auth events logged to `auth_events` table
+   - Passwords hashed with bcrypt (12 salt rounds)
+   - JWT sessions (30-day expiration)
+   - See `docs/nextauth-implementation-summary.md` for complete details
+
+8. **Role-Based Access Control**:
+   - **Student**: Takes quizzes, views own progress, accesses subscribed content
+   - **Admin**: Creates/manages content packs, manages subscriptions, views analytics for their content
+   - **Superadmin**: Full system access, user management, role assignment, system configuration
+   - Use `requireRole()` in server components, `withRole()` in API routes
+   - Check resource ownership with `canAccessResource()` helper
+
+9. **Security Practices**:
+   - Never store plain-text passwords
+   - Always log auth events (login, logout, failed attempts, role changes)
+   - Include IP address and user agent in audit logs
+   - Validate all inputs at boundaries
+   - Use typed errors instead of generic Error()
+   - Implement rate limiting for failed logins (helper function ready)
+
 ## File Locations
 
+### Core Documentation
 - Database schema: `docs/database.sql`
 - Data model explanation: `docs/overview.md`
 - Implementation plan: `docs/roadmap.md`
 - Architecture diagram: `docs/diagram.md`
+- Coding standards: `docs/coding-standards.md`
+
+### Authentication & RBAC
+- NextAuth implementation: `docs/nextauth-implementation-summary.md`
+- Eric Elliott code review: `docs/eric-elliott-code-review.md`
+
+### Testing
+- RITEway principles: `docs/test-review-riteway.md`
+- Test refactoring examples: `docs/test-refactor-example.md`
+- Database testing guide: `docs/database-testing-guide.md`

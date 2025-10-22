@@ -169,7 +169,7 @@ export const findByPath = async (
   const results: Knowledge[] = [];
 
   for (const name of path) {
-    const nodes = await queryMany<Knowledge>(
+    const nodes: Knowledge[] = await queryMany<Knowledge>(
       `SELECT * FROM knowledge
        WHERE name = $1
        AND content_pack_id = $2
@@ -249,17 +249,33 @@ export const create = async (data: NewKnowledge): Promise<Knowledge> => {
 
 /**
  * Update a knowledge node
+ *
+ * Security: Field names are whitelisted to prevent SQL injection
  */
 export const update = async (
   id: number,
   data: PartialUpdate<Knowledge>
 ): Promise<Knowledge> => {
+  // Whitelist of allowed field names to prevent SQL injection
+  const ALLOWED_FIELDS = new Set([
+    'parent_id',
+    'name',
+    'label',
+    'type',
+    'content_pack_id',
+    'order_index',
+  ]);
+
   const fields: string[] = [];
   const values: any[] = [];
   let paramCount = 1;
 
   // Build dynamic UPDATE query
   Object.entries(data).forEach(([key, value]) => {
+    // Security: Only allow whitelisted field names
+    if (!ALLOWED_FIELDS.has(key)) {
+      throw new Error(`Invalid field name: ${key}`);
+    }
     if (value !== undefined) {
       fields.push(`${key} = $${paramCount}`);
       values.push(value);

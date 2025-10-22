@@ -8,7 +8,8 @@
  */
 
 import { query, queryOne } from './connection.js';
-import type { User, NewUser } from './types.js';
+import type { User, NewUser, UserRole } from './types.js';
+import { buildUpdateQuery } from './users-pure.js';
 
 // ============================================================================
 // Query Functions
@@ -75,25 +76,27 @@ export const findByUsername = async (username: string): Promise<User | null> => 
 /**
  * Create a new user
  *
- * @param data - User data (email required, username optional)
+ * @param data - User data (email required, username, password_hash, and role optional)
  * @returns Newly created user object
  * @throws Error if email already exists (database constraint violation)
  *
  * @example
  * const newUser = await users.create({
  *   email: 'user@example.com',
- *   username: 'jdoe'
+ *   username: 'jdoe',
+ *   password_hash: await hashPassword('secret'),
+ *   role: 'student'
  * });
  * console.log(`Created user with ID: ${newUser.id}`);
  */
 export const create = async (data: NewUser): Promise<User> => {
-  const { email, username } = data;
+  const { email, username, password_hash, role } = data;
 
   const result = await queryOne<User>(
-    `INSERT INTO users (email, username)
-     VALUES ($1, $2)
+    `INSERT INTO users (email, username, password_hash, role)
+     VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [email, username || null]
+    [email, username || null, password_hash || null, role || 'student']
   );
 
   if (!result) {
@@ -112,45 +115,17 @@ export const create = async (data: NewUser): Promise<User> => {
  * @throws Error if user not found or email/username already taken
  *
  * @example
- * const updated = await users.update(1, { username: 'johndoe' });
+ * const updated = await users.update(1, { username: 'johndoe', role: 'admin' });
  * console.log(`Username updated to: ${updated.username}`);
  */
 export const update = async (
   id: number,
   data: Partial<Omit<User, 'id' | 'created_at' | 'updated_at'>>
 ): Promise<User> => {
-  const fields: string[] = [];
-  const values: any[] = [];
-  let paramIndex = 1;
+  // Use pure function to build query (no side effects, testable without DB)
+  const { sql, params } = buildUpdateQuery(id, data);
 
-  // Build dynamic UPDATE query based on provided fields
-  if (data.email !== undefined) {
-    fields.push(`email = $${paramIndex++}`);
-    values.push(data.email);
-  }
-
-  if (data.username !== undefined) {
-    fields.push(`username = $${paramIndex++}`);
-    values.push(data.username);
-  }
-
-  if (fields.length === 0) {
-    throw new Error('No fields to update');
-  }
-
-  // Add updated_at timestamp
-  fields.push(`updated_at = CURRENT_TIMESTAMP`);
-
-  // Add WHERE clause parameter
-  values.push(id);
-
-  const result = await queryOne<User>(
-    `UPDATE users
-     SET ${fields.join(', ')}
-     WHERE id = $${paramIndex}
-     RETURNING *`,
-    values
-  );
+  const result = await queryOne<User>(sql, params);
 
   if (!result) {
     throw new Error(`User with id ${id} not found`);
@@ -233,4 +208,98 @@ export const emailExists = async (email: string): Promise<boolean> => {
 export const usernameExists = async (username: string): Promise<boolean> => {
   const user = await findByUsername(username);
   return user !== null;
+};
+
+// ============================================================================
+// Role-Based Access Control (RBAC) Functions
+// ============================================================================
+
+/**
+ * Find users by role
+ *
+ * @param role - User role to filter by
+ * @returns Array of users with the specified role
+ *
+ * @example
+ * const admins = await users.findByRole('admin');
+ * console.log(`Found ${admins.length} admins`);
+ */
+export const findByRole = async (role: UserRole): Promise<User[]> => {
+  const result = await query<User>(
+    'SELECT * FROM users WHERE role = $1 ORDER BY created_at DESC',
+    [role]
+  );
+
+  return result.rows;
+};
+
+/**
+ * Update user role
+ *
+ * @param id - User ID
+ * @param role - New role
+ * @returns Updated user object
+ * @throws Error if user not found
+ *
+ * @example
+ * const user = await users.updateRole(1, 'admin');
+ * console.log(`User role updated to: ${user.role}`);
+ */
+export const updateRole = async (id: number, role: UserRole): Promise<User> => {
+  return update(id, { role });
+};
+
+/**
+ * Check if user has a specific role
+ *
+ * @param userId - User ID
+ * @param role - Role to check
+ * @returns true if user has the role, false otherwise
+ *
+ * @example
+ * const isAdmin = await users.hasRole(1, 'admin');
+ * if (isAdmin) {
+ *   console.log('User is an admin');
+ * }
+ */
+export const hasRole = async (userId: number, role: UserRole): Promise<boolean> => {
+  const user = await findById(userId);
+  return user?.role === role;
+};
+
+/**
+ * Check if user has any of the specified roles
+ *
+ * @param userId - User ID
+ * @param roles - Array of roles to check
+ * @returns true if user has any of the roles, false otherwise
+ *
+ * @example
+ * const canManageContent = await users.hasAnyRole(1, ['admin', 'superadmin']);
+ * if (canManageContent) {
+ *   console.log('User can manage content');
+ * }
+ */
+export const hasAnyRole = async (userId: number, roles: UserRole[]): Promise<boolean> => {
+  const user = await findById(userId);
+  return user ? roles.includes(user.role) : false;
+};
+
+/**
+ * Count users by role
+ *
+ * @param role - Role to count
+ * @returns Number of users with the specified role
+ *
+ * @example
+ * const studentCount = await users.countByRole('student');
+ * console.log(`Total students: ${studentCount}`);
+ */
+export const countByRole = async (role: UserRole): Promise<number> => {
+  const result = await queryOne<{ count: string }>(
+    'SELECT COUNT(*) as count FROM users WHERE role = $1',
+    [role]
+  );
+
+  return result ? parseInt(result.count, 10) : 0;
 };
