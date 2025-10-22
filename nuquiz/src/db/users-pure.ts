@@ -16,6 +16,8 @@ import type { User } from './types.js';
  *
  * PURE FUNCTION - No side effects, just builds query string and params
  *
+ * Security: Field names are whitelisted to prevent SQL injection
+ *
  * @param id - User ID
  * @param data - Partial user data to update
  * @returns Query object with SQL string and parameters
@@ -29,8 +31,24 @@ export const buildUpdateQuery = (
   id: number,
   data: Partial<Omit<User, 'id' | 'created_at' | 'updated_at'>>
 ): { sql: string; params: any[] } => {
+  // Whitelist of allowed field names to prevent SQL injection
+  const ALLOWED_FIELDS = new Set([
+    'email',
+    'username',
+    'password_hash',
+    'role',
+    'email_verified',
+    'last_login_at',
+  ]);
+
   const updates = Object.entries(data)
-    .filter(([_, value]) => value !== undefined)
+    .filter(([key, value]) => {
+      // Security: Only allow whitelisted field names
+      if (!ALLOWED_FIELDS.has(key)) {
+        throw new Error(`Invalid field name: ${key}`);
+      }
+      return value !== undefined;
+    })
     .map(([key, value], index) => ({
       field: `${key} = $${index + 1}`,
       value,

@@ -9,6 +9,7 @@ import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
 import type { UserRole } from '../db/types.js';
 import { logAuthEvent } from '../db/auth.js';
+import { getIpAddress, getUserAgent } from '../db/auth-pure.js';
 
 /**
  * Authenticated request type (immutable extension)
@@ -72,20 +73,16 @@ export const withAuth = (handler: AuthenticatedApiHandler): ApiHandler => {
       // Log failed access attempt
       await logAuthEvent({
         event_type: 'failed_login',
-        ip_address: (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress,
-        user_agent: req.headers['user-agent'],
+        ip_address: getIpAddress(req),
+        user_agent: getUserAgent(req),
         metadata: { reason: 'no_session', path: req.url },
       });
 
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // ✅ Immutable composition: Create new object instead of mutating
-    const authenticatedReq: AuthenticatedRequest = Object.assign(
-      Object.create(Object.getPrototypeOf(req)),
-      req,
-      { session }
-    );
+    // Create typed request with session
+    const authenticatedReq = { ...req, session } as AuthenticatedRequest;
 
     return handler(authenticatedReq, res);
   };
@@ -125,8 +122,8 @@ export const withRole = (
       await logAuthEvent({
         user_id: parseInt(session.user.id),
         event_type: 'failed_login',
-        ip_address: (req.headers['x-forwarded-for'] as string) || req.socket.remoteAddress,
-        user_agent: req.headers['user-agent'],
+        ip_address: getIpAddress(req),
+        user_agent: getUserAgent(req),
         metadata: {
           reason: 'insufficient_permissions',
           required_roles: allowedRoles,

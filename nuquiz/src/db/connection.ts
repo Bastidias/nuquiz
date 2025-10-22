@@ -102,7 +102,7 @@ export interface QueryResult<T = any> {
  * @param params - Query parameters
  * @returns Promise with query results
  */
-export const query = async <T = any>(
+export const query = async <T extends pg.QueryResultRow = any>(
   text: string,
   params?: any[]
 ): Promise<QueryResult<T>> => {
@@ -125,7 +125,7 @@ export const query = async <T = any>(
 /**
  * Execute a single query and return first row or null
  */
-export const queryOne = async <T = any>(
+export const queryOne = async <T extends pg.QueryResultRow = any>(
   text: string,
   params?: any[]
 ): Promise<T | null> => {
@@ -136,7 +136,7 @@ export const queryOne = async <T = any>(
 /**
  * Execute a query and return all rows
  */
-export const queryMany = async <T = any>(
+export const queryMany = async <T extends pg.QueryResultRow = any>(
   text: string,
   params?: any[]
 ): Promise<T[]> => {

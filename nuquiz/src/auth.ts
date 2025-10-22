@@ -10,7 +10,8 @@ import Credentials from 'next-auth/providers/credentials';
 import { findByEmail, findById } from './db/users.js';
 import { verifyPassword } from './db/auth.js';
 import { isEnvAdminCredentials, createEnvAdminUser } from './db/auth-pure.js';
-import type { User as DbUser, UserRole } from './db/types.js';
+import { credentialsSchema } from './lib/schemas.js';
+import type { UserRole } from './db/types.js';
 
 // Extend NextAuth types to include our custom fields
 declare module 'next-auth' {
@@ -46,23 +47,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
+        // Validate input using Zod
+        const result = credentialsSchema.safeParse(credentials);
+
+        if (!result.success) {
           return null;
         }
 
-        const email = credentials.email as string;
-        const password = credentials.password as string;
+        const { email, password } = result.data;
 
         // Check environment admin credentials first
-        if (
-          isEnvAdminCredentials(
-            email,
-            password,
-            process.env.ADMIN_EMAIL,
-            process.env.ADMIN_PASSWORD
-          )
-        ) {
-          // Return admin user from environment
+        if (isEnvAdminCredentials(email, password, process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD)) {
           return createEnvAdminUser(email);
         }
 
