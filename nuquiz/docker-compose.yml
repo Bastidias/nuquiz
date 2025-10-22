@@ -1,0 +1,54 @@
+version: '3.8'
+
+services:
+  # Development PostgreSQL instance
+  postgres-dev:
+    image: postgres:16-alpine
+    container_name: nuquiz-postgres-dev
+    environment:
+      POSTGRES_DB: nuquiz_dev
+      POSTGRES_USER: nuquiz_user
+      POSTGRES_PASSWORD: nuquiz_dev_password
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-dev-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nuquiz_user -d nuquiz_dev"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nuquiz-network
+
+  # Test PostgreSQL instance (separate to avoid pollution)
+  postgres-test:
+    image: postgres:16-alpine
+    container_name: nuquiz-postgres-test
+    environment:
+      POSTGRES_DB: nuquiz_test
+      POSTGRES_USER: nuquiz_user
+      POSTGRES_PASSWORD: nuquiz_test_password
+      POSTGRES_HOST_AUTH_METHOD: md5
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres-test-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U nuquiz_user -d nuquiz_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - nuquiz-network
+
+volumes:
+  postgres-dev-data:
+    driver: local
+  postgres-test-data:
+    driver: local
+
+networks:
+  nuquiz-network:
+    driver: bridge
