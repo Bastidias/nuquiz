@@ -11,7 +11,14 @@
     "migrate": "node-pg-migrate",
     "migrate:up": "node-pg-migrate up",
     "migrate:down": "node-pg-migrate down",
-    "migrate:create": "node-pg-migrate create"
+    "migrate:create": "node-pg-migrate create",
+    "migrate:test": "NODE_ENV=test node-pg-migrate up",
+    "test": "NODE_ENV=test jest",
+    "test:watch": "NODE_ENV=test jest --watch",
+    "test:coverage": "NODE_ENV=test jest --coverage",
+    "test:int": "NODE_ENV=test jest --testMatch='**/*.int.test.ts'",
+    "test:unit": "NODE_ENV=test jest --testMatch='**/*.unit.test.ts'",
+    "test:api": "NODE_ENV=test jest --testMatch='**/*.api.test.ts'"
   },
   "dependencies": {
     "dotenv": "^17.2.3",
@@ -21,13 +28,16 @@
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/pg": "^8.15.5",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.0.0",
+    "jest": "^30.2.0",
     "node-pg-migrate": "^8.0.3",
+    "ts-jest": "^29.4.5",
     "typescript": "^5"
   }
 }
