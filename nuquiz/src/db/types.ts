@@ -9,10 +9,16 @@
 // CORE TYPES
 // ==========================================
 
+export type UserRole = 'student' | 'admin' | 'superadmin';
+
 export interface User {
   id: number;
   email: string;
   username: string | null;
+  password_hash: string | null;
+  role: UserRole;
+  email_verified: boolean;
+  last_login_at: Date | null;
   created_at: Date;
   updated_at: Date;
 }
@@ -20,6 +26,28 @@ export interface User {
 export interface NewUser {
   email: string;
   username?: string;
+  password_hash?: string;
+  role?: UserRole;
+}
+
+export type AuthEventType = 'login' | 'logout' | 'failed_login' | 'password_change' | 'role_change';
+
+export interface AuthEvent {
+  id: number;
+  user_id: number | null;
+  event_type: AuthEventType;
+  ip_address: string | null;
+  user_agent: string | null;
+  metadata: Record<string, any> | null;
+  created_at: Date;
+}
+
+export interface NewAuthEvent {
+  user_id?: number;
+  event_type: AuthEventType;
+  ip_address?: string;
+  user_agent?: string;
+  metadata?: Record<string, any>;
 }
 
 export interface ContentPack {

@@ -21,13 +21,16 @@
     "test:api": "NODE_ENV=test jest --testMatch='**/*.api.test.ts' --runInBand"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "dotenv": "^17.2.3",
     "next": "16.0.0",
+    "next-auth": "^5.0.0-beta.29",
     "pg": "^8.16.3",
     "react": "19.2.0",
     "react-dom": "19.2.0"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.6",
     "@types/jest": "^30.0.0",
     "@types/node": "^20",
     "@types/pg": "^8.15.5",
