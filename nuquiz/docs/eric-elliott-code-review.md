@@ -2,6 +2,8 @@
 
 *Reviewed with the brutal honesty Eric Elliott is known for*
 
+> **⚠️ HISTORICAL DOCUMENT**: This review led to improvements but also resulted in over-engineering ("AI slop"). The issues identified here have been addressed in the 2025-10-22 refactoring. See `code-review-ai-slop.md` for the current pragmatic approach and `coding-standards.md` for updated standards.
+
 ---
 
 ## 🔴 CRITICAL ISSUES
