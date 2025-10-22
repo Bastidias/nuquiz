@@ -4,7 +4,10 @@
  * NO MOCKS ALLOWED - We test against real test database
  */
 
-// Set test environment before any imports
+// Load environment variables FIRST
+require('dotenv').config();
+
+// Set test environment before any other imports
 process.env.NODE_ENV = 'test';
 
 // Ensure test database URL is set
