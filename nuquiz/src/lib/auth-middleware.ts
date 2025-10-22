@@ -11,9 +11,31 @@ import type { UserRole } from '../db/types.js';
 import { logAuthEvent } from '../db/auth.js';
 
 /**
+ * Authenticated request type (immutable extension)
+ */
+export interface AuthenticatedRequest extends NextApiRequest {
+  session: {
+    user: {
+      id: string;
+      email: string;
+      role: UserRole;
+      email_verified: boolean;
+    };
+  };
+}
+
+/**
  * API Route handler type
  */
 type ApiHandler = (req: NextApiRequest, res: NextApiResponse) => Promise<void> | void;
+
+/**
+ * Authenticated API Route handler type
+ */
+type AuthenticatedApiHandler = (
+  req: AuthenticatedRequest,
+  res: NextApiResponse
+) => Promise<void> | void;
 
 /**
  * Get session from Next.js API request
@@ -31,16 +53,18 @@ export const getApiSession = async (req: NextApiRequest, res: NextApiResponse) =
 /**
  * Protect API route - require authentication
  *
- * @param handler - API route handler
+ * Uses immutable composition instead of mutation.
+ *
+ * @param handler - Authenticated API route handler
  * @returns Wrapped handler that checks authentication
  *
  * @example
  * export default withAuth(async (req, res) => {
- *   // req.session is guaranteed to exist
+ *   // req.session is guaranteed to exist (typed!)
  *   res.json({ userId: req.session.user.id });
  * });
  */
-export const withAuth = (handler: ApiHandler): ApiHandler => {
+export const withAuth = (handler: AuthenticatedApiHandler): ApiHandler => {
   return async (req: NextApiRequest, res: NextApiResponse) => {
     const session = await getApiSession(req, res);
 
@@ -56,10 +80,14 @@ export const withAuth = (handler: ApiHandler): ApiHandler => {
       return res.status(401).json({ error: 'Unauthorized' });
     }
 
-    // Attach session to request for handler
-    (req as any).session = session;
+    // ✅ Immutable composition: Create new object instead of mutating
+    const authenticatedReq: AuthenticatedRequest = Object.assign(
+      Object.create(Object.getPrototypeOf(req)),
+      req,
+      { session }
+    );
 
-    return handler(req, res);
+    return handler(authenticatedReq, res);
   };
 };
 
@@ -67,7 +95,7 @@ export const withAuth = (handler: ApiHandler): ApiHandler => {
  * Protect API route - require specific role(s)
  *
  * @param roles - Required role or array of roles
- * @param handler - API route handler
+ * @param handler - Authenticated API route handler
  * @returns Wrapped handler that checks role
  *
  * @example
@@ -84,12 +112,13 @@ export const withAuth = (handler: ApiHandler): ApiHandler => {
  */
 export const withRole = (
   roles: UserRole | UserRole[],
-  handler: ApiHandler
+  handler: AuthenticatedApiHandler
 ): ApiHandler => {
   const allowedRoles = Array.isArray(roles) ? roles : [roles];
 
-  return withAuth(async (req: NextApiRequest, res: NextApiResponse) => {
-    const session = (req as any).session;
+  return withAuth(async (req: AuthenticatedRequest, res: NextApiResponse) => {
+    // ✅ No type assertion needed - req is properly typed!
+    const { session } = req;
 
     if (!allowedRoles.includes(session.user.role)) {
       // Log unauthorized access attempt
@@ -119,7 +148,7 @@ export const withRole = (
 /**
  * Admin-only route protection
  *
- * @param handler - API route handler
+ * @param handler - Authenticated API route handler
  * @returns Wrapped handler that requires admin or superadmin role
  *
  * @example
@@ -127,14 +156,14 @@ export const withRole = (
  *   res.json({ message: 'Admin content' });
  * });
  */
-export const withAdmin = (handler: ApiHandler): ApiHandler => {
+export const withAdmin = (handler: AuthenticatedApiHandler): ApiHandler => {
   return withRole(['admin', 'superadmin'], handler);
 };
 
 /**
  * Superadmin-only route protection
  *
- * @param handler - API route handler
+ * @param handler - Authenticated API route handler
  * @returns Wrapped handler that requires superadmin role
  *
  * @example
@@ -142,7 +171,7 @@ export const withAdmin = (handler: ApiHandler): ApiHandler => {
  *   res.json({ message: 'Superadmin content' });
  * });
  */
-export const withSuperAdmin = (handler: ApiHandler): ApiHandler => {
+export const withSuperAdmin = (handler: AuthenticatedApiHandler): ApiHandler => {
   return withRole('superadmin', handler);
 };
 

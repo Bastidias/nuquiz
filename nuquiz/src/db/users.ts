@@ -9,6 +9,7 @@
 
 import { query, queryOne } from './connection.js';
 import type { User, NewUser, UserRole } from './types.js';
+import { buildUpdateQuery } from './users-pure.js';
 
 // ============================================================================
 // Query Functions
@@ -121,53 +122,10 @@ export const update = async (
   id: number,
   data: Partial<Omit<User, 'id' | 'created_at' | 'updated_at'>>
 ): Promise<User> => {
-  const fields: string[] = [];
-  const values: any[] = [];
-  let paramIndex = 1;
+  // Use pure function to build query (no side effects, testable without DB)
+  const { sql, params } = buildUpdateQuery(id, data);
 
-  // Build dynamic UPDATE query based on provided fields
-  if (data.email !== undefined) {
-    fields.push(`email = $${paramIndex++}`);
-    values.push(data.email);
-  }
-
-  if (data.username !== undefined) {
-    fields.push(`username = $${paramIndex++}`);
-    values.push(data.username);
-  }
-
-  if (data.password_hash !== undefined) {
-    fields.push(`password_hash = $${paramIndex++}`);
-    values.push(data.password_hash);
-  }
-
-  if (data.role !== undefined) {
-    fields.push(`role = $${paramIndex++}`);
-    values.push(data.role);
-  }
-
-  if (data.email_verified !== undefined) {
-    fields.push(`email_verified = $${paramIndex++}`);
-    values.push(data.email_verified);
-  }
-
-  if (fields.length === 0) {
-    throw new Error('No fields to update');
-  }
-
-  // Add updated_at timestamp
-  fields.push(`updated_at = CURRENT_TIMESTAMP`);
-
-  // Add WHERE clause parameter
-  values.push(id);
-
-  const result = await queryOne<User>(
-    `UPDATE users
-     SET ${fields.join(', ')}
-     WHERE id = $${paramIndex}
-     RETURNING *`,
-    values
-  );
+  const result = await queryOne<User>(sql, params);
 
   if (!result) {
     throw new Error(`User with id ${id} not found`);

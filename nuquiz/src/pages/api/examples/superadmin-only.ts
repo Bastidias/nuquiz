@@ -5,11 +5,12 @@
  * Only superadmins can access system-wide management.
  */
 
-import type { NextApiRequest, NextApiResponse } from 'next';
-import { withSuperAdmin } from '../../../lib/auth-middleware';
+import type { NextApiResponse } from 'next';
+import { withSuperAdmin, type AuthenticatedRequest } from '../../../lib/auth-middleware';
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const session = (req as any).session;
+const handler = async (req: AuthenticatedRequest, res: NextApiResponse) => {
+  // ✅ No type assertion needed - req.session is properly typed!
+  const { session } = req;
 
   return res.status(200).json({
     message: 'Superadmin content accessed successfully',
