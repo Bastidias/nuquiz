@@ -44,7 +44,7 @@ export const credentialsSchema = z.object({
 
 export const registerSchema = z.object({
   email: emailSchema,
-  password: passwordSchema, // Validate strength on registration
+  password: z.string().min(8, 'Password must be at least 8 characters'), // Min length only, zxcvbn checks strength
   username: usernameSchema.optional(),
 });
 
