@@ -1,20 +1,9 @@
 .page {
-  --background: #fafafa;
-  --foreground: #fff;
-  --text-primary: #000;
-  --text-secondary: #666;
-  --border: #e5e5e5;
-  --error-bg: #fee;
-  --error-text: #c00;
-  --warning-bg: #fef3cd;
-  --warning-text: #856404;
-
   display: flex;
   min-height: 100vh;
   align-items: center;
   justify-content: center;
-  font-family: var(--font-geist-sans);
-  background-color: var(--background);
+  background-color: var(--bg-page);
   padding: 24px;
 }
 
@@ -24,7 +13,7 @@
 }
 
 .card {
-  background: var(--foreground);
+  background: var(--bg-surface);
   border: 1px solid var(--border);
   border-radius: 12px;
   padding: 48px 40px;
@@ -87,9 +76,8 @@
   font-size: 16px;
   border: 1px solid var(--border);
   border-radius: 6px;
-  background: var(--foreground);
+  background: var(--bg-surface);
   color: var(--text-primary);
-  font-family: var(--font-geist-sans);
   transition: border-color 0.2s;
 }
 
@@ -113,13 +101,12 @@
   padding: 12px 24px;
   font-size: 16px;
   font-weight: 600;
-  color: var(--background);
-  background: var(--text-primary);
+  color: var(--button-primary-text);
+  background: var(--button-primary-bg);
   border: none;
   border-radius: 6px;
   cursor: pointer;
   transition: opacity 0.2s;
-  font-family: var(--font-geist-sans);
   margin-top: 8px;
 }
 
@@ -156,19 +143,5 @@
 
   .card h1 {
     font-size: 24px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .page {
-    --background: #000;
-    --foreground: #0a0a0a;
-    --text-primary: #ededed;
-    --text-secondary: #999;
-    --border: #1a1a1a;
-    --error-bg: #2a1515;
-    --error-text: #ff6b6b;
-    --warning-bg: #2a2515;
-    --warning-text: #ffb347;
   }
 }

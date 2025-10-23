@@ -1,6 +1,6 @@
 .main {
   min-height: calc(100vh - 70px);
-  background-color: var(--background, #fafafa);
+  background-color: var(--bg-page);
   padding: 48px 24px;
 }
 
@@ -13,12 +13,12 @@
   font-size: 36px;
   font-weight: 700;
   margin-bottom: 32px;
-  color: var(--text-primary, #000);
+  color: var(--text-primary);
 }
 
 .userCard {
-  background: var(--foreground, #fff);
-  border: 1px solid var(--border, #e5e5e5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 32px;
   margin-bottom: 32px;
@@ -28,7 +28,7 @@
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 24px;
-  color: var(--text-primary, #000);
+  color: var(--text-primary);
 }
 
 .userInfo {
@@ -46,13 +46,13 @@
 .field label {
   font-size: 14px;
   font-weight: 600;
-  color: var(--text-secondary, #666);
+  color: var(--text-secondary);
   min-width: 100px;
 }
 
 .field span {
   font-size: 14px;
-  color: var(--text-primary, #000);
+  color: var(--text-primary);
 }
 
 .roleBadge {
@@ -60,15 +60,15 @@
   font-size: 11px !important;
   font-weight: 600;
   letter-spacing: 0.5px;
-  background: var(--button-secondary-hover, #f2f2f2);
+  background: var(--button-secondary-hover);
   padding: 4px 8px;
   border-radius: 4px;
-  color: var(--text-primary, #000) !important;
+  color: var(--text-primary) !important;
 }
 
 .section {
-  background: var(--foreground, #fff);
-  border: 1px solid var(--border, #e5e5e5);
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
   border-radius: 12px;
   padding: 32px;
   margin-bottom: 32px;
@@ -78,13 +78,13 @@
   font-size: 20px;
   font-weight: 600;
   margin-bottom: 16px;
-  color: var(--text-primary, #000);
+  color: var(--text-primary);
 }
 
 .section p {
   font-size: 16px;
   line-height: 1.6;
-  color: var(--text-secondary, #666);
+  color: var(--text-secondary);
   margin-bottom: 24px;
 }
 
@@ -103,8 +103,8 @@
   align-items: center;
   justify-content: center;
   padding: 12px 24px;
-  background: var(--text-primary, #000);
-  color: var(--background, #fff);
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
   border-radius: 6px;
   font-size: 14px;
   font-weight: 600;
@@ -133,16 +133,5 @@
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
-  }
-}
-
-@media (prefers-color-scheme: dark) {
-  .main {
-    --background: #000;
-    --foreground: #0a0a0a;
-    --text-primary: #ededed;
-    --text-secondary: #999;
-    --border: #1a1a1a;
-    --button-secondary-hover: #1a1a1a;
   }
 }
