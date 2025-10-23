@@ -7,13 +7,13 @@
  * NO MOCKS - All functions operate on real database.
  */
 
-import { query, queryOne, queryMany, transaction } from './connection.js';
+import { query, queryOne, queryMany, transaction } from './connection';
 import type {
   Knowledge,
   NewKnowledge,
   KnowledgeType,
   PartialUpdate,
-} from './types.js';
+} from './types';
 
 // ==========================================
 // HIERARCHY VALIDATION

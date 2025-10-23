@@ -10,8 +10,8 @@
  */
 
 import bcrypt from 'bcryptjs';
-import { query, queryOne } from './connection.js';
-import type { AuthEvent, NewAuthEvent, User } from './types.js';
+import { query, queryOne } from './connection';
+import type { AuthEvent, NewAuthEvent, User } from './types';
 
 // ==========================================
 // PASSWORD MANAGEMENT

@@ -5,7 +5,7 @@
  * Functional approach - pure functions that operate on real data.
  */
 
-import { query, closeAll } from '../../connection.js';
+import { query, closeAll } from '../../connection';
 
 /**
  * Truncate all tables in the database (CASCADE to handle foreign keys)

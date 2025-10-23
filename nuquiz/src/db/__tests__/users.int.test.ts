@@ -7,10 +7,10 @@
  * Philosophy: NO MOCKS. Test the real thing.
  */
 
-import { query } from '../connection.js';
-import { testLifecycle } from './helpers/cleanup.js';
-import * as users from '../users.js';
-import type { User } from '../types.js';
+import { query } from '../connection';
+import { testLifecycle } from './helpers/cleanup';
+import * as users from '../users';
+import type { User } from '../types';
 
 describe('Users DAL - Integration Tests (NO MOCKS)', () => {
   // Clean database before all tests, after each test, and after all tests

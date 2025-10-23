@@ -5,5 +5,5 @@
  * NO MOCKS - These work with real test database.
  */
 
-export * from './factories.js';
-export * from './cleanup.js';
+export * from './factories';
+export * from './cleanup';

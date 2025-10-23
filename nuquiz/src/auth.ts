@@ -7,11 +7,11 @@
 
 import NextAuth, { type DefaultSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
-import { findByEmail, findById } from './db/users.js';
-import { verifyPassword } from './db/auth.js';
-import { isEnvAdminCredentials, createEnvAdminUser } from './db/auth-pure.js';
-import { credentialsSchema } from './lib/schemas.js';
-import type { UserRole } from './db/types.js';
+import { findByEmail, findById } from './db/users';
+import { verifyPassword } from './db/auth';
+import { isEnvAdminCredentials, createEnvAdminUser } from './db/auth-pure';
+import { credentialsSchema } from './lib/schemas';
+import type { UserRole } from './db/types';
 
 // Extend NextAuth types to include our custom fields
 declare module 'next-auth' {

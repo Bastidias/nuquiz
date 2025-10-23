@@ -11,7 +11,7 @@ import {
   buildUpdateQuery,
   validateEmail,
   validateUsername,
-} from '../users-pure.js';
+} from '../users-pure';
 
 // ============================================================================
 // buildUpdateQuery()

@@ -5,7 +5,7 @@
  * Uses battle-tested libraries (zxcvbn) instead of reinventing wheels.
  */
 
-import type { UserRole } from './types.js';
+import type { UserRole } from './types';
 import zxcvbn from 'zxcvbn';
 
 // ============================================================================

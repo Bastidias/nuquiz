@@ -9,7 +9,7 @@
  * ✅ Can be composed and reused
  */
 
-import type { KnowledgeType } from './types.js';
+import type { KnowledgeType } from './types';
 
 /**
  * Hierarchy rules: which child types are allowed for each parent type

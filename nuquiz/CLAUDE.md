@@ -87,8 +87,15 @@ This project uses **real integration testing** instead of mocks:
 
 **Test File Naming Convention:**
 - `*.int.test.ts` - Integration tests (database, API, external services)
+  - **Requires:** Test database running (docker-compose)
+  - Run with: `npm test` or `npm run test:int`
 - `*.unit.test.ts` - Pure unit tests (functions with no I/O)
-- `*.api.test.ts` - API endpoint tests
+  - **Requires:** Nothing - pure functions only
+  - Run with: `npm run test:unit`
+- `*.api.test.ts` - API endpoint tests (using `node-mocks-http`)
+  - **Requires:** Test database running (docker-compose)
+  - **Does NOT require:** Dev server running (uses direct handler calls)
+  - Run with: `npm run test:api`
 
 **Why No Mocks?**
 - Mocks test your mocks, not your code

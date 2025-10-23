@@ -7,9 +7,9 @@
 
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { getServerSession } from 'next-auth';
-import type { UserRole } from '../db/types.js';
-import { logAuthEvent } from '../db/auth.js';
-import { getIpAddress, getUserAgent } from '../db/auth-pure.js';
+import type { UserRole } from '../db/types';
+import { logAuthEvent } from '../db/auth';
+import { getIpAddress, getUserAgent } from '../db/auth-pure';
 
 /**
  * Authenticated request type (immutable extension)

@@ -7,9 +7,9 @@
  * NO MOCKS - Designed for integration testing against real PostgreSQL database.
  */
 
-import { query, queryOne } from './connection.js';
-import type { User, NewUser, UserRole } from './types.js';
-import { buildUpdateQuery } from './users-pure.js';
+import { query, queryOne } from './connection';
+import type { User, NewUser, UserRole } from './types';
+import { buildUpdateQuery } from './users-pure';
 
 // ============================================================================
 // Query Functions

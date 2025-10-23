@@ -7,7 +7,7 @@
 
 import { Kysely, PostgresDialect } from 'kysely';
 import { Pool } from 'pg';
-import type { UserRole, KnowledgeType, AuthEventType } from './types.js';
+import type { UserRole, KnowledgeType, AuthEventType } from './types';
 
 // ============================================================================
 // Database Schema Types

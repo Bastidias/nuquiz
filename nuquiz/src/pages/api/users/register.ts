@@ -12,7 +12,6 @@ import { AppError, toAppError } from '@/lib/errors';
 import * as users from '@/db/users';
 import { hashPassword } from '@/db/auth';
 import { checkPasswordStrength } from '@/db/auth-pure';
-import { signIn } from 'next-auth/react';
 
 export default async function handler(
   req: NextApiRequest,

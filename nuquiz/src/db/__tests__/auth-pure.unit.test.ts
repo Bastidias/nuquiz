@@ -16,7 +16,7 @@ import {
   getIpAddress,
   getUserAgent,
   isSessionExpired,
-} from '../auth-pure.js';
+} from '../auth-pure';
 
 // ============================================================================
 // isEnvAdminCredentials()

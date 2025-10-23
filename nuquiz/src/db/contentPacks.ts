@@ -7,8 +7,8 @@
  * NO MOCKS - Designed for integration testing against real PostgreSQL database.
  */
 
-import { query, queryOne, queryMany } from './connection.js';
-import type { ContentPack, NewContentPack, UserPackSubscription } from './types.js';
+import { query, queryOne, queryMany } from './connection';
+import type { ContentPack, NewContentPack, UserPackSubscription } from './types';
 
 // ============================================================================
 // Content Pack Query Functions

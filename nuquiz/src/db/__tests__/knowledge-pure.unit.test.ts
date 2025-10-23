@@ -27,7 +27,7 @@ import {
   canHaveChildren,
   getAllowedChildTypes,
   HIERARCHY_RULES,
-} from '../knowledge-pure.js';
+} from '../knowledge-pure';
 
 describe('validateHierarchyRule()', () => {
   // Root level tests

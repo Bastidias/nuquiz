@@ -11,7 +11,7 @@ import type {
   NewKnowledge,
   NewQuizSession,
   KnowledgeType,
-} from '../../types.js';
+} from '../../types';
 
 // Counter for generating unique values
 let counter = 0;

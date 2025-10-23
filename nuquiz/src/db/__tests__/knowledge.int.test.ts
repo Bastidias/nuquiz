@@ -6,9 +6,9 @@
  */
 
 import { describe, it, expect, beforeAll, afterEach, afterAll } from '@jest/globals';
-import * as knowledge from '../knowledge.js';
-import { testLifecycle, buildContentPack, buildUser, generateEmail, generateUsername } from './helpers/index.js';
-import { query } from '../connection.js';
+import * as knowledge from '../knowledge';
+import { testLifecycle, buildContentPack, buildUser, generateEmail, generateUsername } from './helpers/index';
+import { query } from '../connection';
 
 describe('Knowledge DAL - Integration Tests (NO MOCKS)', () => {
   let contentPackId: number;

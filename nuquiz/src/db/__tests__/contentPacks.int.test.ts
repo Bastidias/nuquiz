@@ -7,11 +7,11 @@
  * Philosophy: NO MOCKS. Test the real thing.
  */
 
-import { query } from '../connection.js';
-import { testLifecycle } from './helpers/cleanup.js';
-import * as users from '../users.js';
-import * as contentPacks from '../contentPacks.js';
-import type { User, ContentPack, UserPackSubscription } from '../types.js';
+import { query } from '../connection';
+import { testLifecycle } from './helpers/cleanup';
+import * as users from '../users';
+import * as contentPacks from '../contentPacks';
+import type { User, ContentPack, UserPackSubscription } from '../types';
 
 describe('ContentPacks & Subscriptions DAL - Integration Tests (NO MOCKS)', () => {
   let testUser1: User;

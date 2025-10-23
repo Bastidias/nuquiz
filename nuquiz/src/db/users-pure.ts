@@ -9,7 +9,7 @@
  * ✅ Composable and reusable
  */
 
-import type { User } from './types.js';
+import type { User } from './types';
 
 /**
  * Build dynamic UPDATE query from partial user data

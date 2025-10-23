@@ -11,7 +11,7 @@
  * - ✅ Can run tests in parallel
  */
 
-import { getPool } from '../../connection.js';
+import { getPool } from '../../connection';
 import type { PoolClient } from 'pg';
 
 /**
