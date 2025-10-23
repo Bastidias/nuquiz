@@ -2,16 +2,16 @@ import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { getServerSession } from 'next-auth';
 import Navigation from '@/components/Navigation';
-import { Geist, Geist_Mono } from 'next/font/google';
+import { Inter, Roboto_Mono } from 'next/font/google';
 import styles from '@/styles/Dashboard.module.css';
 
-const geistSans = Geist({
-  variable: '--font-geist-sans',
+const inter = Inter({
+  variable: '--font-inter',
   subsets: ['latin'],
 });
 
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
+const robotoMono = Roboto_Mono({
+  variable: '--font-roboto-mono',
   subsets: ['latin'],
 });
 
@@ -31,7 +31,7 @@ export default function Dashboard({ user }: DashboardProps) {
         <meta name="description" content="Your Nuquiz dashboard" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
       </Head>
-      <div className={`${geistSans.variable} ${geistMono.variable}`}>
+      <div className={`${inter.variable} ${robotoMono.variable}`}>
         <Navigation />
         <main className={styles.main}>
           <div className={styles.container}>
