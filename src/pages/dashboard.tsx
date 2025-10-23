@@ -1,9 +1,9 @@
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
-import { getServerSession } from 'next-auth';
 import Navigation from '@/components/Navigation';
 import { Inter, Roboto_Mono } from 'next/font/google';
 import styles from '@/styles/Dashboard.module.css';
+import { getSessionSSR } from '@/lib/auth-helpers';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -76,7 +76,7 @@ export default function Dashboard({ user }: DashboardProps) {
 }
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-  const session = await getServerSession(context.req, context.res, {});
+  const session = await getSessionSSR(context);
 
   // Redirect to login if not authenticated
   if (!session?.user) {
@@ -93,7 +93,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
       user: {
         email: session.user.email,
         username: session.user.name || null,
-        role: (session.user as any).role || 'student',
+        role: session.user.role || 'student',
       },
     },
   };

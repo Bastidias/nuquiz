@@ -1,17 +1,17 @@
 /**
- * NextAuth Configuration
+ * NextAuth v4 Configuration
  *
  * Authentication setup with credentials provider and role-based access control.
- * Following functional programming principles.
  */
 
-import NextAuth, { type DefaultSession } from 'next-auth';
-import Credentials from 'next-auth/providers/credentials';
-import { findByEmail, findById } from './db/users';
-import { verifyPassword } from './db/auth';
-import { isEnvAdminCredentials, createEnvAdminUser } from './db/auth-pure';
-import { credentialsSchema } from './lib/schemas';
-import type { UserRole } from './db/types';
+import type { NextAuthOptions, User, Session } from 'next-auth';
+import type { JWT } from 'next-auth/jwt';
+import CredentialsProvider from 'next-auth/providers/credentials';
+import { findByEmail, findById } from '../db/users';
+import { verifyPassword } from '../db/auth';
+import { isEnvAdminCredentials, createEnvAdminUser } from '../db/auth-pure';
+import { credentialsSchema } from './schemas';
+import type { UserRole } from '../db/types';
 
 // Extend NextAuth types to include our custom fields
 declare module 'next-auth' {
@@ -20,7 +20,10 @@ declare module 'next-auth' {
       id: string;
       role: UserRole;
       email_verified: boolean;
-    } & DefaultSession['user'];
+      email?: string | null;
+      name?: string | null;
+      image?: string | null;
+    };
   }
 
   interface User {
@@ -30,7 +33,7 @@ declare module 'next-auth' {
   }
 }
 
-declare module '@auth/core/jwt' {
+declare module 'next-auth/jwt' {
   interface JWT {
     id: string;
     role: UserRole;
@@ -38,15 +41,15 @@ declare module '@auth/core/jwt' {
   }
 }
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
-    Credentials({
+    CredentialsProvider({
       name: 'credentials',
       credentials: {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials) {
+      async authorize(credentials): Promise<User | null> {
         // Validate input using Zod
         const result = credentialsSchema.safeParse(credentials);
 
@@ -87,7 +90,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: JWT; user?: User }): Promise<JWT> {
       // Initial sign in
       if (user) {
         token.id = user.id;
@@ -112,7 +115,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: Session; token: JWT }): Promise<Session> {
       if (session.user) {
         session.user.id = token.id;
         session.user.role = token.role;
@@ -129,55 +132,5 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-});
-
-/**
- * Get current user session
- * @returns Session object or null
- */
-export const getSession = auth;
-
-/**
- * Require authentication
- * Throws error if user is not authenticated
- */
-export const requireAuth = async () => {
-  const session = await auth();
-  if (!session?.user) {
-    throw new Error('Unauthorized');
-  }
-  return session;
-};
-
-/**
- * Require specific role(s)
- * Throws error if user doesn't have required role
- */
-export const requireRole = async (roles: UserRole | UserRole[]) => {
-  const session = await requireAuth();
-  const allowedRoles = Array.isArray(roles) ? roles : [roles];
-
-  if (!allowedRoles.includes(session.user.role)) {
-    throw new Error('Forbidden: insufficient permissions');
-  }
-
-  return session;
-};
-
-/**
- * Check if user has role
- * Returns false if not authenticated
- */
-export const hasRole = async (role: UserRole): Promise<boolean> => {
-  const session = await auth();
-  return session?.user?.role === role;
-};
-
-/**
- * Check if user has any of the specified roles
- * Returns false if not authenticated
- */
-export const hasAnyRole = async (roles: UserRole[]): Promise<boolean> => {
-  const session = await auth();
-  return session?.user ? roles.includes(session.user.role) : false;
+  secret: process.env.NEXTAUTH_SECRET || 'development-secret-change-in-production',
 };

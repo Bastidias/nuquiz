@@ -6,10 +6,10 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { getServerSession } from 'next-auth';
-import type { UserRole } from '../db/types';
-import { logAuthEvent } from '../db/auth';
-import { getIpAddress, getUserAgent } from '../db/auth-pure';
+import type { UserRole } from '@/db/types';
+import { logAuthEvent } from '@/db/auth';
+import { getIpAddress, getUserAgent } from '@/db/auth-pure';
+import { getSession } from '@/lib/auth-helpers';
 
 /**
  * Authenticated request type (immutable extension)
@@ -43,12 +43,7 @@ type AuthenticatedApiHandler = (
  * Helper to get auth session in API routes
  */
 export const getApiSession = async (req: NextApiRequest, res: NextApiResponse) => {
-  // Note: In Next.js 13+ with App Router, use auth() from auth.ts instead
-  // For Pages Router, we use getServerSession
-  return await getServerSession(req, res, {
-    // Your NextAuth configuration would go here
-    // For now, we'll return null until we wire this up properly
-  });
+  return await getSession(req, res);
 };
 
 /**
