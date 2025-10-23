@@ -322,8 +322,12 @@ gh repo view
 - **AI slop analysis: `docs/code-review-ai-slop.md`** ⭐ **REQUIRED READING**
 - Eric Elliott code review (historical): `docs/eric-elliott-code-review.md`
 
-### Authentication & RBAC
+### API Development
+- **API patterns & structure: `docs/api-patterns.md`** ⭐ **REFERENCE FOR ALL API ROUTES**
 - NextAuth implementation: `docs/nextauth-implementation-summary.md`
+- RBAC middleware: `src/lib/auth-middleware.ts`
+- Validation schemas: `src/lib/schemas.ts`
+- Error handling: `src/lib/errors.ts`
 
 ### Testing
 - RITEway principles: `docs/test-review-riteway.md`
