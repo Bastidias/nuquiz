@@ -40,9 +40,38 @@ npm test -- <file> # Run specific test file
 
 ## Architecture Principles
 
+### ⚠️ CRITICAL: Avoid AI-Generated Bloat ("AI Slop")
+
+**This project was refactored in Oct 2025 to remove 1,528 lines of over-engineered code.** Learn from our mistakes:
+
+**❌ NEVER Do This:**
+- Write custom validation when Zod exists
+- Implement password strength checks (use zxcvbn)
+- Create complex error hierarchies (one AppError class is enough)
+- Build custom query builders (use Kysely for type safety)
+- Over-abstract simple operations (inline is often better)
+- Write verbose JSDoc that repeats the code
+
+**✅ ALWAYS Do This:**
+- **Use battle-tested libraries** (Zod, zxcvbn, Kysely, bcrypt)
+- **Keep it simple** - readable code > "functional purity"
+- **Inline simple logic** - don't create helpers used once
+- **Pragmatic over dogmatic** - apply FP principles without over-engineering
+
+**Required Reading:**
+- `docs/code-review-ai-slop.md` - Complete analysis of what went wrong
+- `docs/coding-standards.md` - Pragmatic standards (post-refactoring)
+
+**Before Writing ANY New Code:**
+1. Search for an existing library first
+2. Check if the logic is simple enough to inline
+3. Only abstract when you have 3+ uses
+4. Prefer composition over complex hierarchies
+
 ### Code Style
-- **Functional programming** (Eric Elliott style) over OOP
+- **Functional programming** (Eric Elliott style) over OOP - **but pragmatically applied**
 - **Composition over inheritance**
+- **Libraries over custom code** - don't reinvent wheels
 - **Strict separation** between frontend and backend types
 - No shared type definitions between FE/BE
 
@@ -254,6 +283,32 @@ gh repo view
    - Use typed errors instead of generic Error()
    - Implement rate limiting for failed logins (helper function ready)
 
+## Approved Dependencies
+
+**Always use these libraries instead of custom implementations:**
+
+### Validation & Schemas
+- **Zod** - Runtime validation, schema inference (`src/lib/schemas.ts`)
+- Never write custom regex validators
+
+### Security
+- **bcryptjs** - Password hashing (12 salt rounds)
+- **zxcvbn** - Password strength checking (Dropbox's library)
+- Never roll your own crypto or password validation
+
+### Database
+- **pg** - PostgreSQL client (parameterized queries)
+- **Kysely** - Type-safe query builder (`src/db/kysely.ts`)
+- Never use string interpolation for SQL
+
+### Authentication
+- **NextAuth v5** - Authentication framework (`src/auth.ts`)
+- JWT sessions, role-based access control
+
+### Error Handling
+- **AppError class** - Simple, pragmatic error handling (`src/lib/errors.ts`)
+- No complex error hierarchies or factory methods
+
 ## File Locations
 
 ### Core Documentation
@@ -261,11 +316,14 @@ gh repo view
 - Data model explanation: `docs/overview.md`
 - Implementation plan: `docs/roadmap.md`
 - Architecture diagram: `docs/diagram.md`
-- Coding standards: `docs/coding-standards.md`
+- **Coding standards: `docs/coding-standards.md`** ⭐ **READ THIS FIRST**
+
+### Code Quality & Anti-Patterns
+- **AI slop analysis: `docs/code-review-ai-slop.md`** ⭐ **REQUIRED READING**
+- Eric Elliott code review (historical): `docs/eric-elliott-code-review.md`
 
 ### Authentication & RBAC
 - NextAuth implementation: `docs/nextauth-implementation-summary.md`
-- Eric Elliott code review: `docs/eric-elliott-code-review.md`
 
 ### Testing
 - RITEway principles: `docs/test-review-riteway.md`
