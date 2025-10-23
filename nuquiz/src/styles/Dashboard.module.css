@@ -1,0 +1,148 @@
+.main {
+  min-height: calc(100vh - 70px);
+  background-color: var(--background, #fafafa);
+  padding: 48px 24px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: var(--text-primary, #000);
+}
+
+.userCard {
+  background: var(--foreground, #fff);
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.userCard h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 24px;
+  color: var(--text-primary, #000);
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.field {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary, #666);
+  min-width: 100px;
+}
+
+.field span {
+  font-size: 14px;
+  color: var(--text-primary, #000);
+}
+
+.roleBadge {
+  text-transform: uppercase;
+  font-size: 11px !important;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: var(--button-secondary-hover, #f2f2f2);
+  padding: 4px 8px;
+  border-radius: 4px;
+  color: var(--text-primary, #000) !important;
+}
+
+.section {
+  background: var(--foreground, #fff);
+  border: 1px solid var(--border, #e5e5e5);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 32px;
+}
+
+.section h2 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  color: var(--text-primary, #000);
+}
+
+.section p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-secondary, #666);
+  margin-bottom: 24px;
+}
+
+.ctas {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.ctas a {
+  text-decoration: none;
+}
+
+.primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: var(--text-primary, #000);
+  color: var(--background, #fff);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  transition: opacity 0.2s;
+}
+
+.primary:hover {
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 24px 16px;
+  }
+
+  .container h1 {
+    font-size: 28px;
+  }
+
+  .userCard,
+  .section {
+    padding: 24px;
+  }
+
+  .field {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .main {
+    --background: #000;
+    --foreground: #0a0a0a;
+    --text-primary: #ededed;
+    --text-secondary: #999;
+    --border: #1a1a1a;
+    --button-secondary-hover: #1a1a1a;
+  }
+}
