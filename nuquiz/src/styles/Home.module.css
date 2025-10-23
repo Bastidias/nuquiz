@@ -47,12 +47,60 @@
   color: var(--text-primary);
 }
 
-.intro p {
+.intro > p {
   max-width: 440px;
   font-size: 18px;
   line-height: 32px;
   text-wrap: balance;
   color: var(--text-secondary);
+}
+
+.features {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+  width: 100%;
+  max-width: 440px;
+  margin-top: 16px;
+}
+
+.feature h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-primary);
+}
+
+.feature p {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+.intro h2 {
+  font-size: 24px;
+  font-weight: 600;
+  margin-top: 32px;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+}
+
+.intro ul {
+  margin: 16px 0;
+  padding-left: 24px;
+  color: var(--text-secondary);
+}
+
+.intro li {
+  margin-bottom: 12px;
+  font-size: 16px;
+  line-height: 24px;
+}
+
+.intro li strong {
+  color: var(--text-primary);
+  font-weight: 600;
 }
 
 .intro a {
