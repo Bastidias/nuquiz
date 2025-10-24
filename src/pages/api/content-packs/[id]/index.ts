@@ -19,14 +19,12 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
 
   try {
-    // Validate pack ID from URL
-    const idResult = contentPackIdSchema.safeParse(req.query.id);
-
-    if (!idResult.success) {
+    // Validate pack ID with Zod
+    const parsed = contentPackIdSchema.safeParse(req.query.id);
+    if (!parsed.success) {
       throw new AppError('Invalid content pack ID', 400);
     }
-
-    const packId = idResult.data;
+    const packId = parsed.data;
 
     // Fetch content pack
     const pack = await findById(packId);

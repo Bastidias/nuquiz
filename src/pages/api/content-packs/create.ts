@@ -18,14 +18,15 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
 
   try {
-    // Validate request body
-    const result = createContentPackSchema.safeParse(req.body);
-
-    if (!result.success) {
-      throw new AppError('Invalid input', 400, { errors: result.error.issues });
+    // Validate input with Zod
+    const parsed = createContentPackSchema.safeParse(req.body);
+    if (!parsed.success) {
+      throw new AppError('Invalid input', 400, {
+        errors: parsed.error.issues,
+      });
     }
 
-    const { name, description } = result.data;
+    const { name, description } = parsed.data;
 
     // Handle env-admin (not in database)
     if (req.session.user.id === 'env-admin') {
@@ -39,8 +40,8 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     }
 
     const pack = await create({
-      name,
-      description: description || null,
+      name, // Already trimmed by Zod
+      description, // undefined if not provided, which matches DB type
       created_by: userId,
     });
 
