@@ -328,6 +328,22 @@ export const getQuestionOptions = async (questionId: number): Promise<AnswerOpti
 };
 
 /**
+ * Get all valid answer option IDs for a quiz session
+ * Used for validating submitted answers belong to the session
+ */
+export const getSessionOptionIds = async (sessionId: number): Promise<Set<number>> => {
+  const options = await queryMany<{id: number}>(
+    `SELECT ao.id
+     FROM answer_options ao
+     INNER JOIN questions q ON ao.question_id = q.id
+     WHERE q.session_id = $1`,
+    [sessionId]
+  );
+
+  return new Set(options.map(o => o.id));
+};
+
+/**
  * Update answer option selection status
  */
 export const markOptionSelected = async (

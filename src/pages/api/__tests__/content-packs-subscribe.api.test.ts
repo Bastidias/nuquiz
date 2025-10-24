@@ -23,6 +23,7 @@ afterEach(async () => {
   await query('DELETE FROM questions');
   await query('DELETE FROM quiz_sessions');
   await query('DELETE FROM user_pack_subscriptions');
+  await query('DELETE FROM knowledge');
   await query('DELETE FROM content_packs');
   await query('DELETE FROM users');
 });

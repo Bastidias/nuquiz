@@ -7,6 +7,7 @@
  * NO I/O, NO randomness without seed, NO side effects.
  */
 
+import seedrandom from 'seedrandom';
 import {
   QuestionData,
   GeneratedQuestion,
@@ -15,34 +16,29 @@ import {
 } from './types';
 
 /**
- * Seeded random number generator (deterministic)
- * Uses a simple LCG (Linear Congruential Generator)
+ * Seeded RNG wrapper using battle-tested seedrandom library
+ * Provides shuffle and sample helper methods
  */
-class SeededRandom {
-  private seed: number;
+type RNG = () => number;
 
-  constructor(seed: number) {
-    this.seed = seed;
+/**
+ * Fisher-Yates shuffle with seeded RNG
+ */
+function shuffle<T>(array: T[], rng: RNG): T[] {
+  const copy = [...array];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
   }
+  return copy;
+}
 
-  next(): number {
-    this.seed = (this.seed * 9301 + 49297) % 233280;
-    return this.seed / 233280;
-  }
-
-  shuffle<T>(array: T[]): T[] {
-    const copy = [...array];
-    for (let i = copy.length - 1; i > 0; i--) {
-      const j = Math.floor(this.next() * (i + 1));
-      [copy[i], copy[j]] = [copy[j], copy[i]];
-    }
-    return copy;
-  }
-
-  sample<T>(array: T[], count: number): T[] {
-    const shuffled = this.shuffle(array);
-    return shuffled.slice(0, count);
-  }
+/**
+ * Random sample N items from array (seeded)
+ */
+function sample<T>(array: T[], count: number, rng: RNG): T[] {
+  const shuffled = shuffle(array, rng);
+  return shuffled.slice(0, count);
 }
 
 /**
@@ -56,7 +52,7 @@ export function generateQuestion(
   data: QuestionData,
   seed: number
 ): GeneratedQuestion {
-  const rng = new SeededRandom(seed);
+  const rng = seedrandom(seed.toString());
 
   if (data.direction === 'downward') {
     return generateDownwardQuestion(data, rng);
@@ -67,7 +63,7 @@ export function generateQuestion(
 
 function generateDownwardQuestion(
   data: QuestionData & { direction: 'downward' },
-  rng: SeededRandom
+  rng: RNG
 ): GeneratedQuestion {
   const { category, attribute, correctFacts, distractorPool, confusingFacts, numDistractors } = data;
 
@@ -87,7 +83,7 @@ function generateDownwardQuestion(
 
   // Option 2: Some correct facts (if more than 1)
   if (correctFacts.length > 1) {
-    const someFacts = rng.sample(correctFacts, Math.ceil(correctFacts.length / 2));
+    const someFacts = sample(correctFacts, Math.ceil(correctFacts.length / 2), rng);
     answerOptions.push({
       option_text: someFacts.map((f) => f.label).join(', '),
       is_correct: true,
@@ -99,8 +95,8 @@ function generateDownwardQuestion(
   // Option 3+: Mixed options (correct + distractors)
   const numMixedOptions = Math.min(2, distractorPool.length);
   for (let i = 0; i < numMixedOptions; i++) {
-    const someCorrect = rng.sample(correctFacts, 1);
-    const someWrong = rng.sample(distractorPool, 1);
+    const someCorrect = sample(correctFacts, 1, rng);
+    const someWrong = sample(distractorPool, 1, rng);
     const components = [...someCorrect, ...someWrong];
 
     // Add confusing facts if provided (adaptive strategy)
@@ -122,7 +118,7 @@ function generateDownwardQuestion(
   }
 
   // Option N: Pure distractor (all wrong)
-  const pureDistractors = rng.sample(distractorPool, Math.min(2, distractorPool.length));
+  const pureDistractors = sample(distractorPool, Math.min(2, distractorPool.length), rng);
 
   // Add confusing facts to pure distractors too (adaptive strategy)
   const distractorComponents = [...pureDistractors];
@@ -142,7 +138,7 @@ function generateDownwardQuestion(
   });
 
   // Shuffle options
-  const shuffledOptions = rng.shuffle(answerOptions).map((opt, idx) => ({
+  const shuffledOptions = shuffle(answerOptions, rng).map((opt, idx) => ({
     ...opt,
     display_order: idx + 1,
   }));
@@ -159,7 +155,7 @@ function generateDownwardQuestion(
 
 function generateUpwardQuestion(
   data: QuestionData & { direction: 'upward' },
-  rng: SeededRandom
+  rng: RNG
 ): GeneratedQuestion {
   const { attribute, fact, correctCategories, distractorPool, numDistractors } = data;
 
@@ -185,7 +181,7 @@ function generateUpwardQuestion(
     const isDistractor = i > correctCategories.length;
 
     if (isDistractor && availableDistractors.length > 0) {
-      const selected = rng.sample(availableDistractors, 1);
+      const selected = sample(availableDistractors, 1, rng);
       answerOptions.push({
         option_text: selected.map((c) => c.label).join(', '),
         is_correct: false,
@@ -196,7 +192,7 @@ function generateUpwardQuestion(
   }
 
   // Shuffle options
-  const shuffledOptions = rng.shuffle(answerOptions).map((opt, idx) => ({
+  const shuffledOptions = shuffle(answerOptions, rng).map((opt, idx) => ({
     ...opt,
     display_order: idx + 1,
   }));
