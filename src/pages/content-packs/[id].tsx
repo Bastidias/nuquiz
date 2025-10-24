@@ -38,6 +38,7 @@ export default function ContentPackDetailsPage() {
   const [error, setError] = useState<string | null>(null);
   const [subscribing, setSubscribing] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
+  const [startingQuiz, setStartingQuiz] = useState(false);
 
   useEffect(() => {
     if (!id) return;
@@ -98,6 +99,37 @@ export default function ContentPackDetailsPage() {
     }
   };
 
+  const handleStartQuiz = async () => {
+    if (!id || startingQuiz) return;
+
+    setStartingQuiz(true);
+    setError(null);
+
+    try {
+      const response = await fetch('/api/quiz-sessions/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          content_pack_id: parseInt(id as string, 10),
+          question_count: 10,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Failed to create quiz');
+      }
+
+      const result = await response.json();
+      router.push(`/quiz/${result.session_id}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'An error occurred');
+      setStartingQuiz(false);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -151,8 +183,18 @@ export default function ContentPackDetailsPage() {
                 </div>
 
                 {pack.user_has_access ? (
-                  <div className={styles.subscribedBadge}>
-                    ✓ Subscribed
+                  <div>
+                    <div className={styles.subscribedBadge}>
+                      ✓ Subscribed
+                    </div>
+                    <button
+                      onClick={handleStartQuiz}
+                      disabled={startingQuiz}
+                      className={styles.button}
+                      style={{ marginTop: '1rem' }}
+                    >
+                      {startingQuiz ? 'Starting Quiz...' : 'Start Quiz (10 Questions)'}
+                    </button>
                   </div>
                 ) : (
                   <button
