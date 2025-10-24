@@ -10,6 +10,7 @@ import type { NextApiResponse } from 'next';
 import { withAuth, type AuthenticatedRequest } from '@/lib/auth-middleware';
 import { AppError, toAppError } from '@/lib/errors';
 import { findById, hasAccess, countSubscriptions } from '@/db/contentPacks';
+import { contentPackIdSchema } from '@/lib/schemas';
 
 async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   // Method check
@@ -18,18 +19,14 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
 
   try {
-    // Extract pack ID from query
-    const { id } = req.query;
+    // Validate pack ID from URL
+    const idResult = contentPackIdSchema.safeParse(req.query.id);
 
-    if (!id || typeof id !== 'string') {
+    if (!idResult.success) {
       throw new AppError('Invalid content pack ID', 400);
     }
 
-    const packId = parseInt(id, 10);
-
-    if (isNaN(packId)) {
-      throw new AppError('Invalid content pack ID', 400);
-    }
+    const packId = idResult.data;
 
     // Fetch content pack
     const pack = await findById(packId);

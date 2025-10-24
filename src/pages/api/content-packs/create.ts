@@ -10,6 +10,7 @@ import type { NextApiResponse } from 'next';
 import { withAdmin, type AuthenticatedRequest } from '@/lib/auth-middleware';
 import { AppError, toAppError } from '@/lib/errors';
 import { create } from '@/db/contentPacks';
+import { createContentPackSchema } from '@/lib/schemas';
 
 async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -17,11 +18,14 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
   }
 
   try {
-    const { name, description } = req.body;
+    // Validate request body
+    const result = createContentPackSchema.safeParse(req.body);
 
-    if (!name || typeof name !== 'string' || name.trim().length < 3) {
-      throw new AppError('Name must be at least 3 characters', 400);
+    if (!result.success) {
+      throw new AppError('Invalid input', 400, { errors: result.error.issues });
     }
+
+    const { name, description } = result.data;
 
     // Handle env-admin (not in database)
     if (req.session.user.id === 'env-admin') {
@@ -35,8 +39,8 @@ async function handler(req: AuthenticatedRequest, res: NextApiResponse) {
     }
 
     const pack = await create({
-      name: name.trim(),
-      description: description?.trim() || null,
+      name,
+      description: description || null,
       created_by: userId,
     });
 

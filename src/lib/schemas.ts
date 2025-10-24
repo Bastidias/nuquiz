@@ -56,6 +56,17 @@ export const updateUserSchema = z.object({
 });
 
 // ============================================================================
+// Content Pack Schemas
+// ============================================================================
+
+export const createContentPackSchema = z.object({
+  name: z.string().min(3, 'Name must be at least 3 characters').max(100).trim(),
+  description: z.string().max(500).optional(),
+});
+
+export const contentPackIdSchema = z.string().regex(/^\d+$/, 'Invalid content pack ID').transform(Number);
+
+// ============================================================================
 // Type Inference
 // ============================================================================
 
@@ -63,3 +74,4 @@ export type Credentials = z.infer<typeof credentialsSchema>;
 export type RegisterData = z.infer<typeof registerSchema>;
 export type UpdateUserData = z.infer<typeof updateUserSchema>;
 export type UserRole = z.infer<typeof roleSchema>;
+export type CreateContentPackData = z.infer<typeof createContentPackSchema>;
