@@ -88,20 +88,26 @@ export const createQuizSession = async (
     throw new Error('No valid category/attribute pairs found for question generation');
   }
 
-  // Step 4: Generate and save questions
+  // Step 4: Filter to only pairs that have facts (FIX: ensures correct question count)
+  const validPairs = questionPairs.filter(pair => {
+    const pairFacts = facts.filter(f => f.parent_id === pair.attribute.id);
+    return pairFacts.length > 0;
+  });
+
+  if (validPairs.length === 0) {
+    throw new Error('No category/attribute pairs with facts found for question generation');
+  }
+
+  // Generate and save questions
   const questions: QuizSessionWithQuestions['questions'] = [];
-  const questionsToGenerate = Math.min(question_count, questionPairs.length);
+  const questionsToGenerate = Math.min(question_count, validPairs.length);
 
   for (let i = 0; i < questionsToGenerate; i++) {
-    const pair = questionPairs[i % questionPairs.length];
+    const pair = validPairs[i % validPairs.length];
     const { category, attribute } = pair;
 
     // Find correct facts (children of this attribute)
     const correctFacts = facts.filter((f) => f.parent_id === attribute.id);
-
-    if (correctFacts.length === 0) {
-      continue; // Skip if no facts available
-    }
 
     // Find distractor facts (facts from sibling attributes or same category)
     const siblingAttributes = attributes.filter(
@@ -291,6 +297,14 @@ export const submitQuizSession = async (
   // Verify session not already completed
   if (session.completed_at) {
     throw new Error('Quiz session already completed');
+  }
+
+  // SECURITY: Validate all submitted option IDs belong to this session
+  const validOptionIds = await quizSessions.getSessionOptionIds(session_id);
+  const invalidOptions = selected_option_ids.filter(id => !validOptionIds.has(id));
+
+  if (invalidOptions.length > 0) {
+    throw new Error(`Invalid option IDs: ${invalidOptions.join(', ')} - these options do not belong to this quiz session`);
   }
 
   // Mark all selected options

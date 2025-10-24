@@ -9,15 +9,10 @@
  */
 
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { z } from 'zod';
 import { withAuth } from '@/lib/auth-middleware';
 import { AppError } from '@/lib/errors';
 import { submitQuizSession } from '@/lib/services/quizSessionService';
-
-// Request validation schema
-const SubmitQuizSessionSchema = z.object({
-  selected_option_ids: z.array(z.number().int().positive()),
-});
+import { sessionIdSchema, submitQuizSessionSchema } from '@/lib/schemas';
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'POST') {
@@ -30,14 +25,16 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
   }
 
   const userId = session.user.id;
-  const sessionId = parseInt(req.query.id as string, 10);
 
-  if (isNaN(sessionId)) {
+  // Validate session ID with Zod
+  const parsedId = sessionIdSchema.safeParse(req.query.id);
+  if (!parsedId.success) {
     throw new AppError('Invalid session ID', 400);
   }
+  const sessionId = parsedId.data;
 
   // Validate request body
-  const parsed = SubmitQuizSessionSchema.safeParse(req.body);
+  const parsed = submitQuizSessionSchema.safeParse(req.body);
   if (!parsed.success) {
     throw new AppError('Invalid request body', 400, {
       errors: parsed.error.issues,
