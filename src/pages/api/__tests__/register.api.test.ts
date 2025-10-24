@@ -15,6 +15,11 @@ import { query } from '@/db/connection';
 
 // Test cleanup
 afterEach(async () => {
+  await query('DELETE FROM answer_option_components');
+  await query('DELETE FROM answer_options');
+  await query('DELETE FROM question_knowledge_sources');
+  await query('DELETE FROM questions');
+  await query('DELETE FROM quiz_sessions');
   await query('DELETE FROM users');
 });
 

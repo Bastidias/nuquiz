@@ -52,7 +52,7 @@ export default function ContentPacksPage({ isAdmin }: ContentPacksPageProps) {
         const subsResponse = await fetch('/api/users/me/subscriptions');
         if (subsResponse.ok) {
           const subsResult = await subsResponse.json();
-          const ids = new Set((subsResult.data || []).map((p: ContentPack) => p.id));
+          const ids = new Set<number>((subsResult.data || []).map((p: ContentPack) => p.id));
           setSubscribedIds(ids);
         }
       } catch (err) {
