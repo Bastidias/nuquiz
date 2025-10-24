@@ -70,7 +70,7 @@ export default async function handler(
     // 6. Create user (default role: student)
     const newUser = await users.create({
       email,
-      username: username || null,
+      username: username || undefined,
       password_hash,
       role: 'student',
     });

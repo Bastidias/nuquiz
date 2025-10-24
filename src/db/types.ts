@@ -64,6 +64,7 @@ export interface NewContentPack {
   name: string;
   description?: string;
   created_by?: number;
+  is_active?: boolean;
 }
 
 export interface UserPackSubscription {

@@ -1,0 +1,247 @@
+.main {
+  min-height: calc(100vh - 70px);
+  background-color: var(--bg-page);
+  padding: 48px 24px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.container h1 {
+  font-size: 36px;
+  font-weight: 700;
+  margin-bottom: 32px;
+  color: var(--text-primary);
+}
+
+.packGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.packCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.packCard:hover {
+  border-color: var(--button-primary-bg);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.packCard h3 {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.packCard h3 .subscribedBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: #4CAF50;
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.packCard p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 16px;
+}
+
+.subscriberCount {
+  font-size: 12px;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.detailsContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.detailsCard {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 32px;
+  margin-bottom: 24px;
+}
+
+.detailsCard h2 {
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  color: var(--text-primary);
+}
+
+.detailsCard p {
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+
+.meta {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.metaItem {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.metaItem label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.metaItem span {
+  font-size: 14px;
+  color: var(--text-primary);
+}
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 24px;
+  background: var(--button-primary-bg);
+  color: var(--button-primary-text);
+  border: none;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  text-decoration: none;
+}
+
+.button:hover:not(:disabled) {
+  opacity: 0.9;
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.buttonSecondary {
+  background: var(--button-secondary-bg);
+  color: var(--text-primary);
+}
+
+.buttonSecondary:hover:not(:disabled) {
+  background: var(--button-secondary-hover);
+}
+
+.subscribedBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  background: var(--button-secondary-hover);
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.error {
+  background: #fee;
+  border: 1px solid #fcc;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+  color: #c00;
+  font-size: 14px;
+}
+
+.success {
+  background: #efe;
+  border: 1px solid #cfc;
+  border-radius: 6px;
+  padding: 16px;
+  margin-bottom: 24px;
+  color: #060;
+  font-size: 14px;
+}
+
+.empty {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-secondary);
+}
+
+.empty p {
+  font-size: 16px;
+  margin-bottom: 24px;
+}
+
+.backLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  text-decoration: none;
+  margin-bottom: 24px;
+  transition: color 0.2s;
+}
+
+.backLink:hover {
+  color: var(--text-primary);
+}
+
+@media (max-width: 768px) {
+  .main {
+    padding: 24px 16px;
+  }
+
+  .container h1 {
+    font-size: 28px;
+  }
+
+  .packGrid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .detailsCard {
+    padding: 24px;
+  }
+
+  .meta {
+    gap: 16px;
+  }
+}

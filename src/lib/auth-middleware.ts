@@ -41,8 +41,44 @@ type AuthenticatedApiHandler = (
 /**
  * Get session from Next.js API request
  * Helper to get auth session in API routes
+ *
+ * In test environment, supports test session injection via cookies
  */
 export const getApiSession = async (req: NextApiRequest, res: NextApiResponse) => {
+  // In test mode, check for test session cookie
+  if (process.env.NODE_ENV === 'test' && req.headers.cookie) {
+    const { decode } = await import('next-auth/jwt');
+    const secret = process.env.NEXTAUTH_SECRET || 'development-secret-change-in-production';
+
+    // Extract session token from cookie
+    const cookieName = 'next-auth.session-token';
+    const cookies = req.headers.cookie.split(';').reduce((acc, cookie) => {
+      const [key, value] = cookie.trim().split('=');
+      acc[key] = value;
+      return acc;
+    }, {} as Record<string, string>);
+
+    const token = cookies[cookieName];
+
+    if (token) {
+      try {
+        const decoded = await decode({ token, secret });
+        if (decoded) {
+          return {
+            user: {
+              id: decoded.id as string,
+              email: decoded.email as string,
+              role: decoded.role as UserRole,
+              email_verified: decoded.email_verified as boolean,
+            },
+          };
+        }
+      } catch (error) {
+        // Fall through to regular session handling
+      }
+    }
+  }
+
   return await getSession(req, res);
 };
 

@@ -5,13 +5,26 @@
 -- This dataset demonstrates the compare/contrast quiz model
 -- Topics → Categories → Attributes → Facts
 
--- Create a test user and content pack
-INSERT INTO users (email, username) VALUES
-    ('teacher@school.edu', 'science_teacher');
+-- ==========================================
+-- TEST USERS (password for all: password123)
+-- ==========================================
+INSERT INTO users (email, username, password_hash, role) VALUES
+    ('admin@test.com', 'Test Admin', '$2b$12$QvJLDpolv0SqEravUDu0jelXO6bGAQgi3wVzPDgUqqJtax.yEAelK', 'admin'),
+    ('student@test.com', 'Test Student', '$2b$12$QvJLDpolv0SqEravUDu0jelXO6bGAQgi3wVzPDgUqqJtax.yEAelK', 'student'),
+    ('teacher@school.edu', 'Science Teacher', '$2b$12$QvJLDpolv0SqEravUDu0jelXO6bGAQgi3wVzPDgUqqJtax.yEAelK', 'admin')
+ON CONFLICT (email) DO UPDATE SET
+    password_hash = EXCLUDED.password_hash,
+    role = EXCLUDED.role;
 
+-- Sample content packs for different users
 INSERT INTO content_packs (name, description, created_by, is_active) VALUES
     ('Middle School Science', 'Fundamental science concepts for grades 6-8',
-     (SELECT id FROM users WHERE email = 'teacher@school.edu'), true);
+     (SELECT id FROM users WHERE email = 'teacher@school.edu'), true),
+    ('Medical Terminology', 'Common medical terms and definitions',
+     (SELECT id FROM users WHERE email = 'admin@test.com'), true),
+    ('Anatomy Basics', 'Fundamental anatomy concepts',
+     (SELECT id FROM users WHERE email = 'admin@test.com'), true)
+ON CONFLICT DO NOTHING;
 
 -- Get the content pack ID for use in knowledge hierarchy
 DO $$

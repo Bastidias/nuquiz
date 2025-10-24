@@ -10,6 +10,9 @@ lsof -ti:3000 | xargs kill -9 2>/dev/null && echo "✓ Killed process on port 30
 # Kill any Next.js dev processes
 pkill -f "next dev" 2>/dev/null && echo "✓ Killed Next.js dev processes"
 
+# Clear Next.js cache
+rm -rf .next && echo "✓ Cleared Next.js cache"
+
 sleep 1
 
 echo "🚀 Starting dev server..."

@@ -1,4 +1,6 @@
+import { useState, useEffect } from 'react';
 import Head from 'next/head';
+import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import Navigation from '@/components/Navigation';
 import { Inter, Roboto_Mono } from 'next/font/google';
@@ -23,7 +25,33 @@ interface DashboardProps {
   };
 }
 
+interface ContentPack {
+  id: number;
+  name: string;
+  description: string | null;
+}
+
 export default function Dashboard({ user }: DashboardProps) {
+  const [subscriptions, setSubscriptions] = useState<ContentPack[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSubscriptions = async () => {
+      try {
+        const response = await fetch('/api/users/me/subscriptions');
+        if (response.ok) {
+          const result = await response.json();
+          setSubscriptions(result.data || []);
+        }
+      } catch (err) {
+        console.error('Failed to fetch subscriptions:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSubscriptions();
+  }, []);
   return (
     <>
       <Head>
@@ -57,16 +85,39 @@ export default function Dashboard({ user }: DashboardProps) {
             </div>
 
             <div className={styles.section}>
-              <h2>Getting Started</h2>
-              <p>
-                Welcome! You can now browse and subscribe to content packs.
-                Once subscribed, you'll be able to take quizzes and track your progress.
-              </p>
-              <div className={styles.ctas}>
-                <a href="/content-packs" className={styles.primary}>
-                  Browse Content Packs
-                </a>
-              </div>
+              <h2>My Subscriptions</h2>
+              {loading ? (
+                <p>Loading...</p>
+              ) : subscriptions.length === 0 ? (
+                <div>
+                  <p>You haven't subscribed to any content packs yet.</p>
+                  <div className={styles.ctas}>
+                    <a href="/content-packs" className={styles.primary}>
+                      Browse Content Packs
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div>
+                  <div className={styles.packList}>
+                    {subscriptions.map((pack) => (
+                      <Link
+                        key={pack.id}
+                        href={`/content-packs/${pack.id}`}
+                        className={styles.packItem}
+                      >
+                        <h3>{pack.name}</h3>
+                        <p>{pack.description || 'No description'}</p>
+                      </Link>
+                    ))}
+                  </div>
+                  <div className={styles.ctas} style={{ marginTop: '24px' }}>
+                    <a href="/content-packs" className={styles.primary}>
+                      Browse More Packs
+                    </a>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </main>

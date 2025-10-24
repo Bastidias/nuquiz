@@ -115,6 +115,40 @@
   opacity: 0.9;
 }
 
+.packList {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.packItem {
+  display: block;
+  padding: 16px;
+  background: var(--bg-page);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: inherit;
+  transition: border-color 0.2s;
+}
+
+.packItem:hover {
+  border-color: var(--button-primary-bg);
+}
+
+.packItem h3 {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+}
+
+.packItem p {
+  font-size: 14px;
+  margin: 0;
+  color: var(--text-secondary);
+}
+
 @media (max-width: 768px) {
   .main {
     padding: 24px 16px;
