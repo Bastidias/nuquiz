@@ -77,8 +77,9 @@ After running `npm run db:seed`, these test users are available:
 - **Pragmatic over dogmatic** - apply FP principles without over-engineering
 
 **Required Reading:**
-- `docs/code-review-ai-slop.md` - Complete analysis of what went wrong
-- `docs/coding-standards.md` - Pragmatic standards (post-refactoring)
+- `docs/archive/code-reviews/2025-10-ai-slop-refactoring.md` - Complete analysis of what went wrong
+- `docs/development/coding-standards.md` - Pragmatic standards (post-refactoring)
+- `docs/00-START-HERE.md` - Master documentation index
 
 **Before Writing ANY New Code:**
 1. Search for an existing library first
@@ -122,7 +123,7 @@ This project uses **real integration testing** instead of mocks:
 - Refactoring doesn't break mock-heavy test suites
 
 **Manual Test Plans:**
-- Comprehensive manual test plans stored in `docs/manual-test-plan-*.md`
+- Comprehensive manual test plans stored in `docs/testing/manual/`
 - Created for each major feature/phase before manual QA
 - Include test cases, expected results, database verification queries
 - Used for regression testing and onboarding new testers
@@ -138,10 +139,26 @@ src/
 └── styles/         # CSS modules
 
 docs/
-├── overview.md     # Knowledge hierarchy data model
-├── database.sql    # Full database schema
-├── roadmap.md      # MVP implementation plan
-└── diagram.md      # Architecture diagram
+├── 00-START-HERE.md         # Master documentation index ⭐ START HERE
+├── project/                 # What we're building
+│   ├── data-model.md        # Knowledge hierarchy explanation
+│   ├── architecture.md      # System design & database
+│   ├── roadmap.md           # MVP phases & timeline
+│   └── user-stories.md      # Feature requirements
+├── development/             # How to build it
+│   ├── coding-standards.md  # Code style & patterns ⭐ REQUIRED
+│   ├── api-patterns.md      # API route structure ⭐ REQUIRED
+│   ├── testing-guide.md     # Testing philosophy & examples
+│   ├── database-setup.md    # Environment setup
+│   └── sample-data-guide.md # Test data explanation
+├── reference/               # Technical specs
+│   ├── database-schema.sql  # Full SQL schema
+│   └── quiz-generation-spec.md # Quiz engine specification
+├── testing/                 # Test plans
+│   └── manual/              # Manual QA test plans
+└── archive/                 # Historical documents
+    ├── code-reviews/        # Past code reviews (learn from these!)
+    └── implementation-notes/ # Implementation summaries
 ```
 
 ### Path Aliases
@@ -342,26 +359,30 @@ gh repo view
 
 ## File Locations
 
+### 📚 START HERE
+- **Master index: `docs/00-START-HERE.md`** ⭐ **Your navigation hub for all documentation**
+
 ### Core Documentation
-- Database schema: `docs/database.sql`
-- Data model explanation: `docs/overview.md`
-- Implementation plan: `docs/roadmap.md`
-- Architecture diagram: `docs/diagram.md`
-- **Coding standards: `docs/coding-standards.md`** ⭐ **READ THIS FIRST**
+- Database schema: `docs/reference/database-schema.sql`
+- Data model explanation: `docs/project/data-model.md`
+- Implementation plan: `docs/project/roadmap.md`
+- Architecture diagram: `docs/project/architecture.md`
+- **Coding standards: `docs/development/coding-standards.md`** ⭐ **READ THIS FIRST**
 
 ### Code Quality & Anti-Patterns
-- **AI slop analysis: `docs/code-review-ai-slop.md`** ⭐ **REQUIRED READING**
-- Eric Elliott code review (historical): `docs/eric-elliott-code-review.md`
+- **AI slop analysis: `docs/archive/code-reviews/2025-10-ai-slop-refactoring.md`** ⭐ **REQUIRED READING**
+- Eric Elliott code review: `docs/archive/code-reviews/2025-10-eric-elliott-review.md`
+- Test refactor review: `docs/archive/code-reviews/2025-10-test-refactor.md`
 
 ### API Development
-- **API patterns & structure: `docs/api-patterns.md`** ⭐ **REFERENCE FOR ALL API ROUTES**
-- NextAuth implementation: `docs/nextauth-implementation-summary.md`
+- **API patterns & structure: `docs/development/api-patterns.md`** ⭐ **REFERENCE FOR ALL API ROUTES**
+- NextAuth implementation: `docs/archive/implementation-notes/nextauth-setup.md`
+- Quiz generation spec: `docs/reference/quiz-generation-spec.md`
 - RBAC middleware: `src/lib/auth-middleware.ts`
 - Validation schemas: `src/lib/schemas.ts`
 - Error handling: `src/lib/errors.ts`
 
 ### Testing
-- RITEway principles: `docs/test-review-riteway.md`
-- Test refactoring examples: `docs/test-refactor-example.md`
-- Database testing guide: `docs/database-testing-guide.md`
-- **Manual test plans: `docs/manual-test-plan-*.md`** - QA checklists for each phase
+- **Testing guide: `docs/development/testing-guide.md`** ⭐ **Comprehensive testing philosophy & patterns**
+- Database setup: `docs/development/database-setup.md`
+- **Manual test plans: `docs/testing/manual/`** - QA checklists for each phase
