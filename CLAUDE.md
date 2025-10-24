@@ -24,7 +24,12 @@ Nuquiz is a quiz application built on a hierarchical knowledge structure that en
 
 ```bash
 # Development
-npm run dev        # Start dev server on http://localhost:3000
+npm run dev        # Start dev server (kills existing, clears cache, starts fresh)
+                   # Note: Always restarts cleanly to avoid Next.js cache issues
+
+# Database
+npm run db:seed    # Load sample data + test users
+                   # Creates: admin@test.com, student@test.com (password: password123)
 
 # Build & Production
 npm run build      # Build for production
@@ -33,10 +38,23 @@ npm start          # Start production server
 # Linting
 npm run lint       # Run ESLint
 
-# Testing (when configured)
+# Testing
 npm test           # Run all tests
 npm test -- <file> # Run specific test file
+npm run test:unit  # Run unit tests only
+npm run test:int   # Run integration tests only
+npm run test:api   # Run API tests only
 ```
+
+## Test Users
+
+After running `npm run db:seed`, these test users are available:
+
+| Email | Password | Role | Purpose |
+|-------|----------|------|---------|
+| admin@test.com | password123 | admin | Test admin features (create packs, etc.) |
+| student@test.com | password123 | student | Test student features (browse, subscribe) |
+| teacher@school.edu | password123 | admin | Sample data creator |
 
 ## Architecture Principles
 
@@ -102,6 +120,12 @@ This project uses **real integration testing** instead of mocks:
 - Integration tests catch real issues
 - Database tests run fast enough with proper setup
 - Refactoring doesn't break mock-heavy test suites
+
+**Manual Test Plans:**
+- Comprehensive manual test plans stored in `docs/manual-test-plan-*.md`
+- Created for each major feature/phase before manual QA
+- Include test cases, expected results, database verification queries
+- Used for regression testing and onboarding new testers
 
 ### Project Structure
 
@@ -340,3 +364,4 @@ gh repo view
 - RITEway principles: `docs/test-review-riteway.md`
 - Test refactoring examples: `docs/test-refactor-example.md`
 - Database testing guide: `docs/database-testing-guide.md`
+- **Manual test plans: `docs/manual-test-plan-*.md`** - QA checklists for each phase

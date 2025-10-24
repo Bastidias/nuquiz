@@ -96,13 +96,13 @@ export const findByCreator = async (userId: number): Promise<ContentPack[]> => {
  * });
  */
 export const create = async (data: NewContentPack): Promise<ContentPack> => {
-  const { name, description, created_by } = data;
+  const { name, description, created_by, is_active = true } = data;
 
   const result = await queryOne<ContentPack>(
     `INSERT INTO content_packs (name, description, created_by, is_active)
      VALUES ($1, $2, $3, $4)
      RETURNING *`,
-    [name, description, created_by, true]
+    [name, description, created_by, is_active]
   );
 
   if (!result) {
