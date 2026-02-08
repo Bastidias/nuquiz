@@ -105,9 +105,10 @@ function getOrCreateTag(
   return tagId;
 }
 
-importRoutes.post("/import", async (c) => {
+importRoutes.post("/catalogs/:catalogId/import", async (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
+  const catalogId = c.req.param("catalogId");
   const body = await c.req.json();
   const parsed = importDeckSchema.safeParse(body);
 
@@ -137,12 +138,6 @@ importRoutes.post("/import", async (c) => {
       { valid: false, errors: validationErrors },
       400
     );
-  }
-
-  // Import requires a catalogId query parameter
-  const catalogId = c.req.query("catalogId");
-  if (!catalogId) {
-    return c.json({ error: "catalogId query parameter is required" }, 400);
   }
 
   // Verify catalog ownership

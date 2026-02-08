@@ -27,13 +27,17 @@ function getOwnedCatalog(db: DbInstance, catalogId: string, userId: string) {
   return catalog ?? null;
 }
 
-function getOwnedDeck(db: DbInstance, deckId: string, userId: string) {
+function getOwnedDeckInCatalog(db: DbInstance, deckId: string, catalogId: string, userId: string) {
   const [row] = db
     .select({ deck: schema.decks })
     .from(schema.decks)
     .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
     .where(
-      and(eq(schema.decks.id, deckId), eq(schema.catalogs.createdBy, userId))
+      and(
+        eq(schema.decks.id, deckId),
+        eq(schema.decks.catalogId, catalogId),
+        eq(schema.catalogs.createdBy, userId)
+      )
     )
     .limit(1)
     .all();
@@ -87,37 +91,37 @@ function getOwnedTriple(db: DbInstance, tripleId: string, userId: string) {
 
 // ── Decks CRUD ─────────────────────────────────────────────────
 
-decks.get("/decks", (c) => {
+decks.get("/catalogs/:catalogId/decks", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
-  const userDecks = db
-    .select({ decks: schema.decks })
-    .from(schema.decks)
-    .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
-    .where(eq(schema.catalogs.createdBy, userId))
-    .orderBy(schema.decks.sortOrder)
-    .all()
-    .map((r) => r.decks);
-  return c.json({ decks: userDecks });
-});
-
-decks.post("/decks", async (c) => {
-  const db = c.get("db");
-  const userId = c.get("userId");
-  const body = await c.req.json();
-
-  const { catalogId, ...rest } = body;
-  const parsed = createDeckSchema.safeParse(rest);
-  if (!parsed.success) {
-    return c.json({ error: parsed.error.flatten().fieldErrors }, 400);
-  }
-  if (!catalogId) {
-    return c.json({ error: "catalogId is required" }, 400);
-  }
-
+  const catalogId = c.req.param("catalogId");
   const catalog = getOwnedCatalog(db, catalogId, userId);
   if (!catalog) {
     return c.json({ error: "Catalog not found" }, 404);
+  }
+
+  const deckList = db
+    .select()
+    .from(schema.decks)
+    .where(eq(schema.decks.catalogId, catalogId))
+    .orderBy(schema.decks.sortOrder)
+    .all();
+  return c.json({ decks: deckList });
+});
+
+decks.post("/catalogs/:catalogId/decks", async (c) => {
+  const db = c.get("db");
+  const userId = c.get("userId");
+  const catalogId = c.req.param("catalogId");
+  const catalog = getOwnedCatalog(db, catalogId, userId);
+  if (!catalog) {
+    return c.json({ error: "Catalog not found" }, 404);
+  }
+
+  const body = await c.req.json();
+  const parsed = createDeckSchema.safeParse(body);
+  if (!parsed.success) {
+    return c.json({ error: parsed.error.flatten().fieldErrors }, 400);
   }
 
   const now = new Date().toISOString();
@@ -140,10 +144,11 @@ decks.post("/decks", async (c) => {
   return c.json({ deck }, 201);
 });
 
-decks.get("/decks/:id", (c) => {
+decks.get("/catalogs/:catalogId/decks/:id", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
-  const deck = getOwnedDeck(db, c.req.param("id"), userId);
+  const catalogId = c.req.param("catalogId");
+  const deck = getOwnedDeckInCatalog(db, c.req.param("id"), catalogId, userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -158,10 +163,11 @@ decks.get("/decks/:id", (c) => {
   return c.json({ ...deck, topics: deckTopics });
 });
 
-decks.put("/decks/:id", async (c) => {
+decks.put("/catalogs/:catalogId/decks/:id", async (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
-  const deck = getOwnedDeck(db, c.req.param("id"), userId);
+  const catalogId = c.req.param("catalogId");
+  const deck = getOwnedDeckInCatalog(db, c.req.param("id"), catalogId, userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -186,10 +192,11 @@ decks.put("/decks/:id", async (c) => {
   return c.json({ deck: updated });
 });
 
-decks.delete("/decks/:id", (c) => {
+decks.delete("/catalogs/:catalogId/decks/:id", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
-  const deck = getOwnedDeck(db, c.req.param("id"), userId);
+  const catalogId = c.req.param("catalogId");
+  const deck = getOwnedDeckInCatalog(db, c.req.param("id"), catalogId, userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -200,10 +207,11 @@ decks.delete("/decks/:id", (c) => {
 
 // ── Topics CRUD (nested under decks) ───────────────────────────
 
-decks.get("/decks/:deckId/topics", (c) => {
+decks.get("/catalogs/:catalogId/decks/:deckId/topics", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
-  const deck = getOwnedDeck(db, c.req.param("deckId"), userId);
+  const catalogId = c.req.param("catalogId");
+  const deck = getOwnedDeckInCatalog(db, c.req.param("deckId"), catalogId, userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -217,10 +225,11 @@ decks.get("/decks/:deckId/topics", (c) => {
   return c.json({ topics: topicList });
 });
 
-decks.post("/decks/:deckId/topics", async (c) => {
+decks.post("/catalogs/:catalogId/decks/:deckId/topics", async (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
-  const deck = getOwnedDeck(db, c.req.param("deckId"), userId);
+  const catalogId = c.req.param("catalogId");
+  const deck = getOwnedDeckInCatalog(db, c.req.param("deckId"), catalogId, userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -251,7 +260,7 @@ decks.post("/decks/:deckId/topics", async (c) => {
   return c.json({ topic }, 201);
 });
 
-decks.get("/decks/:deckId/topics/:topicId", (c) => {
+decks.get("/catalogs/:catalogId/decks/:deckId/topics/:topicId", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const row = getOwnedTopic(db, c.req.param("topicId"), userId);
@@ -269,7 +278,7 @@ decks.get("/decks/:deckId/topics/:topicId", (c) => {
   return c.json({ ...row.topic, concepts: conceptList });
 });
 
-decks.put("/decks/:deckId/topics/:topicId", async (c) => {
+decks.put("/catalogs/:catalogId/decks/:deckId/topics/:topicId", async (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const row = getOwnedTopic(db, c.req.param("topicId"), userId);
@@ -297,7 +306,7 @@ decks.put("/decks/:deckId/topics/:topicId", async (c) => {
   return c.json({ topic: updated });
 });
 
-decks.delete("/decks/:deckId/topics/:topicId", (c) => {
+decks.delete("/catalogs/:catalogId/decks/:deckId/topics/:topicId", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const row = getOwnedTopic(db, c.req.param("topicId"), userId);
@@ -311,7 +320,7 @@ decks.delete("/decks/:deckId/topics/:topicId", (c) => {
 
 // ── Concepts CRUD (nested under topics) ────────────────────────
 
-decks.get("/decks/:deckId/topics/:topicId/concepts", (c) => {
+decks.get("/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const row = getOwnedTopic(db, c.req.param("topicId"), userId);
@@ -328,7 +337,7 @@ decks.get("/decks/:deckId/topics/:topicId/concepts", (c) => {
   return c.json({ concepts: conceptList });
 });
 
-decks.post("/decks/:deckId/topics/:topicId/concepts", async (c) => {
+decks.post("/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts", async (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const row = getOwnedTopic(db, c.req.param("topicId"), userId);
@@ -363,7 +372,7 @@ decks.post("/decks/:deckId/topics/:topicId/concepts", async (c) => {
 });
 
 decks.get(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId",
   (c) => {
     const db = c.get("db");
     const userId = c.get("userId");
@@ -383,7 +392,7 @@ decks.get(
 );
 
 decks.put(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId",
   async (c) => {
     const db = c.get("db");
     const userId = c.get("userId");
@@ -414,7 +423,7 @@ decks.put(
 );
 
 decks.delete(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId",
   (c) => {
     const db = c.get("db");
     const userId = c.get("userId");
@@ -433,7 +442,7 @@ decks.delete(
 // ── Triples CRUD (nested under concepts) ───────────────────────
 
 decks.get(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId/triples",
   (c) => {
     const db = c.get("db");
     const userId = c.get("userId");
@@ -453,7 +462,7 @@ decks.get(
 );
 
 decks.post(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId/triples",
   async (c) => {
     const db = c.get("db");
     const userId = c.get("userId");
@@ -491,7 +500,7 @@ decks.post(
 );
 
 decks.put(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples/:tripleId",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId/triples/:tripleId",
   async (c) => {
     const db = c.get("db");
     const userId = c.get("userId");
@@ -522,7 +531,7 @@ decks.put(
 );
 
 decks.delete(
-  "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples/:tripleId",
+  "/catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts/:conceptId/triples/:tripleId",
   (c) => {
     const db = c.get("db");
     const userId = c.get("userId");

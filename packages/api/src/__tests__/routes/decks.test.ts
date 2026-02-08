@@ -27,11 +27,28 @@ afterEach(() => {
   closeTestDb(sqlite);
 });
 
+// Helper to build catalog-scoped URLs
+const decksUrl = (catalogId: string) => `/catalogs/${catalogId}/decks`;
+const deckUrl = (catalogId: string, deckId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}`;
+const topicsUrl = (catalogId: string, deckId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}/topics`;
+const topicUrl = (catalogId: string, deckId: string, topicId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}/topics/${topicId}`;
+const conceptsUrl = (catalogId: string, deckId: string, topicId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}/topics/${topicId}/concepts`;
+const conceptUrl = (catalogId: string, deckId: string, topicId: string, conceptId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}/topics/${topicId}/concepts/${conceptId}`;
+const triplesUrl = (catalogId: string, deckId: string, topicId: string, conceptId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}/topics/${topicId}/concepts/${conceptId}/triples`;
+const tripleUrl = (catalogId: string, deckId: string, topicId: string, conceptId: string, tripleId: string) =>
+  `/catalogs/${catalogId}/decks/${deckId}/topics/${topicId}/concepts/${conceptId}/triples/${tripleId}`;
+
 // ── Decks CRUD ──────────────────────────────────────────────────
 
-describe("GET /decks", () => {
+describe("GET /catalogs/:catalogId/decks", () => {
   test("returns empty list when no decks exist", async () => {
-    const res = await jsonRequest(app, "GET", "/decks");
+    const res = await jsonRequest(app, "GET", decksUrl(catalogId));
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.decks).toEqual([]);
@@ -39,8 +56,7 @@ describe("GET /decks", () => {
 
   test("returns only the authenticated user's decks", async () => {
     // Arrange — create decks for our user and another user
-    await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "My Deck",
       description: null,
       sortOrder: 0,
@@ -48,15 +64,14 @@ describe("GET /decks", () => {
     const otherUser = createUser(db);
     const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
     const otherApp = createTestApp(db, otherUser.id);
-    await jsonRequest(otherApp, "POST", "/decks", {
-      catalogId: otherCatalog.id,
+    await jsonRequest(otherApp, "POST", decksUrl(otherCatalog.id), {
       title: "Other Deck",
       description: null,
       sortOrder: 0,
     });
 
     // Act
-    const res = await jsonRequest(app, "GET", "/decks");
+    const res = await jsonRequest(app, "GET", decksUrl(catalogId));
     const body = await res.json();
 
     // Assert
@@ -65,10 +80,9 @@ describe("GET /decks", () => {
   });
 });
 
-describe("POST /decks", () => {
+describe("POST /catalogs/:catalogId/decks", () => {
   test("creates a deck and returns 201", async () => {
-    const res = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const res = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Biology 101",
       description: "Intro to biology",
       sortOrder: 0,
@@ -81,8 +95,7 @@ describe("POST /decks", () => {
   });
 
   test("returns 400 for invalid body", async () => {
-    const res = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const res = await jsonRequest(app, "POST", decksUrl(catalogId), {
       description: "Missing title",
       sortOrder: 0,
     });
@@ -90,8 +103,7 @@ describe("POST /decks", () => {
   });
 
   test("returns 400 for empty title", async () => {
-    const res = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const res = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "",
       description: null,
       sortOrder: 0,
@@ -99,35 +111,34 @@ describe("POST /decks", () => {
     expect(res.status).toBe(400);
   });
 
-  test("returns 400 for missing catalogId", async () => {
-    const res = await jsonRequest(app, "POST", "/decks", {
+  test("returns 404 for non-existent catalog", async () => {
+    const res = await jsonRequest(app, "POST", decksUrl("nonexistent"), {
       title: "No Catalog",
       description: null,
       sortOrder: 0,
     });
-    expect(res.status).toBe(400);
+    expect(res.status).toBe(404);
   });
 });
 
-describe("GET /decks/:id", () => {
+describe("GET /catalogs/:catalogId/decks/:id", () => {
   test("returns deck with topics", async () => {
     // Arrange
-    const createRes = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const createRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Bio",
       description: null,
       sortOrder: 0,
     });
     const { deck } = await createRes.json();
 
-    await jsonRequest(app, "POST", `/decks/${deck.id}/topics`, {
+    await jsonRequest(app, "POST", topicsUrl(catalogId, deck.id), {
       title: "Cell Bio",
       description: null,
       sortOrder: 0,
     });
 
     // Act
-    const res = await jsonRequest(app, "GET", `/decks/${deck.id}`);
+    const res = await jsonRequest(app, "GET", deckUrl(catalogId, deck.id));
     const body = await res.json();
 
     // Assert
@@ -138,7 +149,7 @@ describe("GET /decks/:id", () => {
   });
 
   test("returns 404 for non-existent deck", async () => {
-    const res = await jsonRequest(app, "GET", "/decks/nonexistent");
+    const res = await jsonRequest(app, "GET", deckUrl(catalogId, "nonexistent"));
     expect(res.status).toBe(404);
   });
 
@@ -147,31 +158,29 @@ describe("GET /decks/:id", () => {
     const otherUser = createUser(db);
     const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
     const otherApp = createTestApp(db, otherUser.id);
-    const createRes = await jsonRequest(otherApp, "POST", "/decks", {
-      catalogId: otherCatalog.id,
+    const createRes = await jsonRequest(otherApp, "POST", decksUrl(otherCatalog.id), {
       title: "Private",
       description: null,
       sortOrder: 0,
     });
     const { deck } = await createRes.json();
 
-    // Act — try to access as our user
-    const res = await jsonRequest(app, "GET", `/decks/${deck.id}`);
+    // Act — try to access as our user (wrong catalog)
+    const res = await jsonRequest(app, "GET", deckUrl(catalogId, deck.id));
     expect(res.status).toBe(404);
   });
 });
 
-describe("PUT /decks/:id", () => {
+describe("PUT /catalogs/:catalogId/decks/:id", () => {
   test("updates deck title", async () => {
-    const createRes = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const createRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Old Title",
       description: null,
       sortOrder: 0,
     });
     const { deck } = await createRes.json();
 
-    const res = await jsonRequest(app, "PUT", `/decks/${deck.id}`, {
+    const res = await jsonRequest(app, "PUT", deckUrl(catalogId, deck.id), {
       title: "New Title",
     });
     expect(res.status).toBe(200);
@@ -180,44 +189,42 @@ describe("PUT /decks/:id", () => {
   });
 
   test("returns 404 for non-existent deck", async () => {
-    const res = await jsonRequest(app, "PUT", "/decks/nonexistent", {
+    const res = await jsonRequest(app, "PUT", deckUrl(catalogId, "nonexistent"), {
       title: "X",
     });
     expect(res.status).toBe(404);
   });
 });
 
-describe("DELETE /decks/:id", () => {
+describe("DELETE /catalogs/:catalogId/decks/:id", () => {
   test("deletes deck and its children", async () => {
-    const createRes = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const createRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "To Delete",
       description: null,
       sortOrder: 0,
     });
     const { deck } = await createRes.json();
 
-    const res = await jsonRequest(app, "DELETE", `/decks/${deck.id}`);
+    const res = await jsonRequest(app, "DELETE", deckUrl(catalogId, deck.id));
     expect(res.status).toBe(200);
 
-    const getRes = await jsonRequest(app, "GET", `/decks/${deck.id}`);
+    const getRes = await jsonRequest(app, "GET", deckUrl(catalogId, deck.id));
     expect(getRes.status).toBe(404);
   });
 });
 
 // ── Topics CRUD ─────────────────────────────────────────────────
 
-describe("POST /decks/:deckId/topics", () => {
+describe("POST /catalogs/:catalogId/decks/:deckId/topics", () => {
   test("creates a topic under a deck", async () => {
-    const deckRes = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const deckRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Bio",
       description: null,
       sortOrder: 0,
     });
     const { deck } = await deckRes.json();
 
-    const res = await jsonRequest(app, "POST", `/decks/${deck.id}/topics`, {
+    const res = await jsonRequest(app, "POST", topicsUrl(catalogId, deck.id), {
       title: "Cell Biology",
       description: "Study of cells",
       sortOrder: 0,
@@ -229,7 +236,7 @@ describe("POST /decks/:deckId/topics", () => {
   });
 
   test("returns 404 for non-existent deck", async () => {
-    const res = await jsonRequest(app, "POST", "/decks/nonexistent/topics", {
+    const res = await jsonRequest(app, "POST", topicsUrl(catalogId, "nonexistent"), {
       title: "Topic",
       description: null,
       sortOrder: 0,
@@ -240,17 +247,16 @@ describe("POST /decks/:deckId/topics", () => {
 
 // ── Concepts CRUD ───────────────────────────────────────────────
 
-describe("POST /decks/:deckId/topics/:topicId/concepts", () => {
+describe("POST /catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts", () => {
   test("creates a concept under a topic", async () => {
     // Arrange
-    const deckRes = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const deckRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Bio",
       description: null,
       sortOrder: 0,
     });
     const { deck } = await deckRes.json();
-    const topicRes = await jsonRequest(app, "POST", `/decks/${deck.id}/topics`, {
+    const topicRes = await jsonRequest(app, "POST", topicsUrl(catalogId, deck.id), {
       title: "Cell Bio",
       description: null,
       sortOrder: 0,
@@ -261,7 +267,7 @@ describe("POST /decks/:deckId/topics/:topicId/concepts", () => {
     const res = await jsonRequest(
       app,
       "POST",
-      `/decks/${deck.id}/topics/${topic.id}/concepts`,
+      conceptsUrl(catalogId, deck.id, topic.id),
       { title: "Cell Membrane", description: null, sortOrder: 0 }
     );
 
@@ -281,15 +287,14 @@ describe("Triples CRUD", () => {
   let conceptId: string;
 
   beforeEach(async () => {
-    const deckRes = await jsonRequest(app, "POST", "/decks", {
-      catalogId,
+    const deckRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Bio",
       description: null,
       sortOrder: 0,
     });
     deckId = (await deckRes.json()).deck.id;
 
-    const topicRes = await jsonRequest(app, "POST", `/decks/${deckId}/topics`, {
+    const topicRes = await jsonRequest(app, "POST", topicsUrl(catalogId, deckId), {
       title: "Cell Bio",
       description: null,
       sortOrder: 0,
@@ -299,17 +304,16 @@ describe("Triples CRUD", () => {
     const conceptRes = await jsonRequest(
       app,
       "POST",
-      `/decks/${deckId}/topics/${topicId}/concepts`,
+      conceptsUrl(catalogId, deckId, topicId),
       { title: "Cell Membrane", description: null, sortOrder: 0 }
     );
     conceptId = (await conceptRes.json()).concept.id;
   });
 
-  const tripleUrl = () =>
-    `/decks/${deckId}/topics/${topicId}/concepts/${conceptId}/triples`;
+  const tUrl = () => triplesUrl(catalogId, deckId, topicId, conceptId);
 
   test("POST creates a triple", async () => {
-    const res = await jsonRequest(app, "POST", tripleUrl(), {
+    const res = await jsonRequest(app, "POST", tUrl(), {
       subject: "Cell membrane",
       predicate: "is composed of",
       object: "phospholipid bilayer",
@@ -323,27 +327,27 @@ describe("Triples CRUD", () => {
   });
 
   test("GET lists triples for a concept", async () => {
-    await jsonRequest(app, "POST", tripleUrl(), {
+    await jsonRequest(app, "POST", tUrl(), {
       subject: "Cell membrane",
       predicate: "is composed of",
       object: "phospholipid bilayer",
       sortOrder: 0,
     });
-    await jsonRequest(app, "POST", tripleUrl(), {
+    await jsonRequest(app, "POST", tUrl(), {
       subject: "Cell membrane",
       predicate: "function",
       object: "selective permeability",
       sortOrder: 1,
     });
 
-    const res = await jsonRequest(app, "GET", tripleUrl());
+    const res = await jsonRequest(app, "GET", tUrl());
     expect(res.status).toBe(200);
     const body = await res.json();
     expect(body.triples).toHaveLength(2);
   });
 
   test("PUT updates a triple", async () => {
-    const createRes = await jsonRequest(app, "POST", tripleUrl(), {
+    const createRes = await jsonRequest(app, "POST", tUrl(), {
       subject: "Cell membrane",
       predicate: "is composed of",
       object: "lipids",
@@ -354,7 +358,7 @@ describe("Triples CRUD", () => {
     const res = await jsonRequest(
       app,
       "PUT",
-      `${tripleUrl()}/${triple.id}`,
+      tripleUrl(catalogId, deckId, topicId, conceptId, triple.id),
       { object: "phospholipid bilayer" }
     );
     expect(res.status).toBe(200);
@@ -363,7 +367,7 @@ describe("Triples CRUD", () => {
   });
 
   test("DELETE removes a triple", async () => {
-    const createRes = await jsonRequest(app, "POST", tripleUrl(), {
+    const createRes = await jsonRequest(app, "POST", tUrl(), {
       subject: "Cell membrane",
       predicate: "is composed of",
       object: "phospholipid bilayer",
@@ -371,16 +375,20 @@ describe("Triples CRUD", () => {
     });
     const { triple } = await createRes.json();
 
-    const res = await jsonRequest(app, "DELETE", `${tripleUrl()}/${triple.id}`);
+    const res = await jsonRequest(
+      app,
+      "DELETE",
+      tripleUrl(catalogId, deckId, topicId, conceptId, triple.id)
+    );
     expect(res.status).toBe(200);
 
-    const listRes = await jsonRequest(app, "GET", tripleUrl());
+    const listRes = await jsonRequest(app, "GET", tUrl());
     const body = await listRes.json();
     expect(body.triples).toHaveLength(0);
   });
 
   test("POST returns 400 for missing subject", async () => {
-    const res = await jsonRequest(app, "POST", tripleUrl(), {
+    const res = await jsonRequest(app, "POST", tUrl(), {
       predicate: "is",
       object: "something",
       sortOrder: 0,
