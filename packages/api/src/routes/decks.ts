@@ -10,38 +10,38 @@ import {
   createTripleSchema,
   updateTripleSchema,
 } from "@nuquiz/shared";
-import { db, schema } from "../db/index.js";
-import { requireAuth, type AuthEnv } from "../middleware/auth.js";
+import * as schema from "../db/schema.js";
+import type { AppEnv, DbInstance } from "../env.js";
 
-const decks = new Hono<AuthEnv>();
-
-decks.use("/*", requireAuth);
+const decks = new Hono<AppEnv>();
 
 // ── Helper: verify ownership through hierarchy ─────────────────
 
-async function getOwnedDeck(deckId: string, userId: string) {
-  const [deck] = await db
+function getOwnedDeck(db: DbInstance, deckId: string, userId: string) {
+  const [deck] = db
     .select()
     .from(schema.decks)
     .where(and(eq(schema.decks.id, deckId), eq(schema.decks.userId, userId)))
-    .limit(1);
+    .limit(1)
+    .all();
   return deck ?? null;
 }
 
-async function getOwnedTopic(topicId: string, userId: string) {
-  const [row] = await db
+function getOwnedTopic(db: DbInstance, topicId: string, userId: string) {
+  const [row] = db
     .select({ topic: schema.topics, deck: schema.decks })
     .from(schema.topics)
     .innerJoin(schema.decks, eq(schema.topics.deckId, schema.decks.id))
     .where(
       and(eq(schema.topics.id, topicId), eq(schema.decks.userId, userId))
     )
-    .limit(1);
+    .limit(1)
+    .all();
   return row ?? null;
 }
 
-async function getOwnedConcept(conceptId: string, userId: string) {
-  const [row] = await db
+function getOwnedConcept(db: DbInstance, conceptId: string, userId: string) {
+  const [row] = db
     .select({ concept: schema.concepts })
     .from(schema.concepts)
     .innerJoin(schema.topics, eq(schema.concepts.topicId, schema.topics.id))
@@ -49,12 +49,13 @@ async function getOwnedConcept(conceptId: string, userId: string) {
     .where(
       and(eq(schema.concepts.id, conceptId), eq(schema.decks.userId, userId))
     )
-    .limit(1);
+    .limit(1)
+    .all();
   return row ?? null;
 }
 
-async function getOwnedTriple(tripleId: string, userId: string) {
-  const [row] = await db
+function getOwnedTriple(db: DbInstance, tripleId: string, userId: string) {
+  const [row] = db
     .select({ triple: schema.triples })
     .from(schema.triples)
     .innerJoin(schema.concepts, eq(schema.triples.conceptId, schema.concepts.id))
@@ -63,23 +64,27 @@ async function getOwnedTriple(tripleId: string, userId: string) {
     .where(
       and(eq(schema.triples.id, tripleId), eq(schema.decks.userId, userId))
     )
-    .limit(1);
+    .limit(1)
+    .all();
   return row ?? null;
 }
 
 // ── Decks CRUD ─────────────────────────────────────────────────
 
-decks.get("/decks", async (c) => {
+decks.get("/decks", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const userDecks = await db
+  const userDecks = db
     .select()
     .from(schema.decks)
     .where(eq(schema.decks.userId, userId))
-    .orderBy(schema.decks.sortOrder);
+    .orderBy(schema.decks.sortOrder)
+    .all();
   return c.json({ decks: userDecks });
 });
 
 decks.post("/decks", async (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
   const body = await c.req.json();
   const parsed = createDeckSchema.safeParse(body);
@@ -89,7 +94,7 @@ decks.post("/decks", async (c) => {
 
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
-  await db.insert(schema.decks).values({
+  db.insert(schema.decks).values({
     id,
     userId,
     title: parsed.data.title,
@@ -97,34 +102,38 @@ decks.post("/decks", async (c) => {
     sortOrder: parsed.data.sortOrder,
     createdAt: now,
     updatedAt: now,
-  });
+  }).run();
 
-  const [deck] = await db
+  const [deck] = db
     .select()
     .from(schema.decks)
-    .where(eq(schema.decks.id, id));
+    .where(eq(schema.decks.id, id))
+    .all();
   return c.json({ deck }, 201);
 });
 
-decks.get("/decks/:id", async (c) => {
+decks.get("/decks/:id", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const deck = await getOwnedDeck(c.req.param("id"), userId);
+  const deck = getOwnedDeck(db, c.req.param("id"), userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
 
-  const deckTopics = await db
+  const deckTopics = db
     .select()
     .from(schema.topics)
     .where(eq(schema.topics.deckId, deck.id))
-    .orderBy(schema.topics.sortOrder);
+    .orderBy(schema.topics.sortOrder)
+    .all();
 
   return c.json({ ...deck, topics: deckTopics });
 });
 
 decks.put("/decks/:id", async (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const deck = await getOwnedDeck(c.req.param("id"), userId);
+  const deck = getOwnedDeck(db, c.req.param("id"), userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -136,49 +145,54 @@ decks.put("/decks/:id", async (c) => {
   }
 
   const now = new Date().toISOString();
-  await db
-    .update(schema.decks)
+  db.update(schema.decks)
     .set({ ...parsed.data, updatedAt: now })
-    .where(eq(schema.decks.id, deck.id));
+    .where(eq(schema.decks.id, deck.id))
+    .run();
 
-  const [updated] = await db
+  const [updated] = db
     .select()
     .from(schema.decks)
-    .where(eq(schema.decks.id, deck.id));
+    .where(eq(schema.decks.id, deck.id))
+    .all();
   return c.json({ deck: updated });
 });
 
-decks.delete("/decks/:id", async (c) => {
+decks.delete("/decks/:id", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const deck = await getOwnedDeck(c.req.param("id"), userId);
+  const deck = getOwnedDeck(db, c.req.param("id"), userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
 
-  await db.delete(schema.decks).where(eq(schema.decks.id, deck.id));
+  db.delete(schema.decks).where(eq(schema.decks.id, deck.id)).run();
   return c.json({ ok: true });
 });
 
 // ── Topics CRUD (nested under decks) ───────────────────────────
 
-decks.get("/decks/:deckId/topics", async (c) => {
+decks.get("/decks/:deckId/topics", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const deck = await getOwnedDeck(c.req.param("deckId"), userId);
+  const deck = getOwnedDeck(db, c.req.param("deckId"), userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
 
-  const topicList = await db
+  const topicList = db
     .select()
     .from(schema.topics)
     .where(eq(schema.topics.deckId, deck.id))
-    .orderBy(schema.topics.sortOrder);
+    .orderBy(schema.topics.sortOrder)
+    .all();
   return c.json({ topics: topicList });
 });
 
 decks.post("/decks/:deckId/topics", async (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const deck = await getOwnedDeck(c.req.param("deckId"), userId);
+  const deck = getOwnedDeck(db, c.req.param("deckId"), userId);
   if (!deck) {
     return c.json({ error: "Deck not found" }, 404);
   }
@@ -191,7 +205,7 @@ decks.post("/decks/:deckId/topics", async (c) => {
 
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
-  await db.insert(schema.topics).values({
+  db.insert(schema.topics).values({
     id,
     deckId: deck.id,
     title: parsed.data.title,
@@ -199,34 +213,38 @@ decks.post("/decks/:deckId/topics", async (c) => {
     sortOrder: parsed.data.sortOrder,
     createdAt: now,
     updatedAt: now,
-  });
+  }).run();
 
-  const [topic] = await db
+  const [topic] = db
     .select()
     .from(schema.topics)
-    .where(eq(schema.topics.id, id));
+    .where(eq(schema.topics.id, id))
+    .all();
   return c.json({ topic }, 201);
 });
 
-decks.get("/decks/:deckId/topics/:topicId", async (c) => {
+decks.get("/decks/:deckId/topics/:topicId", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const row = await getOwnedTopic(c.req.param("topicId"), userId);
+  const row = getOwnedTopic(db, c.req.param("topicId"), userId);
   if (!row) {
     return c.json({ error: "Topic not found" }, 404);
   }
 
-  const conceptList = await db
+  const conceptList = db
     .select()
     .from(schema.concepts)
     .where(eq(schema.concepts.topicId, row.topic.id))
-    .orderBy(schema.concepts.sortOrder);
+    .orderBy(schema.concepts.sortOrder)
+    .all();
 
   return c.json({ ...row.topic, concepts: conceptList });
 });
 
 decks.put("/decks/:deckId/topics/:topicId", async (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const row = await getOwnedTopic(c.req.param("topicId"), userId);
+  const row = getOwnedTopic(db, c.req.param("topicId"), userId);
   if (!row) {
     return c.json({ error: "Topic not found" }, 404);
   }
@@ -238,49 +256,54 @@ decks.put("/decks/:deckId/topics/:topicId", async (c) => {
   }
 
   const now = new Date().toISOString();
-  await db
-    .update(schema.topics)
+  db.update(schema.topics)
     .set({ ...parsed.data, updatedAt: now })
-    .where(eq(schema.topics.id, row.topic.id));
+    .where(eq(schema.topics.id, row.topic.id))
+    .run();
 
-  const [updated] = await db
+  const [updated] = db
     .select()
     .from(schema.topics)
-    .where(eq(schema.topics.id, row.topic.id));
+    .where(eq(schema.topics.id, row.topic.id))
+    .all();
   return c.json({ topic: updated });
 });
 
-decks.delete("/decks/:deckId/topics/:topicId", async (c) => {
+decks.delete("/decks/:deckId/topics/:topicId", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const row = await getOwnedTopic(c.req.param("topicId"), userId);
+  const row = getOwnedTopic(db, c.req.param("topicId"), userId);
   if (!row) {
     return c.json({ error: "Topic not found" }, 404);
   }
 
-  await db.delete(schema.topics).where(eq(schema.topics.id, row.topic.id));
+  db.delete(schema.topics).where(eq(schema.topics.id, row.topic.id)).run();
   return c.json({ ok: true });
 });
 
 // ── Concepts CRUD (nested under topics) ────────────────────────
 
-decks.get("/decks/:deckId/topics/:topicId/concepts", async (c) => {
+decks.get("/decks/:deckId/topics/:topicId/concepts", (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const row = await getOwnedTopic(c.req.param("topicId"), userId);
+  const row = getOwnedTopic(db, c.req.param("topicId"), userId);
   if (!row) {
     return c.json({ error: "Topic not found" }, 404);
   }
 
-  const conceptList = await db
+  const conceptList = db
     .select()
     .from(schema.concepts)
     .where(eq(schema.concepts.topicId, row.topic.id))
-    .orderBy(schema.concepts.sortOrder);
+    .orderBy(schema.concepts.sortOrder)
+    .all();
   return c.json({ concepts: conceptList });
 });
 
 decks.post("/decks/:deckId/topics/:topicId/concepts", async (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
-  const row = await getOwnedTopic(c.req.param("topicId"), userId);
+  const row = getOwnedTopic(db, c.req.param("topicId"), userId);
   if (!row) {
     return c.json({ error: "Topic not found" }, 404);
   }
@@ -293,7 +316,7 @@ decks.post("/decks/:deckId/topics/:topicId/concepts", async (c) => {
 
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
-  await db.insert(schema.concepts).values({
+  db.insert(schema.concepts).values({
     id,
     topicId: row.topic.id,
     title: parsed.data.title,
@@ -301,29 +324,32 @@ decks.post("/decks/:deckId/topics/:topicId/concepts", async (c) => {
     sortOrder: parsed.data.sortOrder,
     createdAt: now,
     updatedAt: now,
-  });
+  }).run();
 
-  const [concept] = await db
+  const [concept] = db
     .select()
     .from(schema.concepts)
-    .where(eq(schema.concepts.id, id));
+    .where(eq(schema.concepts.id, id))
+    .all();
   return c.json({ concept }, 201);
 });
 
 decks.get(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId",
-  async (c) => {
+  (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedConcept(c.req.param("conceptId"), userId);
+    const row = getOwnedConcept(db, c.req.param("conceptId"), userId);
     if (!row) {
       return c.json({ error: "Concept not found" }, 404);
     }
 
-    const tripleList = await db
+    const tripleList = db
       .select()
       .from(schema.triples)
       .where(eq(schema.triples.conceptId, row.concept.id))
-      .orderBy(schema.triples.sortOrder);
+      .orderBy(schema.triples.sortOrder)
+      .all();
     return c.json({ ...row.concept, triples: tripleList });
   }
 );
@@ -331,8 +357,9 @@ decks.get(
 decks.put(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId",
   async (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedConcept(c.req.param("conceptId"), userId);
+    const row = getOwnedConcept(db, c.req.param("conceptId"), userId);
     if (!row) {
       return c.json({ error: "Concept not found" }, 404);
     }
@@ -344,31 +371,33 @@ decks.put(
     }
 
     const now = new Date().toISOString();
-    await db
-      .update(schema.concepts)
+    db.update(schema.concepts)
       .set({ ...parsed.data, updatedAt: now })
-      .where(eq(schema.concepts.id, row.concept.id));
+      .where(eq(schema.concepts.id, row.concept.id))
+      .run();
 
-    const [updated] = await db
+    const [updated] = db
       .select()
       .from(schema.concepts)
-      .where(eq(schema.concepts.id, row.concept.id));
+      .where(eq(schema.concepts.id, row.concept.id))
+      .all();
     return c.json({ concept: updated });
   }
 );
 
 decks.delete(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId",
-  async (c) => {
+  (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedConcept(c.req.param("conceptId"), userId);
+    const row = getOwnedConcept(db, c.req.param("conceptId"), userId);
     if (!row) {
       return c.json({ error: "Concept not found" }, 404);
     }
 
-    await db
-      .delete(schema.concepts)
-      .where(eq(schema.concepts.id, row.concept.id));
+    db.delete(schema.concepts)
+      .where(eq(schema.concepts.id, row.concept.id))
+      .run();
     return c.json({ ok: true });
   }
 );
@@ -377,18 +406,20 @@ decks.delete(
 
 decks.get(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples",
-  async (c) => {
+  (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedConcept(c.req.param("conceptId"), userId);
+    const row = getOwnedConcept(db, c.req.param("conceptId"), userId);
     if (!row) {
       return c.json({ error: "Concept not found" }, 404);
     }
 
-    const tripleList = await db
+    const tripleList = db
       .select()
       .from(schema.triples)
       .where(eq(schema.triples.conceptId, row.concept.id))
-      .orderBy(schema.triples.sortOrder);
+      .orderBy(schema.triples.sortOrder)
+      .all();
     return c.json({ triples: tripleList });
   }
 );
@@ -396,8 +427,9 @@ decks.get(
 decks.post(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples",
   async (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedConcept(c.req.param("conceptId"), userId);
+    const row = getOwnedConcept(db, c.req.param("conceptId"), userId);
     if (!row) {
       return c.json({ error: "Concept not found" }, 404);
     }
@@ -410,7 +442,7 @@ decks.post(
 
     const now = new Date().toISOString();
     const id = crypto.randomUUID();
-    await db.insert(schema.triples).values({
+    db.insert(schema.triples).values({
       id,
       conceptId: row.concept.id,
       userId,
@@ -420,12 +452,13 @@ decks.post(
       sortOrder: parsed.data.sortOrder,
       createdAt: now,
       updatedAt: now,
-    });
+    }).run();
 
-    const [triple] = await db
+    const [triple] = db
       .select()
       .from(schema.triples)
-      .where(eq(schema.triples.id, id));
+      .where(eq(schema.triples.id, id))
+      .all();
     return c.json({ triple }, 201);
   }
 );
@@ -433,8 +466,9 @@ decks.post(
 decks.put(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples/:tripleId",
   async (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedTriple(c.req.param("tripleId"), userId);
+    const row = getOwnedTriple(db, c.req.param("tripleId"), userId);
     if (!row) {
       return c.json({ error: "Triple not found" }, 404);
     }
@@ -446,31 +480,33 @@ decks.put(
     }
 
     const now = new Date().toISOString();
-    await db
-      .update(schema.triples)
+    db.update(schema.triples)
       .set({ ...parsed.data, updatedAt: now })
-      .where(eq(schema.triples.id, row.triple.id));
+      .where(eq(schema.triples.id, row.triple.id))
+      .run();
 
-    const [updated] = await db
+    const [updated] = db
       .select()
       .from(schema.triples)
-      .where(eq(schema.triples.id, row.triple.id));
+      .where(eq(schema.triples.id, row.triple.id))
+      .all();
     return c.json({ triple: updated });
   }
 );
 
 decks.delete(
   "/decks/:deckId/topics/:topicId/concepts/:conceptId/triples/:tripleId",
-  async (c) => {
+  (c) => {
+    const db = c.get("db");
     const userId = c.get("userId");
-    const row = await getOwnedTriple(c.req.param("tripleId"), userId);
+    const row = getOwnedTriple(db, c.req.param("tripleId"), userId);
     if (!row) {
       return c.json({ error: "Triple not found" }, 404);
     }
 
-    await db
-      .delete(schema.triples)
-      .where(eq(schema.triples.id, row.triple.id));
+    db.delete(schema.triples)
+      .where(eq(schema.triples.id, row.triple.id))
+      .run();
     return c.json({ ok: true });
   }
 );

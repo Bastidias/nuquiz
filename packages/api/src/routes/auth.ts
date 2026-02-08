@@ -2,8 +2,9 @@ import { Hono } from "hono";
 import { getCookie, setCookie, deleteCookie } from "hono/cookie";
 import { Google, generateState, type OAuth2Tokens } from "arctic";
 import { eq, and } from "drizzle-orm";
-import { db, schema } from "../db/index.js";
+import * as schema from "../db/schema.js";
 import { createSession, destroySession } from "../lib/session.js";
+import type { AppEnv } from "../env.js";
 
 const google = new Google(
   process.env.GOOGLE_CLIENT_ID || "",
@@ -11,7 +12,7 @@ const google = new Google(
   process.env.GOOGLE_REDIRECT_URI || "http://localhost:3001/auth/google/callback"
 );
 
-const auth = new Hono();
+const auth = new Hono<AppEnv>();
 
 auth.get("/auth/google/login", async (c) => {
   const state = generateState();
@@ -30,6 +31,7 @@ auth.get("/auth/google/login", async (c) => {
 });
 
 auth.get("/auth/google/callback", async (c) => {
+  const db = c.get("db");
   const code = c.req.query("code");
   const state = c.req.query("state");
   const storedState = getCookie(c, "oauth_state");
@@ -65,7 +67,7 @@ auth.get("/auth/google/callback", async (c) => {
 
   // Upsert user
   const now = new Date().toISOString();
-  const [existingUser] = await db
+  const [existingUser] = db
     .select()
     .from(schema.users)
     .where(
@@ -74,24 +76,25 @@ auth.get("/auth/google/callback", async (c) => {
         eq(schema.users.providerId, googleUser.sub)
       )
     )
-    .limit(1);
+    .limit(1)
+    .all();
 
   let userId: string;
 
   if (existingUser) {
     userId = existingUser.id;
-    await db
-      .update(schema.users)
+    db.update(schema.users)
       .set({
         name: googleUser.name,
         email: googleUser.email,
         avatarUrl: googleUser.picture || null,
         updatedAt: now,
       })
-      .where(eq(schema.users.id, userId));
+      .where(eq(schema.users.id, userId))
+      .run();
   } else {
     userId = crypto.randomUUID();
-    await db.insert(schema.users).values({
+    db.insert(schema.users).values({
       id: userId,
       email: googleUser.email,
       name: googleUser.name,
@@ -100,10 +103,10 @@ auth.get("/auth/google/callback", async (c) => {
       providerId: googleUser.sub,
       createdAt: now,
       updatedAt: now,
-    });
+    }).run();
   }
 
-  const sessionId = await createSession(userId);
+  const sessionId = createSession(db, userId);
 
   setCookie(c, "session", sessionId, {
     httpOnly: true,
@@ -117,29 +120,39 @@ auth.get("/auth/google/callback", async (c) => {
   return c.redirect(frontendUrl);
 });
 
-auth.post("/auth/logout", async (c) => {
+auth.post("/auth/logout", (c) => {
+  const db = c.get("db");
   const sessionId = getCookie(c, "session");
   if (sessionId) {
-    await destroySession(sessionId);
+    destroySession(db, sessionId);
   }
   deleteCookie(c, "session");
   return c.json({ ok: true });
 });
 
-auth.get("/auth/me", async (c) => {
+auth.get("/auth/me", (c) => {
+  const db = c.get("db");
   const sessionId = getCookie(c, "session");
   if (!sessionId) {
     return c.json({ user: null });
   }
 
-  const { validateSession } = await import("../lib/session.js");
-  const session = await validateSession(sessionId);
-  if (!session) {
+  const [session] = db
+    .select()
+    .from(schema.sessions)
+    .where(eq(schema.sessions.id, sessionId))
+    .limit(1)
+    .all();
+
+  if (!session || new Date(session.expiresAt) < new Date()) {
+    if (session) {
+      destroySession(db, sessionId);
+    }
     deleteCookie(c, "session");
     return c.json({ user: null });
   }
 
-  const [user] = await db
+  const [user] = db
     .select({
       id: schema.users.id,
       name: schema.users.name,
@@ -147,7 +160,8 @@ auth.get("/auth/me", async (c) => {
     })
     .from(schema.users)
     .where(eq(schema.users.id, session.userId))
-    .limit(1);
+    .limit(1)
+    .all();
 
   return c.json({ user: user || null });
 });

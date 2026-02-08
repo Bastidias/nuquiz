@@ -7,12 +7,10 @@ import {
   type ImportDryRunResult,
   type ImportValidationError,
 } from "@nuquiz/shared";
-import { db, schema } from "../db/index.js";
-import { requireAuth, type AuthEnv } from "../middleware/auth.js";
+import * as schema from "../db/schema.js";
+import type { AppEnv, DbInstance } from "../env.js";
 
-const importRoutes = new Hono<AuthEnv>();
-
-importRoutes.use("/*", requireAuth);
+const importRoutes = new Hono<AppEnv>();
 
 function validateImportData(data: ImportDeck): ImportValidationError[] {
   const errors: ImportValidationError[] = [];
@@ -72,23 +70,24 @@ function countImportItems(data: ImportDeck) {
   return { topicsCreated, conceptsCreated, triplesCreated, tagsCreated: tagNames.size };
 }
 
-async function getOrCreateTag(
+function getOrCreateTag(
+  db: DbInstance,
   userId: string,
   tagName: string,
   tagCache: Map<string, string>,
   now: string
-): Promise<string> {
+): string {
   const cached = tagCache.get(tagName);
   if (cached) return cached;
 
-  // Check if tag already exists for this user
-  const [existing] = await db
+  const [existing] = db
     .select({ id: schema.tags.id })
     .from(schema.tags)
     .where(
       and(eq(schema.tags.userId, userId), eq(schema.tags.name, tagName))
     )
-    .limit(1);
+    .limit(1)
+    .all();
 
   if (existing) {
     tagCache.set(tagName, existing.id);
@@ -96,17 +95,18 @@ async function getOrCreateTag(
   }
 
   const tagId = crypto.randomUUID();
-  await db.insert(schema.tags).values({
+  db.insert(schema.tags).values({
     id: tagId,
     userId,
     name: tagName,
     createdAt: now,
-  });
+  }).run();
   tagCache.set(tagName, tagId);
   return tagId;
 }
 
 importRoutes.post("/import", async (c) => {
+  const db = c.get("db");
   const userId = c.get("userId");
   const body = await c.req.json();
   const parsed = importDeckSchema.safeParse(body);
@@ -118,7 +118,6 @@ importRoutes.post("/import", async (c) => {
   const data = parsed.data;
   const isDryRun = c.req.query("dryRun") === "true";
 
-  // Validate content beyond Zod schema
   const validationErrors = validateImportData(data);
 
   if (isDryRun) {
@@ -140,11 +139,10 @@ importRoutes.post("/import", async (c) => {
     );
   }
 
-  // Persist the full hierarchy
   const now = new Date().toISOString();
   const deckId = crypto.randomUUID();
 
-  await db.insert(schema.decks).values({
+  db.insert(schema.decks).values({
     id: deckId,
     userId,
     title: data.title,
@@ -152,7 +150,7 @@ importRoutes.post("/import", async (c) => {
     sortOrder: 0,
     createdAt: now,
     updatedAt: now,
-  });
+  }).run();
 
   let topicsCreated = 0;
   let conceptsCreated = 0;
@@ -163,7 +161,7 @@ importRoutes.post("/import", async (c) => {
     const topicData = data.topics[ti];
     const topicId = crypto.randomUUID();
 
-    await db.insert(schema.topics).values({
+    db.insert(schema.topics).values({
       id: topicId,
       deckId,
       title: topicData.title,
@@ -171,14 +169,14 @@ importRoutes.post("/import", async (c) => {
       sortOrder: ti,
       createdAt: now,
       updatedAt: now,
-    });
+    }).run();
     topicsCreated++;
 
     for (let ci = 0; ci < topicData.concepts.length; ci++) {
       const conceptData = topicData.concepts[ci];
       const conceptId = crypto.randomUUID();
 
-      await db.insert(schema.concepts).values({
+      db.insert(schema.concepts).values({
         id: conceptId,
         topicId,
         title: conceptData.title,
@@ -186,14 +184,14 @@ importRoutes.post("/import", async (c) => {
         sortOrder: ci,
         createdAt: now,
         updatedAt: now,
-      });
+      }).run();
       conceptsCreated++;
 
       for (let tri = 0; tri < conceptData.triples.length; tri++) {
         const tripleData = conceptData.triples[tri];
         const tripleId = crypto.randomUUID();
 
-        await db.insert(schema.triples).values({
+        db.insert(schema.triples).values({
           id: tripleId,
           conceptId,
           userId,
@@ -203,16 +201,16 @@ importRoutes.post("/import", async (c) => {
           sortOrder: tri,
           createdAt: now,
           updatedAt: now,
-        });
+        }).run();
         triplesCreated++;
 
         if (tripleData.tags) {
           for (const tagName of tripleData.tags) {
-            const tagId = await getOrCreateTag(userId, tagName, tagCache, now);
-            await db
-              .insert(schema.tripleTags)
+            const tagId = getOrCreateTag(db, userId, tagName, tagCache, now);
+            db.insert(schema.tripleTags)
               .values({ tripleId, tagId })
-              .onConflictDoNothing();
+              .onConflictDoNothing()
+              .run();
           }
         }
       }

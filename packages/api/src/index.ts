@@ -5,12 +5,20 @@ import {
   csrfMiddleware,
   secureHeadersMiddleware,
 } from "./middleware/security.js";
+import { db } from "./db/index.js";
 import health from "./routes/health.js";
 import auth from "./routes/auth.js";
-import deckRoutes from "./routes/decks.js";
+import sectionRoutes from "./routes/sections.js";
 import importRoutes from "./routes/import.js";
+import type { AppEnv } from "./env.js";
 
-const app = new Hono();
+const app = new Hono<AppEnv>();
+
+// Inject db into context for all routes
+app.use("/*", async (c, next) => {
+  c.set("db", db);
+  await next();
+});
 
 // Global middleware
 app.use("/*", corsMiddleware);
@@ -21,7 +29,7 @@ app.use("/*", secureHeadersMiddleware);
 const routes = app
   .route("/", health)
   .route("/", auth)
-  .route("/", deckRoutes)
+  .route("/", sectionRoutes)
   .route("/", importRoutes);
 
 export type AppType = typeof routes;
