@@ -269,6 +269,57 @@ export function tagTriple(db: TestDb, tripleId: string, tagId: string) {
   db.insert(schema.tripleTags).values({ tripleId, tagId }).run();
 }
 
+// ─── Quiz Response Fixtures ──────────────────────────────────────────────────
+
+export interface CreateQuizResponseOptions {
+  id?: string;
+  userId: string;
+  conceptId: string;
+  axis?: "subject" | "predicate" | "object";
+  format?: "multiple_choice" | "select_all" | "true_false" | "matching" | "fill_blank";
+  correct?: number;
+  responseTimeMs?: number;
+  createdAt?: string;
+}
+
+export function createQuizResponse(db: TestDb, options: CreateQuizResponseOptions) {
+  const id = options.id ?? nextId();
+  const now = new Date().toISOString();
+  const response = {
+    id,
+    userId: options.userId,
+    conceptId: options.conceptId,
+    axis: options.axis ?? "subject",
+    format: options.format ?? "multiple_choice",
+    correct: options.correct ?? 1,
+    responseTimeMs: options.responseTimeMs ?? 1500,
+    createdAt: options.createdAt ?? now,
+  };
+  db.insert(schema.quizResponses).values(response).run();
+  return response;
+}
+
+// ─── Response Triple Fixtures ───────────────────────────────────────────────
+
+export interface CreateResponseTripleOptions {
+  id?: string;
+  responseId: string;
+  tripleId: string;
+  correct?: number;
+}
+
+export function createResponseTriple(db: TestDb, options: CreateResponseTripleOptions) {
+  const id = options.id ?? nextId();
+  const responseTriple = {
+    id,
+    responseId: options.responseId,
+    tripleId: options.tripleId,
+    correct: options.correct ?? 1,
+  };
+  db.insert(schema.responseTriples).values(responseTriple).run();
+  return responseTriple;
+}
+
 // ─── Full Hierarchy Helpers ──────────────────────────────────────────────────
 
 /**

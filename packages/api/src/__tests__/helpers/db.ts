@@ -115,6 +115,27 @@ export function createTestDb(): { db: TestDb; sqlite: InstanceType<typeof Databa
     );
     CREATE UNIQUE INDEX IF NOT EXISTS idx_triple_tags_pk ON triple_tags(triple_id, tag_id);
     CREATE INDEX IF NOT EXISTS idx_triple_tags_tag_id ON triple_tags(tag_id);
+
+    CREATE TABLE IF NOT EXISTS quiz_responses (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      concept_id TEXT NOT NULL REFERENCES concepts(id) ON DELETE CASCADE,
+      axis TEXT NOT NULL CHECK(axis IN ('subject', 'predicate', 'object')),
+      format TEXT NOT NULL CHECK(format IN ('multiple_choice', 'select_all', 'true_false', 'matching', 'fill_blank')),
+      correct INTEGER NOT NULL,
+      response_time_ms INTEGER NOT NULL,
+      created_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_quiz_responses_user_concept ON quiz_responses(user_id, concept_id);
+    CREATE INDEX IF NOT EXISTS idx_quiz_responses_user_created ON quiz_responses(user_id, created_at);
+
+    CREATE TABLE IF NOT EXISTS response_triples (
+      id TEXT PRIMARY KEY,
+      response_id TEXT NOT NULL REFERENCES quiz_responses(id) ON DELETE CASCADE,
+      triple_id TEXT NOT NULL REFERENCES triples(id) ON DELETE CASCADE,
+      correct INTEGER NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_response_triples_response_id ON response_triples(response_id);
   `);
 
   return { db, sqlite };
@@ -132,6 +153,8 @@ export function closeTestDb(sqlite: InstanceType<typeof Database>): void {
  * Useful between tests if sharing a database instance within a describe block.
  */
 export function clearTestDb(db: TestDb): void {
+  db.run(sql`DELETE FROM response_triples`);
+  db.run(sql`DELETE FROM quiz_responses`);
   db.run(sql`DELETE FROM triple_tags`);
   db.run(sql`DELETE FROM tags`);
   db.run(sql`DELETE FROM triples`);

@@ -11,6 +11,8 @@ import {
   createTag,
   tagTriple,
   createFullHierarchy,
+  createQuizResponse,
+  createResponseTriple,
   resetFixtureCounter,
 } from "../helpers/fixtures.js";
 import * as schema from "../../db/schema.js";
@@ -130,6 +132,54 @@ describe("foreign key constraints", () => {
       sqlite
         .prepare("INSERT INTO triple_tags (triple_id, tag_id) VALUES (?, 'nonexistent')")
         .run(triple.id);
+    }).toThrow();
+  });
+
+  test("quiz_responses requires a valid user_id", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    expect(() => {
+      sqlite
+        .prepare(
+          "INSERT INTO quiz_responses (id, user_id, concept_id, axis, format, correct, response_time_ms, created_at) VALUES ('qr1', 'nonexistent', ?, 'subject', 'multiple_choice', 1, 1500, '2024-01-01')"
+        )
+        .run(concept.id);
+    }).toThrow();
+  });
+
+  test("quiz_responses requires a valid concept_id", () => {
+    const user = createUser(db);
+    expect(() => {
+      sqlite
+        .prepare(
+          "INSERT INTO quiz_responses (id, user_id, concept_id, axis, format, correct, response_time_ms, created_at) VALUES ('qr1', ?, 'nonexistent', 'subject', 'multiple_choice', 1, 1500, '2024-01-01')"
+        )
+        .run(user.id);
+    }).toThrow();
+  });
+
+  test("response_triples requires a valid response_id", () => {
+    const user = createUser(db);
+    const { triple } = createFullHierarchy(db, user.id);
+    expect(() => {
+      sqlite
+        .prepare(
+          "INSERT INTO response_triples (id, response_id, triple_id, correct) VALUES ('rt1', 'nonexistent', ?, 1)"
+        )
+        .run(triple.id);
+    }).toThrow();
+  });
+
+  test("response_triples requires a valid triple_id", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    const qr = createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+    expect(() => {
+      sqlite
+        .prepare(
+          "INSERT INTO response_triples (id, response_id, triple_id, correct) VALUES ('rt1', ?, 'nonexistent', 1)"
+        )
+        .run(qr.id);
     }).toThrow();
   });
 });
@@ -260,6 +310,65 @@ describe("cascade deletes", () => {
     expect(remaining).toHaveLength(0);
   });
 
+  test("deleting a concept cascades to its quiz responses", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+    createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+
+    db.delete(schema.concepts).where(eq(schema.concepts.id, concept.id)).run();
+
+    const remaining = db.select().from(schema.quizResponses).all();
+    expect(remaining).toHaveLength(0);
+  });
+
+  test("deleting a user cascades to their quiz responses", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+
+    db.delete(schema.users).where(eq(schema.users.id, user.id)).run();
+
+    const remaining = db.select().from(schema.quizResponses).all();
+    expect(remaining).toHaveLength(0);
+  });
+
+  test("deleting a quiz response cascades to its response triples", () => {
+    const user = createUser(db);
+    const { concept, triple } = createFullHierarchy(db, user.id);
+    const qr = createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+    createResponseTriple(db, { responseId: qr.id, tripleId: triple.id });
+
+    db.delete(schema.quizResponses).where(eq(schema.quizResponses.id, qr.id)).run();
+
+    const remaining = db.select().from(schema.responseTriples).all();
+    expect(remaining).toHaveLength(0);
+  });
+
+  test("deleting a triple cascades to its response triples", () => {
+    const user = createUser(db);
+    const { concept, triple } = createFullHierarchy(db, user.id);
+    const qr = createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+    createResponseTriple(db, { responseId: qr.id, tripleId: triple.id });
+
+    db.delete(schema.triples).where(eq(schema.triples.id, triple.id)).run();
+
+    const remaining = db.select().from(schema.responseTriples).all();
+    expect(remaining).toHaveLength(0);
+  });
+
+  test("deleting a concept cascades through quiz responses to response triples", () => {
+    const user = createUser(db);
+    const { concept, triple } = createFullHierarchy(db, user.id);
+    const qr = createQuizResponse(db, { userId: user.id, conceptId: concept.id });
+    createResponseTriple(db, { responseId: qr.id, tripleId: triple.id });
+
+    db.delete(schema.concepts).where(eq(schema.concepts.id, concept.id)).run();
+
+    expect(db.select().from(schema.quizResponses).all()).toHaveLength(0);
+    expect(db.select().from(schema.responseTriples).all()).toHaveLength(0);
+  });
+
   test("deleting one user does not affect another user's data", () => {
     const user1 = createUser(db, { id: "user1" });
     const user2 = createUser(db, { id: "user2" });
@@ -320,6 +429,63 @@ describe("unique constraints", () => {
     expect(() => {
       tagTriple(db, triple.id, tag.id);
     }).toThrow();
+  });
+});
+
+// ── CHECK Constraints ────────────────────────────────────────────
+
+describe("CHECK constraints", () => {
+  test("quiz_responses rejects invalid axis value", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    expect(() => {
+      sqlite
+        .prepare(
+          "INSERT INTO quiz_responses (id, user_id, concept_id, axis, format, correct, response_time_ms, created_at) VALUES ('qr1', ?, ?, 'invalid', 'multiple_choice', 1, 1500, '2024-01-01')"
+        )
+        .run(user.id, concept.id);
+    }).toThrow();
+  });
+
+  test("quiz_responses rejects invalid format value", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    expect(() => {
+      sqlite
+        .prepare(
+          "INSERT INTO quiz_responses (id, user_id, concept_id, axis, format, correct, response_time_ms, created_at) VALUES ('qr1', ?, ?, 'subject', 'invalid', 1, 1500, '2024-01-01')"
+        )
+        .run(user.id, concept.id);
+    }).toThrow();
+  });
+
+  test("quiz_responses accepts all valid axis values", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    for (const axis of ["subject", "predicate", "object"]) {
+      sqlite
+        .prepare(
+          "INSERT INTO quiz_responses (id, user_id, concept_id, axis, format, correct, response_time_ms, created_at) VALUES (?, ?, ?, ?, 'multiple_choice', 1, 1500, '2024-01-01')"
+        )
+        .run(`qr-${axis}`, user.id, concept.id, axis);
+    }
+    const responses = db.select().from(schema.quizResponses).all();
+    expect(responses).toHaveLength(3);
+  });
+
+  test("quiz_responses accepts all valid format values", () => {
+    const user = createUser(db);
+    const { concept } = createFullHierarchy(db, user.id);
+    const formats = ["multiple_choice", "select_all", "true_false", "matching", "fill_blank"];
+    for (const format of formats) {
+      sqlite
+        .prepare(
+          "INSERT INTO quiz_responses (id, user_id, concept_id, axis, format, correct, response_time_ms, created_at) VALUES (?, ?, ?, 'subject', ?, 1, 1500, '2024-01-01')"
+        )
+        .run(`qr-${format}`, user.id, concept.id, format);
+    }
+    const responses = db.select().from(schema.quizResponses).all();
+    expect(responses).toHaveLength(5);
   });
 });
 

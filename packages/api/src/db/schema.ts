@@ -157,3 +157,44 @@ export const tripleTags = sqliteTable(
     index("idx_triple_tags_tag_id").on(table.tagId),
   ]
 );
+
+// ── Quiz Responses ──────────────────────────────────────────────
+
+export const quizResponses = sqliteTable(
+  "quiz_responses",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    conceptId: text("concept_id")
+      .notNull()
+      .references(() => concepts.id, { onDelete: "cascade" }),
+    axis: text("axis", { enum: ["subject", "predicate", "object"] }).notNull(),
+    format: text("format", {
+      enum: ["multiple_choice", "select_all", "true_false", "matching", "fill_blank"],
+    }).notNull(),
+    correct: integer("correct").notNull(),
+    responseTimeMs: integer("response_time_ms").notNull(),
+    createdAt: text("created_at").notNull(),
+  },
+  (table) => [
+    index("idx_quiz_responses_user_concept").on(table.userId, table.conceptId),
+    index("idx_quiz_responses_user_created").on(table.userId, table.createdAt),
+  ]
+);
+
+export const responseTriples = sqliteTable(
+  "response_triples",
+  {
+    id: text("id").primaryKey(),
+    responseId: text("response_id")
+      .notNull()
+      .references(() => quizResponses.id, { onDelete: "cascade" }),
+    tripleId: text("triple_id")
+      .notNull()
+      .references(() => triples.id, { onDelete: "cascade" }),
+    correct: integer("correct").notNull(),
+  },
+  (table) => [index("idx_response_triples_response_id").on(table.responseId)]
+);
