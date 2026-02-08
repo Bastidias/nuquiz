@@ -8,6 +8,7 @@ import {
 import { db } from "./db/index.js";
 import health from "./routes/health.js";
 import auth from "./routes/auth.js";
+import catalogRoutes from "./routes/catalogs.js";
 import deckRoutes from "./routes/decks.js";
 import importRoutes from "./routes/import.js";
 import type { AppEnv } from "./env.js";
@@ -29,6 +30,7 @@ app.use("/*", secureHeadersMiddleware);
 const routes = app
   .route("/", health)
   .route("/", auth)
+  .route("/", catalogRoutes)
   .route("/", deckRoutes)
   .route("/", importRoutes);
 

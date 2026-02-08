@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import type { AppEnv } from "../../env.js";
 import type { TestDb } from "./db.js";
+import catalogRoutes from "../../routes/catalogs.js";
 import deckRoutes from "../../routes/decks.js";
 import importRoutes from "../../routes/import.js";
 import health from "../../routes/health.js";
@@ -21,6 +22,7 @@ export function createTestApp(db: TestDb, userId: string) {
   });
 
   app.route("/", health);
+  app.route("/", catalogRoutes);
   app.route("/", deckRoutes);
   app.route("/", importRoutes);
 
