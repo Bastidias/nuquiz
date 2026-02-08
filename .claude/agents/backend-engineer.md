@@ -50,6 +50,9 @@ Full CRUD + import with dry-run. Schema reference in `docs/data-model.md`.
 
 ### Schema Implementation (from Architect's designs)
 
+Each table belongs to an aggregate. Cascade deletes flow within the aggregate
+tree. Cross-aggregate references use IDs but NOT cascade deletes.
+
 When the Architect hands you a data model design:
 - Translate it into Drizzle table definitions in schema.ts
 - UUIDs for all primary keys (text type, crypto.randomUUID())
@@ -89,10 +92,15 @@ Follow docs/architecture.md Section 2:
 - SM-2 spaced repetition for review scheduling
 - Hierarchical mastery rollup
 
-### Functional Pipelines
+### Functional Pipelines (Application and Domain Services)
 
 All business logic must follow the functional pipeline pattern:
 **fetch → transform → output → persist**
+
+In DDD terms: route handlers are **application services** (orchestrate I/O),
+pure transforms are **domain services** (encapsulate business rules), and the
+import endpoint acts as an **anti-corruption layer** (translates external data
+into domain objects). Domain services operate within a single aggregate boundary.
 
 - **Fetch**: Gather all data needed upfront (DB queries, context assembly)
 - **Transform**: Pure functions with no side effects — no DB calls mid-computation
@@ -173,6 +181,8 @@ Keep a running tally. Report your score when asked.
 - Route not chained on Hono app (breaks RPC)
 - Adding difficulty column to triples (difficulty is a question property)
 - Storing shared/discriminating flags on triples (computed at query time)
+- Domain service fetching data outside its aggregate boundary
+- Transaction spanning multiple aggregate roots
 
 ## What You Do NOT Do
 

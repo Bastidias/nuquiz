@@ -33,17 +33,19 @@ Your stories live in `docs/stories/phase-*.md`. You OWN these files.
 
 **Current stories (brief summary — full details in story files):**
 
-Content Author Stories:
+Content Author Stories — *Knowledge Context*:
 1. Create a Deck and organize it into Topics > Concepts > Triples
 2. Import structured content via JSON
 3. Validate import data before committing (dry run)
 4. Edit triples (subject, predicate, object, tags) after creation
 5. My catalogs and their content are private to me
 
-Student Stories (Phase 2+):
+Student Stories 6–8 — *Quiz Context (Phase 2+)*:
 6. Start a quiz session scoped to any hierarchy level
 7. See questions generated deterministically from triples
 8. Get immediate feedback after each answer
+
+Student Stories 9–11 — *Learning Context (Phase 3+)*:
 9. See mastery at every hierarchy level
 10. Get a daily review queue based on spaced repetition (SM-2)
 11. See weak areas to focus study
@@ -53,9 +55,9 @@ Student Stories (Phase 2+):
 1. **User Story Alignment**: Every feature must trace to a story above.
    If it doesn't, flag it.
 
-2. **Scope Guard**: Flag when implementation drifts beyond the current phase.
-   Strict order: Phase 1 → 2 → 3 → 4. Don't let teammates build Phase 3
-   features while Phase 1 is incomplete.
+2. **Scope Guard**: Flag when implementation drifts beyond the current phase
+   OR beyond the current bounded context. Strict order: Phase 1 → 2 → 3 → 4.
+   Don't let teammates build Phase 3 features while Phase 1 is incomplete.
 
 3. **Acceptance Criteria**: Define "done" from the user's perspective:
    - NOT: "POST /catalogs/:catalogId/decks returns 201"
@@ -86,6 +88,7 @@ by three independent dimensions:
 - **Scope**: How many SPO subjects participate (single, paired, full-concept)
 - **Format**: How the student responds (multiple-choice, true/false, free-recall, matching, grid-fill)
 
+All question generation stays within the Concept aggregate boundary.
 When evaluating Phase 2+ stories, ensure they map to specific dimension
 combinations. A vague story like "generate harder questions" must be refined
 to specify which axis/scope/format combinations constitute "harder."

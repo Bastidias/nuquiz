@@ -21,65 +21,76 @@ The current quiz/question model is a placeholder. It stores pre-written question
 - Hono API on Node.js with Drizzle ORM + SQLite
 - Security middleware (CORS, CSRF, secure headers)
 - Shared Zod schemas imported by both API and web
+- Dependency injection for testable routes (db instance injected via Hono context)
+- Jest test suite with in-memory SQLite (27 integration tests passing)
 
 ---
 
-## Phase 1: Knowledge Hierarchy
+## Phase 1: Knowledge Hierarchy -- COMPLETE
 
-**Goal:** A content author can create a Subject, organize structured SPO data into Topics and Concepts, and import/edit Facts. All content is user-scoped.
+> **Stories:** [docs/stories/phase-1-knowledge.md](stories/phase-1-knowledge.md)
+> **Data model:** [docs/data-model.md](data-model.md)
 
-### Deliverables
+**Goal:** A content author can create a Deck, organize structured SPO data into Topics > Concepts > Triples, and import/edit Triples. All content is user-scoped.
 
-| Deliverable | User Story | Status |
-|---|---|---|
-| **Subjects table + CRUD** | #1: Author creates a Subject and organizes it into Topics > Concepts > Facts | Not started |
-| **Topics table + CRUD** | #1: Same -- Topics are children of Subjects | Not started |
-| **Concepts table + CRUD** | #1: Same -- Concepts are children of Topics | Not started |
-| **Facts (triples) table + CRUD** | #1, #4: Author creates/edits atomic SPO triples within Concepts | Not started |
-| **JSON/YAML import endpoint** | #2, #3: Author imports structured content and validates before committing | Not started |
-| **Import validation (dry-run)** | #3: Author validates import data before committing | Not started |
-| **User-scoped data isolation** | #5: Author's subjects are private -- query filters enforce userId | Not started |
-| **Shared Zod schemas for hierarchy** | All: Type-safe contracts between API and web | Not started |
+### Stories
 
-### Acceptance Criteria (Phase 1 "Done")
+| ID | Title | Status | Test Coverage |
+|----|-------|--------|---------------|
+| S01 | Create Deck with hierarchy (Deck > Topic > Concept > Triple) | Done | `decks.test.ts` |
+| S02 | Import structured content via JSON | Done | `import.test.ts` |
+| S03 | Validate import before committing (dry run) | Done | `import.test.ts` (dry-run) |
+| S04 | Edit Triples after creation (partial updates) | Done | `decks.test.ts` (PUT triples) |
+| S05 | Content is private to author | Done | `decks.test.ts` (auth/ownership) |
 
-1. A user can create a Subject with a title, and see it listed when they fetch their subjects. The subject is scoped to them and invisible to other users.
-2. A user can create Topics within a Subject, Concepts within a Topic, and Facts (SPO triples) within a Concept -- forming a full hierarchy.
-3. A user can edit a Fact's statement (subject, predicate, object), tags, and difficulty after creation.
-4. A user can upload a JSON file matching the import schema and see the hierarchy created from it.
-5. A user can run a dry-run import that returns validation results without persisting anything.
-6. Each Object in a triple is exactly one atomic fact -- the schema enforces this by accepting a single string, not arrays or compound values.
-7. All hierarchy endpoints return 404 for resources belonging to other users.
+### What was delivered
 
-### Key Data Model Decisions (Pending)
+- **Hierarchy CRUD**: Full create/read/update/delete for Decks, Topics, Concepts, and Triples with nested REST routes
+- **Atomic SPO columns**: Each Triple has separate `subject`, `predicate`, `object` text columns -- no JSON blobs, no compound values
+- **JSON import**: `POST /import` accepts nested payload (deck > topics[] > concepts[] > triples[]) and creates the full hierarchy in one request
+- **Dry-run validation**: `POST /import?dryRun=true` returns preview counts and validation errors without persisting data
+- **Tag support**: Tags resolved via get-or-create with user-scoped uniqueness; many-to-many association with Triples
+- **Ownership enforcement**: All hierarchy endpoints filter by authenticated user; another user's resources return 404
+- **Cascade deletes**: Deleting a Deck cascades to all children (Topics, Concepts, Triples)
+- **Shared Zod schemas**: Type-safe contracts in `packages/shared/src/schemas/knowledge.ts` covering all CRUD and import operations
 
-- Hierarchy: Subject > Topic > Concept > Fact (triple)
-- Facts store `subject`, `predicate`, `object` as separate columns (not JSON blobs)
-- Tags on facts as a many-to-many relation
-- Difficulty stored per-fact for future adaptive progression
+### Phase 1 migration notes for Phase 2
+
+The Phase 1 implementation uses a simplified ownership model to get the hierarchy working:
+
+- **No Catalog layer yet.** Decks are owned directly by users (`decks.userId`) rather than nested under Catalogs. Phase 2 will introduce the `catalogs` table and re-parent Decks under Catalogs, with `catalogs.created_by` as the ownership root.
+- **Tags are user-scoped, not catalog-scoped.** When Catalogs are introduced, tag uniqueness will shift from `(userId, name)` to `(catalogId, name)`.
+- **`userId` still exists on triples.** The canonical data model says content ownership lives at the Catalog level, not the Triple level. This column will be dropped when Catalogs are added.
+
+These are not bugs -- they are intentional Phase 1 simplifications documented here so Phase 2 migration is planned.
 
 ---
 
 ## Phase 2: Question Generation Engine (Preview)
 
-**Goal:** Questions are generated deterministically from SPO data. No pre-authored questions.
+**Goal:** Questions are generated deterministically from Triple data. No pre-authored questions.
 
-- Question engine operating on three dimensions: Axis (hide S/P/O), Scope (single/cell/paired/profile/cross-subject), Format (MC/select-all/matching/T-F/fill-in-the-blank)
-- Distractor sourcing from same-predicate and adjacent-predicate data
-- Shared vs. discriminating Object tracking per predicate
+- Introduce the Catalog layer (Catalog > Deck > Topic > Concept > Triple)
+- Question engine operating on three dimensions:
+  - **Axis**: Which part of the Triple is hidden (Subject, Predicate, or Object)
+  - **Scope**: How many SPO subjects participate (single, paired, full-concept)
+  - **Format**: How the student responds (MC, select-all, matching, true/false, fill-in-the-blank)
+- Distractor sourcing from same-predicate and adjacent-predicate data within the Concept boundary
+- Shared vs. discriminating Object computation at query time
 - Quiz session API: start session scoped to any hierarchy level, receive generated questions
+- `quiz_responses` and `response_triples` tables for per-triple answer tracking
 
-**User Stories:** #6 (start a quiz session), #7 (deterministic questions from facts)
+**User Stories:** #6 (start a quiz session), #7 (deterministic questions from Triples)
 
 ---
 
 ## Phase 3: Learning Tracking (Preview)
 
-**Goal:** Track student mastery per-triple and surface weak areas.
+**Goal:** Track student mastery per-Triple and surface weak areas.
 
-- SM-2 spaced repetition per user-triple pair
+- SM-2 spaced repetition per user-Triple pair (Review Cards)
 - Quality derivation from correctness + response time (no self-rating)
-- Hierarchical mastery rollup (concept/topic/subject percentages)
+- Hierarchical mastery rollup (Concept / Topic / Deck percentages)
 - Weak area identification (low-mastery clusters)
 - Daily review queue (due cards + new cards, interleaved)
 
@@ -92,7 +103,7 @@ The current quiz/question model is a placeholder. It stores pre-written question
 **Goal:** The system behaves like a tutor -- selecting what to test next based on demonstrated mastery.
 
 - Independent progression along axis, scope, and format dimensions
-- Trigger-based moves (miss a triple -> drill it; master MC -> promote to fill-in-the-blank)
+- Trigger-based moves (miss a Triple -> drill it; master MC -> promote to fill-in-the-blank)
 - Distractor difficulty tuning (cross-predicate vs. same-predicate)
 - Composite distractor generation for advanced students
 
@@ -102,7 +113,7 @@ The current quiz/question model is a placeholder. It stores pre-written question
 
 ## Current Status
 
-- **Phase:** Pre-Phase 1
-- **In Progress:** Knowledge hierarchy DB schema design, shared Zod schemas
-- **Blocking:** Schema design must complete before CRUD routes and import endpoint
-- **Next Up:** Implement Drizzle schema + migrations, then subjects CRUD + import
+- **Phase:** Phase 1 COMPLETE. Phase 2 next.
+- **Completed:** All 5 Phase 1 stories (S01-S05) with 27 integration tests passing
+- **Next up:** Phase 2 -- Catalog layer, question generation engine, quiz session API
+- **Open questions:** Entity tables for SPO subjects/predicates (deferred to Phase 2 Builder UI), `triple_relations` table (deferred, metadata only)

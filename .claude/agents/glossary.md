@@ -65,3 +65,43 @@ These are common misconceptions. Triple rows contain ONLY: `id`, `concept_id`, `
 | ~~entity tables for subjects/predicates~~ | Deferred to Phase 2 Builder UI. Currently plain text columns. |
 | ~~stored shared/discriminating flags~~ | Computed at query time from triple data within the Concept boundary. |
 | ~~triple_relations table~~ | Deferred. Metadata, not used by question engine. |
+
+---
+
+## DDD Pattern Mapping
+
+> Maps NuQuiz terms to Domain-Driven Design tactical patterns.
+> Other agent prompts reference this section — do not duplicate these definitions elsewhere.
+
+### Bounded Contexts
+
+| Context | Scope | Key Aggregates |
+|---------|-------|----------------|
+| **Knowledge** (authoring) | Catalog hierarchy, CRUD, import, tags | Catalog Aggregate |
+| **Quiz** (generation) | Question strategies, session orchestration, distractor sourcing | Concept Aggregate |
+| **Learning** (tracking) | Review cards, SM-2, mastery rollup, daily queue | ReviewCard (Phase 3) |
+
+Contexts communicate through shared identifiers (triple IDs, concept IDs) but do NOT share internal logic.
+
+### Aggregates and Aggregate Roots
+
+| Aggregate | Root | Boundary | Invariant |
+|-----------|------|----------|-----------|
+| **Catalog** | Catalog | All content in a Catalog (Decks, Topics, Concepts, Triples) | Only `created_by` can modify; cascade delete |
+| **Concept** | Concept | All Triples and SPO subjects within the Concept | All SPO subjects comparable; engine never crosses boundary |
+| **ReviewCard** (Phase 3) | ReviewCard | One per user + triple | SM-2 state is authoritative |
+
+### Entities vs Value Objects
+
+| Classification | Examples |
+|----------------|----------|
+| **Entities** (have identity) | Catalog, Deck, Topic, Concept, Triple, Tag, User, ReviewCard |
+| **Value Objects** (identity-less, interchangeable) | SPO text components, axis/scope/format dimensions, SM-2 parameters |
+
+### Domain Services vs Application Services
+
+| Type | Examples | Rule |
+|------|----------|------|
+| **Domain Service** | Question generation, mastery rollup, import validation | Pure, no DB access, testable in isolation |
+| **Application Service** | Route handlers (fetch → domain service → persist) | Matches the existing functional pipeline pattern |
+| **Anti-Corruption Layer** | Import endpoint, future AI ingestion | Translates external data into domain objects |

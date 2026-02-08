@@ -16,6 +16,9 @@ cases, and Jest's `expect` API for assertions. Run tests with `pnpm test`.
 
 ## Testing Philosophy
 
+Tests verify two things: aggregate invariants hold, and domain services produce
+correct results. See `.claude/agents/glossary.md` for aggregate and service definitions.
+
 ### Integration-First
 
 **Integration tests are the default.** Every user story gets integration tests
@@ -25,7 +28,7 @@ Drizzle → in-memory SQLite → response. No mocking.
 These tests ARE the story acceptance criteria verification. They prove the
 system works end-to-end for real user scenarios.
 
-**Unit tests are for pure domain logic worth isolating:**
+**Unit tests are for pure domain services worth isolating:**
 - Question generation: given triples + siblings + RNG seed → expected questions
 - SM-2 algorithm: given card state + quality → expected next state
 - Mastery rollup: given review cards → expected mastery percentages
@@ -79,7 +82,43 @@ const res = await app.request("/catalogs/cat-1/decks", {
 expect(res.status).toBe(201);
 const body = await res.json();
 expect(body.title).toBe("Security Architecture");
+
+// Verify write-through — confirm the mutation persisted
+const getRes = await app.request(`/catalogs/cat-1/decks/${body.id}`, {
+  headers: authHeaders(testUser),
+});
+expect(getRes.status).toBe(200);
+const fetched = await getRes.json();
+expect(fetched.title).toBe("Security Architecture");
+
+// Highest-confidence check — query DB directly
+const row = db
+  .select()
+  .from(decks)
+  .where(eq(decks.id, body.id))
+  .get();
+expect(row?.title).toBe("Security Architecture");
 ```
+
+### Write-Through Verification
+
+After every POST or PUT, verify the mutation actually persisted. Never trust
+only the mutation response — the handler could return fabricated data while the
+DB write silently fails.
+
+**Three levels of confidence (use at least one):**
+1. **GET the resource** — call the corresponding read endpoint and assert the
+   expected state. This tests the full round-trip through your API.
+2. **Query the DB directly** — use Drizzle to `select()` the row and assert
+   field values. This is the highest-confidence check because it bypasses
+   serialization and response shaping.
+3. **Both** — for critical mutations (cascading deletes, ownership changes),
+   use both the GET and the DB query.
+
+The AAA example above demonstrates all three levels. For most tests, the GET
+check alone is sufficient. Reserve direct DB queries for cases where the
+response shape differs from what's stored (e.g., joined/computed fields) or
+when testing side effects like cascading deletes.
 
 ### Red-Green-Refactor
 
@@ -103,7 +142,7 @@ Test the real API pipeline with no mocking:
 - Map to PM story acceptance criteria
 
 ```typescript
-// GOOD — integration test mapped to story S01
+// GOOD — integration test mapped to story S01, with write-through verification
 describe("S01 — Create deck with hierarchy", () => {
   test("POST /catalogs/:catalogId/decks creates a deck scoped to the catalog", async () => {
     // Arrange
@@ -120,13 +159,21 @@ describe("S01 — Create deck with hierarchy", () => {
     expect(res.status).toBe(201);
     const body = await res.json();
     expect(body.title).toBe("CISSP Study Guide");
+
+    // Verify write-through — GET confirms persistence
+    const getRes = await app.request(`/catalogs/cat-1/decks/${body.id}`, {
+      headers: authHeaders(testUser),
+    });
+    expect(getRes.status).toBe(200);
+    const fetched = await getRes.json();
+    expect(fetched.title).toBe("CISSP Study Guide");
   });
 });
 ```
 
-### 2. Unit Tests (SELECTIVE) — Pure Domain Logic Only
+### 2. Unit Tests (SELECTIVE) — Domain Services Only
 
-Test core domain functions in isolation with NO database, NO HTTP, NO side effects:
+Test core domain services in isolation with NO database, NO HTTP, NO side effects:
 - Question generation strategies (given triples + context → expected question)
 - SM-2 algorithm (given card state + quality → expected next state)
 - Mastery rollup (given review cards → expected mastery percentages)
@@ -196,7 +243,7 @@ packages/api/src/__tests__/helpers/
 ## What Makes a Good Test
 
 ```typescript
-// GOOD — integration test mapped to a story, readable description
+// GOOD — integration test with write-through verification
 describe("S01 — Create deck with hierarchy", () => {
   test("POST /catalogs/:catalogId/decks creates a deck scoped to the catalog", async () => {
     // Arrange
@@ -209,10 +256,17 @@ describe("S01 — Create deck with hierarchy", () => {
       body: JSON.stringify({ title: "CISSP Study Guide" }),
     });
 
-    // Assert
+    // Assert — verify response
     expect(res.status).toBe(201);
     const body = await res.json();
     expect(body.title).toBe("CISSP Study Guide");
+
+    // Assert — verify write-through
+    const getRes = await app.request(`/catalogs/cat-1/decks/${body.id}`, {
+      headers: authHeaders(testUser),
+    });
+    const fetched = await getRes.json();
+    expect(fetched.title).toBe("CISSP Study Guide");
   });
 });
 
@@ -249,7 +303,7 @@ The codebase uses functional pipelines (fetch → transform → output → persi
 This means you can test each stage independently:
 
 ```typescript
-// Test the transform stage in isolation (pure function, no DB)
+// Test the transform stage in isolation (pure domain service, no DB)
 test("buildQuestions: generates one question per triple with valid distractors", () => {
   const triples = [makeTriple({ subject: "TCP", predicate: "Reliability", object: "Guaranteed" })];
   const siblings = [makeTriple({ subject: "UDP", predicate: "Reliability", object: "Best-effort" })];
@@ -259,6 +313,18 @@ test("buildQuestions: generates one question per triple with valid distractors",
   expect(questions).toHaveLength(1);
   expect(questions[0].choices).toContain("Guaranteed");
   expect(questions[0].choices).toContain("Best-effort");
+});
+
+// Test Concept aggregate boundary invariant
+test("buildQuestions: uses only triples within the same Concept as distractors", () => {
+  const conceptA = [makeTriple({ conceptId: "c1", subject: "TCP", predicate: "Reliability", object: "Guaranteed" })];
+  const siblingsA = [makeTriple({ conceptId: "c1", subject: "UDP", predicate: "Reliability", object: "Best-effort" })];
+  const unrelatedB = [makeTriple({ conceptId: "c2", subject: "HTTP", predicate: "Reliability", object: "Depends" })];
+
+  const questions = buildQuestions(conceptA, siblingsA, makeRng(42));
+
+  const allChoices = questions.flatMap((q) => q.choices);
+  expect(allChoices).not.toContain("Depends"); // from different Concept
 });
 ```
 
@@ -270,7 +336,7 @@ You are part of the commit approval process:
 |-------------|-----------|
 | Core domain logic (engine, SRS, mastery) | Unit tests MUST exist and pass |
 | New API route | Integration test for happy path + auth + validation errors |
-| Schema change | Cascade/constraint tests |
+| Schema change | Cascade/constraint tests verifying aggregate invariants |
 | Bug fix | Regression test that reproduces the bug |
 
 ## Self-Scoring

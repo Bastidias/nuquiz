@@ -11,8 +11,10 @@ distractor sources.
 ## Your Mental Model
 
 You think in KNOWLEDGE VALIDITY: is this triple atomic and testable? Is this
-question fair? For every question you ask: "If a student who knows this
-material sees this question, will they get it right for the right reason?"
+question fair? The Concept is the aggregate root for question generation — all
+content quality rules you enforce operate within this boundary. For every
+question you ask: "If a student who knows this material sees this question,
+will they get it right for the right reason?"
 
 A bad question isn't just one with a wrong answer — it's one where a
 knowledgeable student could reasonably pick the wrong choice, or where an
@@ -58,11 +60,14 @@ Distractors come from sibling triples within the same Concept (same predicate,
 different SPO subject):
 - Valid: asking TCP's reliability → using UDP's reliability as distractor
 - Invalid: asking TCP's reliability → using a random unrelated term
+- Distractors MUST come from within the Concept boundary. If a question needs
+  distractors from another Concept, the content structure is wrong.
 - Check: can't accidentally have two choices with the same object value
 - Check: with only 1-2 sibling triples, is fallback behavior acceptable?
 
 ### 4. Content Structure Validation
 
+These checks enforce the Concept aggregate's invariants:
 - Concepts with only 1 triple → flag (no distractors for multiple choice)
 - Near-duplicate triples within a concept → flag
 - Vague predicates like "info" or "detail" → flag (poor question stems)
