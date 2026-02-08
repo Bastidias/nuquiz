@@ -1,0 +1,18 @@
+{
+  "env": {
+    "CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS": "1",
+    "disableBypassPermissionsMode": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm install)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm build)",
+      "Bash(pnpm db:generate)",
+      "Bash(pnpm db:migrate)",
+      "Bash(pnpm tsc --noEmit)",
+      "Bash(npx drizzle-kit *)",
+      "Bash(git *)"
+    ]
+  }
+}
