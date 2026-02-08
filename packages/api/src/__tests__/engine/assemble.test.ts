@@ -19,7 +19,7 @@ function baseParams(overrides: Record<string, unknown> = {}) {
 
 // ── multiple_choice ─────────────────────────────────────────────
 
-describe("assembleQuestion — multiple_choice", () => {
+describe("S07: assembleQuestion — multiple_choice", () => {
   test("returns 1 correct + up to 3 distractor options", () => {
     const q = assembleQuestion(baseParams({ format: "multiple_choice" }));
     const correct = q.options.filter((o) => o.correct);
@@ -54,7 +54,7 @@ describe("assembleQuestion — multiple_choice", () => {
 
 // ── select_all ──────────────────────────────────────────────────
 
-describe("assembleQuestion — select_all", () => {
+describe("S07: assembleQuestion — select_all", () => {
   // Use two triples with the same subject+predicate for select_all
   const selectAllTriples: QuizTriple[] = [
     { id: "1", subject: "TCP", predicate: "Reliability", object: "Guaranteed (Retransmission)" },
@@ -113,7 +113,7 @@ describe("assembleQuestion — select_all", () => {
 
 // ── true_false ──────────────────────────────────────────────────
 
-describe("assembleQuestion — true_false", () => {
+describe("S07: assembleQuestion — true_false", () => {
   test("swaps when rng < 0.5 and distractors exist", () => {
     // rng that always returns a value < 0.5
     const q = assembleQuestion(baseParams({
@@ -180,7 +180,7 @@ describe("assembleQuestion — true_false", () => {
 
 // ── matching ────────────────────────────────────────────────────
 
-describe("assembleQuestion — matching", () => {
+describe("S07: assembleQuestion — matching", () => {
   const reliabilityTriples = [tcpUdpTriples[0], tcpUdpTriples[1]];
 
   function matchingParams(overrides: Record<string, unknown> = {}) {
@@ -227,7 +227,7 @@ describe("assembleQuestion — matching", () => {
 
 // ── fill_blank ──────────────────────────────────────────────────
 
-describe("assembleQuestion — fill_blank", () => {
+describe("S07: assembleQuestion — fill_blank", () => {
   test("object axis: blank at the end", () => {
     const q = assembleQuestion(baseParams({ format: "fill_blank", axis: "object" }));
     expect(q.prompt).toBe("TCP | Reliability → _________");

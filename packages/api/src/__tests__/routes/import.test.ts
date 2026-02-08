@@ -82,7 +82,7 @@ const validImport = {
   ],
 };
 
-describe("POST /catalogs/:catalogId/import", () => {
+describe("S02: POST /catalogs/:catalogId/import", () => {
   test("imports a full deck hierarchy and returns 201", async () => {
     const res = await jsonRequest(app, "POST", importUrl(catalogId), validImport);
     expect(res.status).toBe(201);
@@ -151,7 +151,7 @@ describe("POST /catalogs/:catalogId/import", () => {
     expect(tripleTags).toHaveLength(3); // 2 tags on first triple, 1 on second
   });
 
-  test("dry run validates without persisting", async () => {
+  test("S03: dry run validates without persisting", async () => {
     const res = await jsonRequest(
       app,
       "POST",
@@ -172,7 +172,7 @@ describe("POST /catalogs/:catalogId/import", () => {
     expect(decks).toHaveLength(0);
   });
 
-  test("dry run reports validation errors", async () => {
+  test("S03: dry run reports validation errors", async () => {
     const invalidImport = {
       title: "Bad",
       topics: [

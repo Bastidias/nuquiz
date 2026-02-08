@@ -33,7 +33,7 @@ describe("GET /catalogs", () => {
     expect(body.catalogs).toEqual([]);
   });
 
-  test("returns only the authenticated user's catalogs", async () => {
+  test("S05: returns only the authenticated user's catalogs", async () => {
     await jsonRequest(app, "POST", "/catalogs", {
       title: "My Catalog",
       description: null,
@@ -101,7 +101,7 @@ describe("GET /catalogs/:id", () => {
     expect(res.status).toBe(404);
   });
 
-  test("returns 404 for another user's catalog", async () => {
+  test("S05: returns 404 for another user's catalog", async () => {
     const otherUser = createUser(db);
     const otherApp = createTestApp(db, otherUser.id);
     const createRes = await jsonRequest(otherApp, "POST", "/catalogs", {
@@ -138,7 +138,7 @@ describe("PUT /catalogs/:id", () => {
     expect(res.status).toBe(404);
   });
 
-  test("returns 404 for another user's catalog", async () => {
+  test("S05: returns 404 for another user's catalog", async () => {
     const otherUser = createUser(db);
     const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
 
@@ -176,7 +176,7 @@ describe("DELETE /catalogs/:id", () => {
     expect(res.status).toBe(404);
   });
 
-  test("returns 404 for another user's catalog", async () => {
+  test("S05: returns 404 for another user's catalog", async () => {
     const otherUser = createUser(db);
     const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
 

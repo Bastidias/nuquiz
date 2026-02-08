@@ -3,7 +3,7 @@ import { groupByPredicate } from "../../domain/engine/group.js";
 import type { QuizTriple } from "../../domain/engine/types.js";
 import { tcpUdpTriples, tcpUdpGroups } from "./fixtures.js";
 
-describe("sourceDistractors", () => {
+describe("S07: sourceDistractors", () => {
   test("same-predicate distractors sourced first", () => {
     // Arrange
     const target = tcpUdpTriples[0]; // TCP | Reliability → Guaranteed

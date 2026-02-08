@@ -2,7 +2,7 @@ import { classifyObjects } from "../../domain/engine/classify.js";
 import type { PredicateGroup } from "../../domain/engine/types.js";
 import { energyLevelGroup, mentalStateGroup, autonomicGroup } from "./fixtures.js";
 
-describe("classifyObjects", () => {
+describe("S07: classifyObjects", () => {
   test("Energy Level: fully shared, no discriminating objects", () => {
     // Arrange
     const group = energyLevelGroup;

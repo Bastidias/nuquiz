@@ -77,7 +77,7 @@ function createConceptWithTriples() {
 
 // ── POST /quiz/start ──────────────────────────────────────────────
 
-describe("POST /quiz/start", () => {
+describe("S06: POST /quiz/start", () => {
   test("starts a session scoped to a concept and returns questions", async () => {
     const { concept } = createConceptWithTriples();
 
@@ -281,7 +281,7 @@ describe("POST /quiz/start", () => {
 
 // ── POST /quiz/:sessionId/respond ─────────────────────────────────
 
-describe("POST /quiz/:sessionId/respond", () => {
+describe("S08: POST /quiz/:sessionId/respond", () => {
   async function startSession(overrides: Record<string, unknown> = {}) {
     const { concept } = createConceptWithTriples();
     const res = await jsonRequest(app, "POST", "/quiz/start", {

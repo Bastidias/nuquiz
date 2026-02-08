@@ -2,7 +2,7 @@ import { groupByPredicate } from "../../domain/engine/group.js";
 import type { QuizTriple } from "../../domain/engine/types.js";
 import { tcpUdpTriples, medicalTriples } from "./fixtures.js";
 
-describe("groupByPredicate", () => {
+describe("S07: groupByPredicate", () => {
   test("TCP/UDP dataset produces 3 predicate groups", () => {
     // Arrange
     const triples = tcpUdpTriples;

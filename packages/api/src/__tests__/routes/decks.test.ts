@@ -46,7 +46,7 @@ const tripleUrl = (catalogId: string, deckId: string, topicId: string, conceptId
 
 // ── Decks CRUD ──────────────────────────────────────────────────
 
-describe("GET /catalogs/:catalogId/decks", () => {
+describe("S01: GET /catalogs/:catalogId/decks", () => {
   test("returns empty list when no decks exist", async () => {
     const res = await jsonRequest(app, "GET", decksUrl(catalogId));
     expect(res.status).toBe(200);
@@ -54,7 +54,7 @@ describe("GET /catalogs/:catalogId/decks", () => {
     expect(body.decks).toEqual([]);
   });
 
-  test("returns only the authenticated user's decks", async () => {
+  test("S05: returns only the authenticated user's decks", async () => {
     // Arrange — create decks for our user and another user
     await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "My Deck",
@@ -80,7 +80,7 @@ describe("GET /catalogs/:catalogId/decks", () => {
   });
 });
 
-describe("POST /catalogs/:catalogId/decks", () => {
+describe("S01: POST /catalogs/:catalogId/decks", () => {
   test("creates a deck and returns 201", async () => {
     const res = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Biology 101",
@@ -121,7 +121,7 @@ describe("POST /catalogs/:catalogId/decks", () => {
   });
 });
 
-describe("GET /catalogs/:catalogId/decks/:id", () => {
+describe("S01: GET /catalogs/:catalogId/decks/:id", () => {
   test("returns deck with topics", async () => {
     // Arrange
     const createRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
@@ -153,7 +153,7 @@ describe("GET /catalogs/:catalogId/decks/:id", () => {
     expect(res.status).toBe(404);
   });
 
-  test("returns 404 for another user's deck", async () => {
+  test("S05: returns 404 for another user's deck", async () => {
     // Arrange — create deck as another user
     const otherUser = createUser(db);
     const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
@@ -171,7 +171,7 @@ describe("GET /catalogs/:catalogId/decks/:id", () => {
   });
 });
 
-describe("PUT /catalogs/:catalogId/decks/:id", () => {
+describe("S01: PUT /catalogs/:catalogId/decks/:id", () => {
   test("updates deck title", async () => {
     const createRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Old Title",
@@ -196,7 +196,7 @@ describe("PUT /catalogs/:catalogId/decks/:id", () => {
   });
 });
 
-describe("DELETE /catalogs/:catalogId/decks/:id", () => {
+describe("S01: DELETE /catalogs/:catalogId/decks/:id", () => {
   test("deletes deck and its children", async () => {
     const createRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "To Delete",
@@ -215,7 +215,7 @@ describe("DELETE /catalogs/:catalogId/decks/:id", () => {
 
 // ── Topics CRUD ─────────────────────────────────────────────────
 
-describe("POST /catalogs/:catalogId/decks/:deckId/topics", () => {
+describe("S01: POST .../topics", () => {
   test("creates a topic under a deck", async () => {
     const deckRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
       title: "Bio",
@@ -247,7 +247,7 @@ describe("POST /catalogs/:catalogId/decks/:deckId/topics", () => {
 
 // ── Concepts CRUD ───────────────────────────────────────────────
 
-describe("POST /catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts", () => {
+describe("S01: POST .../concepts", () => {
   test("creates a concept under a topic", async () => {
     // Arrange
     const deckRes = await jsonRequest(app, "POST", decksUrl(catalogId), {
@@ -281,7 +281,7 @@ describe("POST /catalogs/:catalogId/decks/:deckId/topics/:topicId/concepts", () 
 
 // ── Triples CRUD ────────────────────────────────────────────────
 
-describe("Triples CRUD", () => {
+describe("S01: Triples CRUD", () => {
   let deckId: string;
   let topicId: string;
   let conceptId: string;
@@ -346,7 +346,7 @@ describe("Triples CRUD", () => {
     expect(body.triples).toHaveLength(2);
   });
 
-  test("PUT updates a triple", async () => {
+  test("S04: PUT updates a triple", async () => {
     const createRes = await jsonRequest(app, "POST", tUrl(), {
       subject: "Cell membrane",
       predicate: "is composed of",
