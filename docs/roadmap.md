@@ -66,21 +66,39 @@ These are not bugs -- they are intentional Phase 1 simplifications documented he
 
 ---
 
-## Phase 2: Question Generation Engine (Preview)
+## Phase 2: Question Generation Engine -- COMPLETE
+
+> **Stories:** [docs/stories/phase-2-quiz-session.md](stories/phase-2-quiz-session.md)
 
 **Goal:** Questions are generated deterministically from Triple data. No pre-authored questions.
 
-- Introduce the Catalog layer (Catalog > Deck > Topic > Concept > Triple)
-- Question engine operating on three dimensions:
-  - **Axis**: Which part of the Triple is hidden (Subject, Predicate, or Object)
-  - **Scope**: How many SPO subjects participate (single, paired, full-concept)
-  - **Format**: How the student responds (MC, select-all, matching, true/false, fill-in-the-blank)
-- Distractor sourcing from same-predicate and adjacent-predicate data within the Concept boundary
-- Shared vs. discriminating Object computation at query time
-- Quiz session API: start session scoped to any hierarchy level, receive generated questions
-- `quiz_responses` and `response_triples` tables for per-triple answer tracking
+### Stories
 
-**User Stories:** #6 (start a quiz session), #7 (deterministic questions from Triples)
+| ID | Title | Status | Test Coverage |
+|----|-------|--------|---------------|
+| S06 | Start a quiz session scoped to a hierarchy level | Done | `quiz.test.ts` |
+| S07 | Receive deterministically generated questions from Triples | Done | `engine/*.test.ts`, `quiz.test.ts` |
+| S08 | Submit answers and record responses | Done | `quiz.test.ts` |
+
+### What was delivered
+
+- **Catalog layer**: `catalogs` table with `created_by` ownership; `subscriptions` table for read-only access; Decks re-parented under Catalogs
+- **Engine domain functions** (pure, no DB access):
+  - `groupByPredicate` -- groups Triples by predicate within a Concept
+  - `classifyObjects` -- computes shared vs discriminating Objects at query time
+  - `sourceDistractors` -- same-predicate first, adjacent-predicate fallback
+  - `assembleQuestion` -- builds a Question for any axis/format combination
+  - `orchestrate` -- generates a full set of questions from Triples with seeded RNG
+- **Question formats**: multiple-choice, select-all, true/false, matching, fill-in-the-blank
+- **Quiz session API**:
+  - `POST /quiz/start` -- start a session scoped to a Concept, Topic, or Deck; returns questions without correct answers
+  - `POST /quiz/:sessionId/respond` -- submit an answer, get immediate feedback with correct answer revealed
+  - In-memory session store holds generated questions server-side (answers never leaked before submission)
+  - Authorization: catalog author or subscriber can start sessions
+- **Per-triple response tracking**: `quiz_responses` and `response_triples` tables persist every answer with axis, format, correctness, and response time
+- **Shared Zod schemas**: `questionSchema`, `clientQuestionSchema`, `startQuizSessionSchema`, `submitQuizResponseSchema`, `quizResponseResultSchema` in `packages/shared`
+- **Deterministic generation**: Same seed + same content = same questions (reproducible via seeded PRNG)
+- **202 tests passing** (180 engine unit tests + 22 quiz integration tests)
 
 ---
 
@@ -113,7 +131,7 @@ These are not bugs -- they are intentional Phase 1 simplifications documented he
 
 ## Current Status
 
-- **Phase:** Phase 1 COMPLETE. Phase 2 next.
-- **Completed:** All 5 Phase 1 stories (S01-S05) with 27 integration tests passing
-- **Next up:** Phase 2 -- Catalog layer, question generation engine, quiz session API
-- **Open questions:** Entity tables for SPO subjects/predicates (deferred to Phase 2 Builder UI), `triple_relations` table (deferred, metadata only)
+- **Phase:** Phase 2 COMPLETE. Phase 3 next.
+- **Completed:** Phase 1 (S01-S05) + Phase 2 (S06-S08) with 202 tests passing
+- **Next up:** Phase 3 -- SM-2 spaced repetition, mastery rollup, review queue
+- **Open questions:** Entity tables for SPO subjects/predicates (deferred to Builder UI), `triple_relations` table (deferred, metadata only), session expiry strategy (in-memory store for now)
