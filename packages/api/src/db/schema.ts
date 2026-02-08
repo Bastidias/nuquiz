@@ -21,22 +21,57 @@ export const sessions = sqliteTable("sessions", {
   expiresAt: text("expires_at").notNull(),
 });
 
+// ── Catalogs & Subscriptions ────────────────────────────────────
+
+export const catalogs = sqliteTable(
+  "catalogs",
+  {
+    id: text("id").primaryKey(),
+    createdBy: text("created_by")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    createdAt: text("created_at").notNull(),
+    updatedAt: text("updated_at").notNull(),
+  },
+  (table) => [index("idx_catalogs_created_by").on(table.createdBy)]
+);
+
+export const subscriptions = sqliteTable(
+  "subscriptions",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    catalogId: text("catalog_id")
+      .notNull()
+      .references(() => catalogs.id, { onDelete: "cascade" }),
+    createdAt: text("created_at").notNull(),
+  },
+  (table) => [
+    uniqueIndex("idx_subscriptions_user_catalog").on(table.userId, table.catalogId),
+    index("idx_subscriptions_catalog_id").on(table.catalogId),
+  ]
+);
+
 // ── Knowledge Hierarchy: Deck > Topic > Concept > Triple ──────
 
 export const decks = sqliteTable(
   "decks",
   {
     id: text("id").primaryKey(),
-    userId: text("user_id")
+    catalogId: text("catalog_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => catalogs.id, { onDelete: "cascade" }),
     title: text("title").notNull(),
     description: text("description"),
     sortOrder: integer("sort_order").notNull().default(0),
     createdAt: text("created_at").notNull(),
     updatedAt: text("updated_at").notNull(),
   },
-  (table) => [index("idx_decks_user_id").on(table.userId)]
+  (table) => [index("idx_decks_catalog_id").on(table.catalogId)]
 );
 
 export const topics = sqliteTable(
@@ -78,9 +113,6 @@ export const triples = sqliteTable(
     conceptId: text("concept_id")
       .notNull()
       .references(() => concepts.id, { onDelete: "cascade" }),
-    userId: text("user_id")
-      .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
     subject: text("subject").notNull(),
     predicate: text("predicate").notNull(),
     object: text("object").notNull(),
@@ -90,25 +122,24 @@ export const triples = sqliteTable(
   },
   (table) => [
     index("idx_triples_concept_id").on(table.conceptId),
-    index("idx_triples_user_id").on(table.userId),
     index("idx_triples_subject_predicate").on(table.conceptId, table.subject, table.predicate),
     index("idx_triples_predicate").on(table.conceptId, table.predicate),
   ]
 );
 
-// ── Tags (many-to-many on triples) ────────────────────────────
+// ── Tags (many-to-many on triples, scoped to catalog) ────────
 
 export const tags = sqliteTable(
   "tags",
   {
     id: text("id").primaryKey(),
-    userId: text("user_id")
+    catalogId: text("catalog_id")
       .notNull()
-      .references(() => users.id, { onDelete: "cascade" }),
+      .references(() => catalogs.id, { onDelete: "cascade" }),
     name: text("name").notNull(),
     createdAt: text("created_at").notNull(),
   },
-  (table) => [uniqueIndex("idx_tags_user_name").on(table.userId, table.name)]
+  (table) => [uniqueIndex("idx_tags_catalog_name").on(table.catalogId, table.name)]
 );
 
 export const tripleTags = sqliteTable(

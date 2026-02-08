@@ -1,10 +1,45 @@
 import { z } from "zod";
 
-// ── Deck (top-level container) ──────────────────────────────
+// ── Catalog (top-level ownership container) ─────────────────
+
+export const catalogSchema = z.object({
+  id: z.string(),
+  createdBy: z.string(),
+  title: z.string().min(1).max(200),
+  description: z.string().max(1000).nullable(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export type Catalog = z.infer<typeof catalogSchema>;
+
+export const createCatalogSchema = catalogSchema.pick({
+  title: true,
+  description: true,
+});
+
+export type CreateCatalog = z.infer<typeof createCatalogSchema>;
+
+export const updateCatalogSchema = createCatalogSchema.partial();
+
+export type UpdateCatalog = z.infer<typeof updateCatalogSchema>;
+
+// ── Subscription (user subscribes to a catalog) ─────────────
+
+export const subscriptionSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  catalogId: z.string(),
+  createdAt: z.string().datetime(),
+});
+
+export type Subscription = z.infer<typeof subscriptionSchema>;
+
+// ── Deck (child of Catalog) ─────────────────────────────────
 
 export const deckSchema = z.object({
   id: z.string(),
-  userId: z.string(),
+  catalogId: z.string(),
   title: z.string().min(1).max(200),
   description: z.string().max(1000).nullable(),
   sortOrder: z.number().int().min(0),
@@ -83,7 +118,6 @@ export type UpdateConcept = z.infer<typeof updateConceptSchema>;
 export const tripleSchema = z.object({
   id: z.string(),
   conceptId: z.string(),
-  userId: z.string(),
   subject: z.string().min(1).max(500),
   predicate: z.string().min(1).max(500),
   object: z.string().min(1).max(500),
@@ -107,11 +141,11 @@ export const updateTripleSchema = createTripleSchema.partial();
 
 export type UpdateTriple = z.infer<typeof updateTripleSchema>;
 
-// ── Tag (many-to-many on triples) ───────────────────────────
+// ── Tag (many-to-many on triples, scoped to catalog) ────────
 
 export const tagSchema = z.object({
   id: z.string(),
-  userId: z.string(),
+  catalogId: z.string(),
   name: z.string().min(1).max(100),
   createdAt: z.string().datetime(),
 });

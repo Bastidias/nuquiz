@@ -15,16 +15,29 @@ import type { AppEnv, DbInstance } from "../env.js";
 
 const decks = new Hono<AppEnv>();
 
-// ── Helper: verify ownership through hierarchy ─────────────────
+// ── Helper: verify ownership through catalog hierarchy ────────────
 
-function getOwnedDeck(db: DbInstance, deckId: string, userId: string) {
-  const [deck] = db
+function getOwnedCatalog(db: DbInstance, catalogId: string, userId: string) {
+  const [catalog] = db
     .select()
-    .from(schema.decks)
-    .where(and(eq(schema.decks.id, deckId), eq(schema.decks.userId, userId)))
+    .from(schema.catalogs)
+    .where(and(eq(schema.catalogs.id, catalogId), eq(schema.catalogs.createdBy, userId)))
     .limit(1)
     .all();
-  return deck ?? null;
+  return catalog ?? null;
+}
+
+function getOwnedDeck(db: DbInstance, deckId: string, userId: string) {
+  const [row] = db
+    .select({ deck: schema.decks })
+    .from(schema.decks)
+    .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
+    .where(
+      and(eq(schema.decks.id, deckId), eq(schema.catalogs.createdBy, userId))
+    )
+    .limit(1)
+    .all();
+  return row?.deck ?? null;
 }
 
 function getOwnedTopic(db: DbInstance, topicId: string, userId: string) {
@@ -32,8 +45,9 @@ function getOwnedTopic(db: DbInstance, topicId: string, userId: string) {
     .select({ topic: schema.topics, deck: schema.decks })
     .from(schema.topics)
     .innerJoin(schema.decks, eq(schema.topics.deckId, schema.decks.id))
+    .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
     .where(
-      and(eq(schema.topics.id, topicId), eq(schema.decks.userId, userId))
+      and(eq(schema.topics.id, topicId), eq(schema.catalogs.createdBy, userId))
     )
     .limit(1)
     .all();
@@ -46,8 +60,9 @@ function getOwnedConcept(db: DbInstance, conceptId: string, userId: string) {
     .from(schema.concepts)
     .innerJoin(schema.topics, eq(schema.concepts.topicId, schema.topics.id))
     .innerJoin(schema.decks, eq(schema.topics.deckId, schema.decks.id))
+    .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
     .where(
-      and(eq(schema.concepts.id, conceptId), eq(schema.decks.userId, userId))
+      and(eq(schema.concepts.id, conceptId), eq(schema.catalogs.createdBy, userId))
     )
     .limit(1)
     .all();
@@ -61,8 +76,9 @@ function getOwnedTriple(db: DbInstance, tripleId: string, userId: string) {
     .innerJoin(schema.concepts, eq(schema.triples.conceptId, schema.concepts.id))
     .innerJoin(schema.topics, eq(schema.concepts.topicId, schema.topics.id))
     .innerJoin(schema.decks, eq(schema.topics.deckId, schema.decks.id))
+    .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
     .where(
-      and(eq(schema.triples.id, tripleId), eq(schema.decks.userId, userId))
+      and(eq(schema.triples.id, tripleId), eq(schema.catalogs.createdBy, userId))
     )
     .limit(1)
     .all();
@@ -75,11 +91,13 @@ decks.get("/decks", (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const userDecks = db
-    .select()
+    .select({ decks: schema.decks })
     .from(schema.decks)
-    .where(eq(schema.decks.userId, userId))
+    .innerJoin(schema.catalogs, eq(schema.decks.catalogId, schema.catalogs.id))
+    .where(eq(schema.catalogs.createdBy, userId))
     .orderBy(schema.decks.sortOrder)
-    .all();
+    .all()
+    .map((r) => r.decks);
   return c.json({ decks: userDecks });
 });
 
@@ -87,16 +105,26 @@ decks.post("/decks", async (c) => {
   const db = c.get("db");
   const userId = c.get("userId");
   const body = await c.req.json();
-  const parsed = createDeckSchema.safeParse(body);
+
+  const { catalogId, ...rest } = body;
+  const parsed = createDeckSchema.safeParse(rest);
   if (!parsed.success) {
     return c.json({ error: parsed.error.flatten().fieldErrors }, 400);
+  }
+  if (!catalogId) {
+    return c.json({ error: "catalogId is required" }, 400);
+  }
+
+  const catalog = getOwnedCatalog(db, catalogId, userId);
+  if (!catalog) {
+    return c.json({ error: "Catalog not found" }, 404);
   }
 
   const now = new Date().toISOString();
   const id = crypto.randomUUID();
   db.insert(schema.decks).values({
     id,
-    userId,
+    catalogId,
     title: parsed.data.title,
     description: parsed.data.description,
     sortOrder: parsed.data.sortOrder,
@@ -445,7 +473,6 @@ decks.post(
     db.insert(schema.triples).values({
       id,
       conceptId: row.concept.id,
-      userId,
       subject: parsed.data.subject,
       predicate: parsed.data.predicate,
       object: parsed.data.object,

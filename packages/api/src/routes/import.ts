@@ -72,7 +72,7 @@ function countImportItems(data: ImportDeck) {
 
 function getOrCreateTag(
   db: DbInstance,
-  userId: string,
+  catalogId: string,
   tagName: string,
   tagCache: Map<string, string>,
   now: string
@@ -84,7 +84,7 @@ function getOrCreateTag(
     .select({ id: schema.tags.id })
     .from(schema.tags)
     .where(
-      and(eq(schema.tags.userId, userId), eq(schema.tags.name, tagName))
+      and(eq(schema.tags.catalogId, catalogId), eq(schema.tags.name, tagName))
     )
     .limit(1)
     .all();
@@ -97,7 +97,7 @@ function getOrCreateTag(
   const tagId = crypto.randomUUID();
   db.insert(schema.tags).values({
     id: tagId,
-    userId,
+    catalogId,
     name: tagName,
     createdAt: now,
   }).run();
@@ -139,12 +139,29 @@ importRoutes.post("/import", async (c) => {
     );
   }
 
+  // Import requires a catalogId query parameter
+  const catalogId = c.req.query("catalogId");
+  if (!catalogId) {
+    return c.json({ error: "catalogId query parameter is required" }, 400);
+  }
+
+  // Verify catalog ownership
+  const [catalog] = db
+    .select()
+    .from(schema.catalogs)
+    .where(and(eq(schema.catalogs.id, catalogId), eq(schema.catalogs.createdBy, userId)))
+    .limit(1)
+    .all();
+  if (!catalog) {
+    return c.json({ error: "Catalog not found" }, 404);
+  }
+
   const now = new Date().toISOString();
   const deckId = crypto.randomUUID();
 
   db.insert(schema.decks).values({
     id: deckId,
-    userId,
+    catalogId,
     title: data.title,
     description: data.description ?? null,
     sortOrder: 0,
@@ -194,7 +211,6 @@ importRoutes.post("/import", async (c) => {
         db.insert(schema.triples).values({
           id: tripleId,
           conceptId,
-          userId,
           subject: tripleData.subject,
           predicate: tripleData.predicate,
           object: tripleData.object,
@@ -206,7 +222,7 @@ importRoutes.post("/import", async (c) => {
 
         if (tripleData.tags) {
           for (const tagName of tripleData.tags) {
-            const tagId = getOrCreateTag(db, userId, tagName, tagCache, now);
+            const tagId = getOrCreateTag(db, catalogId, tagName, tagCache, now);
             db.insert(schema.tripleTags)
               .values({ tripleId, tagId })
               .onConflictDoNothing()

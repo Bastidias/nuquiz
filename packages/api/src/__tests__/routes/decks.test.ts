@@ -1,5 +1,5 @@
 import { createTestDb, closeTestDb, type TestDb } from "../helpers/db.js";
-import { createUser, resetFixtureCounter } from "../helpers/fixtures.js";
+import { createUser, createCatalog, resetFixtureCounter } from "../helpers/fixtures.js";
 import { createTestApp, jsonRequest } from "../helpers/app.js";
 import type { Hono } from "hono";
 import type { AppEnv } from "../../env.js";
@@ -9,6 +9,7 @@ let db: TestDb;
 let sqlite: InstanceType<typeof Database>;
 let app: Hono<AppEnv>;
 let userId: string;
+let catalogId: string;
 
 beforeEach(() => {
   resetFixtureCounter();
@@ -17,6 +18,8 @@ beforeEach(() => {
   sqlite = testDb.sqlite;
   const user = createUser(db);
   userId = user.id;
+  const catalog = createCatalog(db, { createdBy: userId, title: "Test Catalog" });
+  catalogId = catalog.id;
   app = createTestApp(db, userId);
 });
 
@@ -37,13 +40,16 @@ describe("GET /decks", () => {
   test("returns only the authenticated user's decks", async () => {
     // Arrange — create decks for our user and another user
     await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "My Deck",
       description: null,
       sortOrder: 0,
     });
     const otherUser = createUser(db);
+    const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
     const otherApp = createTestApp(db, otherUser.id);
     await jsonRequest(otherApp, "POST", "/decks", {
+      catalogId: otherCatalog.id,
       title: "Other Deck",
       description: null,
       sortOrder: 0,
@@ -62,6 +68,7 @@ describe("GET /decks", () => {
 describe("POST /decks", () => {
   test("creates a deck and returns 201", async () => {
     const res = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "Biology 101",
       description: "Intro to biology",
       sortOrder: 0,
@@ -70,11 +77,12 @@ describe("POST /decks", () => {
     const body = await res.json();
     expect(body.deck.title).toBe("Biology 101");
     expect(body.deck.description).toBe("Intro to biology");
-    expect(body.deck.userId).toBe(userId);
+    expect(body.deck.catalogId).toBe(catalogId);
   });
 
   test("returns 400 for invalid body", async () => {
     const res = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       description: "Missing title",
       sortOrder: 0,
     });
@@ -83,7 +91,17 @@ describe("POST /decks", () => {
 
   test("returns 400 for empty title", async () => {
     const res = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "",
+      description: null,
+      sortOrder: 0,
+    });
+    expect(res.status).toBe(400);
+  });
+
+  test("returns 400 for missing catalogId", async () => {
+    const res = await jsonRequest(app, "POST", "/decks", {
+      title: "No Catalog",
       description: null,
       sortOrder: 0,
     });
@@ -95,6 +113,7 @@ describe("GET /decks/:id", () => {
   test("returns deck with topics", async () => {
     // Arrange
     const createRes = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "Bio",
       description: null,
       sortOrder: 0,
@@ -126,8 +145,10 @@ describe("GET /decks/:id", () => {
   test("returns 404 for another user's deck", async () => {
     // Arrange — create deck as another user
     const otherUser = createUser(db);
+    const otherCatalog = createCatalog(db, { createdBy: otherUser.id });
     const otherApp = createTestApp(db, otherUser.id);
     const createRes = await jsonRequest(otherApp, "POST", "/decks", {
+      catalogId: otherCatalog.id,
       title: "Private",
       description: null,
       sortOrder: 0,
@@ -143,6 +164,7 @@ describe("GET /decks/:id", () => {
 describe("PUT /decks/:id", () => {
   test("updates deck title", async () => {
     const createRes = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "Old Title",
       description: null,
       sortOrder: 0,
@@ -168,6 +190,7 @@ describe("PUT /decks/:id", () => {
 describe("DELETE /decks/:id", () => {
   test("deletes deck and its children", async () => {
     const createRes = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "To Delete",
       description: null,
       sortOrder: 0,
@@ -187,6 +210,7 @@ describe("DELETE /decks/:id", () => {
 describe("POST /decks/:deckId/topics", () => {
   test("creates a topic under a deck", async () => {
     const deckRes = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "Bio",
       description: null,
       sortOrder: 0,
@@ -220,6 +244,7 @@ describe("POST /decks/:deckId/topics/:topicId/concepts", () => {
   test("creates a concept under a topic", async () => {
     // Arrange
     const deckRes = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "Bio",
       description: null,
       sortOrder: 0,
@@ -257,6 +282,7 @@ describe("Triples CRUD", () => {
 
   beforeEach(async () => {
     const deckRes = await jsonRequest(app, "POST", "/decks", {
+      catalogId,
       title: "Bio",
       description: null,
       sortOrder: 0,

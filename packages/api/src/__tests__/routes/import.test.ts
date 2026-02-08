@@ -1,5 +1,5 @@
 import { createTestDb, closeTestDb, type TestDb } from "../helpers/db.js";
-import { createUser, resetFixtureCounter } from "../helpers/fixtures.js";
+import { createUser, createCatalog, resetFixtureCounter } from "../helpers/fixtures.js";
 import { createTestApp, jsonRequest } from "../helpers/app.js";
 import * as schema from "../../db/schema.js";
 import type { Hono } from "hono";
@@ -10,6 +10,7 @@ let db: TestDb;
 let sqlite: InstanceType<typeof Database>;
 let app: Hono<AppEnv>;
 let userId: string;
+let catalogId: string;
 
 beforeEach(() => {
   resetFixtureCounter();
@@ -18,6 +19,8 @@ beforeEach(() => {
   sqlite = testDb.sqlite;
   const user = createUser(db);
   userId = user.id;
+  const catalog = createCatalog(db, { createdBy: userId, title: "Test Catalog" });
+  catalogId = catalog.id;
   app = createTestApp(db, userId);
 });
 
@@ -79,7 +82,7 @@ const validImport = {
 
 describe("POST /import", () => {
   test("imports a full deck hierarchy and returns 201", async () => {
-    const res = await jsonRequest(app, "POST", "/import", validImport);
+    const res = await jsonRequest(app, "POST", `/import?catalogId=${catalogId}`, validImport);
     expect(res.status).toBe(201);
     const body = await res.json();
 
@@ -91,7 +94,7 @@ describe("POST /import", () => {
   });
 
   test("creates all entities in the database", async () => {
-    await jsonRequest(app, "POST", "/import", validImport);
+    await jsonRequest(app, "POST", `/import?catalogId=${catalogId}`, validImport);
 
     const decks = db.select().from(schema.decks).all();
     const topics = db.select().from(schema.topics).all();
@@ -134,7 +137,7 @@ describe("POST /import", () => {
       ],
     };
 
-    const res = await jsonRequest(app, "POST", "/import", importWithTags);
+    const res = await jsonRequest(app, "POST", `/import?catalogId=${catalogId}`, importWithTags);
     expect(res.status).toBe(201);
     const body = await res.json();
     expect(body.tagsCreated).toBe(2); // "elements" and "basics"
@@ -193,7 +196,7 @@ describe("POST /import", () => {
   });
 
   test("rejects invalid schema (empty topics)", async () => {
-    const res = await jsonRequest(app, "POST", "/import", {
+    const res = await jsonRequest(app, "POST", `/import?catalogId=${catalogId}`, {
       title: "Empty",
       topics: [],
     });
@@ -222,14 +225,14 @@ describe("POST /import", () => {
       ],
     };
 
-    const res = await jsonRequest(app, "POST", "/import", badImport);
+    const res = await jsonRequest(app, "POST", `/import?catalogId=${catalogId}`, badImport);
     expect(res.status).toBe(400);
     const body = await res.json();
     expect(body.errors).toHaveLength(3);
   });
 
   test("assigns sortOrder based on position", async () => {
-    await jsonRequest(app, "POST", "/import", validImport);
+    await jsonRequest(app, "POST", `/import?catalogId=${catalogId}`, validImport);
 
     const topics = db.select().from(schema.topics).all();
     const sortOrders = topics.map((t) => t.sortOrder).sort();
@@ -241,5 +244,12 @@ describe("POST /import", () => {
       (t) => t.subject === "Cell membrane"
     );
     expect(cellMembraneTriples.map((t) => t.sortOrder).sort()).toEqual([0, 1]);
+  });
+
+  test("returns 400 when catalogId is missing for non-dry-run", async () => {
+    const res = await jsonRequest(app, "POST", "/import", validImport);
+    expect(res.status).toBe(400);
+    const body = await res.json();
+    expect(body.error).toContain("catalogId");
   });
 });

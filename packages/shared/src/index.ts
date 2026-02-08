@@ -8,6 +8,16 @@ export {
 } from "./schemas/user.js";
 
 export {
+  // Catalog
+  catalogSchema,
+  createCatalogSchema,
+  updateCatalogSchema,
+  type Catalog,
+  type CreateCatalog,
+  type UpdateCatalog,
+  // Subscription
+  subscriptionSchema,
+  type Subscription,
   // Deck
   deckSchema,
   createDeckSchema,

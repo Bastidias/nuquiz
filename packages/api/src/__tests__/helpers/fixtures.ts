@@ -79,11 +79,59 @@ export function createAuthenticatedUser(
   return { user, session };
 }
 
+// ─── Catalog Fixtures ────────────────────────────────────────────────────────
+
+export interface CreateCatalogOptions {
+  id?: string;
+  createdBy: string;
+  title?: string;
+  description?: string | null;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export function createCatalog(db: TestDb, options: CreateCatalogOptions) {
+  const id = options.id ?? nextId();
+  const now = new Date().toISOString();
+  const catalog = {
+    id,
+    createdBy: options.createdBy,
+    title: options.title ?? `Test Catalog ${id}`,
+    description: options.description ?? null,
+    createdAt: options.createdAt ?? now,
+    updatedAt: options.updatedAt ?? now,
+  };
+  db.insert(schema.catalogs).values(catalog).run();
+  return catalog;
+}
+
+// ─── Subscription Fixtures ───────────────────────────────────────────────────
+
+export interface CreateSubscriptionOptions {
+  id?: string;
+  userId: string;
+  catalogId: string;
+  createdAt?: string;
+}
+
+export function createSubscription(db: TestDb, options: CreateSubscriptionOptions) {
+  const id = options.id ?? nextId();
+  const now = new Date().toISOString();
+  const subscription = {
+    id,
+    userId: options.userId,
+    catalogId: options.catalogId,
+    createdAt: options.createdAt ?? now,
+  };
+  db.insert(schema.subscriptions).values(subscription).run();
+  return subscription;
+}
+
 // ─── Deck Fixtures ──────────────────────────────────────────────────────────
 
 export interface CreateDeckOptions {
   id?: string;
-  userId: string;
+  catalogId: string;
   title?: string;
   description?: string | null;
   sortOrder?: number;
@@ -96,7 +144,7 @@ export function createDeck(db: TestDb, options: CreateDeckOptions) {
   const now = new Date().toISOString();
   const deck = {
     id,
-    userId: options.userId,
+    catalogId: options.catalogId,
     title: options.title ?? `Test Deck ${id}`,
     description: options.description ?? null,
     sortOrder: options.sortOrder ?? 0,
@@ -168,7 +216,6 @@ export function createConcept(db: TestDb, options: CreateConceptOptions) {
 export interface CreateTripleOptions {
   id?: string;
   conceptId: string;
-  userId: string;
   subject?: string;
   predicate?: string;
   object?: string;
@@ -183,7 +230,6 @@ export function createTriple(db: TestDb, options: CreateTripleOptions) {
   const triple = {
     id,
     conceptId: options.conceptId,
-    userId: options.userId,
     subject: options.subject ?? "TCP",
     predicate: options.predicate ?? "provides",
     object: options.object ?? "reliable delivery",
@@ -199,7 +245,7 @@ export function createTriple(db: TestDb, options: CreateTripleOptions) {
 
 export interface CreateTagOptions {
   id?: string;
-  userId: string;
+  catalogId: string;
   name?: string;
   createdAt?: string;
 }
@@ -209,7 +255,7 @@ export function createTag(db: TestDb, options: CreateTagOptions) {
   const now = new Date().toISOString();
   const tag = {
     id,
-    userId: options.userId,
+    catalogId: options.catalogId,
     name: options.name ?? `tag-${id}`,
     createdAt: options.createdAt ?? now,
   };
@@ -226,19 +272,19 @@ export function tagTriple(db: TestDb, tripleId: string, tagId: string) {
 // ─── Full Hierarchy Helpers ──────────────────────────────────────────────────
 
 /**
- * Creates a complete deck -> topic -> concept -> triple hierarchy.
+ * Creates a complete catalog -> deck -> topic -> concept -> triple hierarchy.
  * Useful for tests that need a full tree without caring about specifics.
  */
 export function createFullHierarchy(db: TestDb, userId: string) {
-  const deck = createDeck(db, { userId, title: "Biology" });
+  const catalog = createCatalog(db, { createdBy: userId, title: "Test Catalog" });
+  const deck = createDeck(db, { catalogId: catalog.id, title: "Biology" });
   const topic = createTopic(db, { deckId: deck.id, title: "Cell Biology" });
   const concept = createConcept(db, { topicId: topic.id, title: "Cell Membrane" });
   const triple = createTriple(db, {
     conceptId: concept.id,
-    userId,
     subject: "Cell membrane",
     predicate: "is composed of",
     object: "phospholipid bilayer",
   });
-  return { deck, topic, concept, triple };
+  return { catalog, deck, topic, concept, triple };
 }

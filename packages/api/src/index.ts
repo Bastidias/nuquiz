@@ -8,7 +8,7 @@ import {
 import { db } from "./db/index.js";
 import health from "./routes/health.js";
 import auth from "./routes/auth.js";
-import sectionRoutes from "./routes/sections.js";
+import deckRoutes from "./routes/decks.js";
 import importRoutes from "./routes/import.js";
 import type { AppEnv } from "./env.js";
 
@@ -29,7 +29,7 @@ app.use("/*", secureHeadersMiddleware);
 const routes = app
   .route("/", health)
   .route("/", auth)
-  .route("/", sectionRoutes)
+  .route("/", deckRoutes)
   .route("/", importRoutes);
 
 export type AppType = typeof routes;

@@ -35,16 +35,35 @@ export function createTestDb(): { db: TestDb; sqlite: InstanceType<typeof Databa
       expires_at TEXT NOT NULL
     );
 
-    CREATE TABLE IF NOT EXISTS decks (
+    CREATE TABLE IF NOT EXISTS catalogs (
+      id TEXT PRIMARY KEY,
+      created_by TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      title TEXT NOT NULL,
+      description TEXT,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE INDEX IF NOT EXISTS idx_catalogs_created_by ON catalogs(created_by);
+
+    CREATE TABLE IF NOT EXISTS subscriptions (
       id TEXT PRIMARY KEY,
       user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      catalog_id TEXT NOT NULL REFERENCES catalogs(id) ON DELETE CASCADE,
+      created_at TEXT NOT NULL
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_subscriptions_user_catalog ON subscriptions(user_id, catalog_id);
+    CREATE INDEX IF NOT EXISTS idx_subscriptions_catalog_id ON subscriptions(catalog_id);
+
+    CREATE TABLE IF NOT EXISTS decks (
+      id TEXT PRIMARY KEY,
+      catalog_id TEXT NOT NULL REFERENCES catalogs(id) ON DELETE CASCADE,
       title TEXT NOT NULL,
       description TEXT,
       sort_order INTEGER NOT NULL DEFAULT 0,
       created_at TEXT NOT NULL,
       updated_at TEXT NOT NULL
     );
-    CREATE INDEX IF NOT EXISTS idx_decks_user_id ON decks(user_id);
+    CREATE INDEX IF NOT EXISTS idx_decks_catalog_id ON decks(catalog_id);
 
     CREATE TABLE IF NOT EXISTS topics (
       id TEXT PRIMARY KEY,
@@ -71,7 +90,6 @@ export function createTestDb(): { db: TestDb; sqlite: InstanceType<typeof Databa
     CREATE TABLE IF NOT EXISTS triples (
       id TEXT PRIMARY KEY,
       concept_id TEXT NOT NULL REFERENCES concepts(id) ON DELETE CASCADE,
-      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
       subject TEXT NOT NULL,
       predicate TEXT NOT NULL,
       object TEXT NOT NULL,
@@ -80,17 +98,16 @@ export function createTestDb(): { db: TestDb; sqlite: InstanceType<typeof Databa
       updated_at TEXT NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_triples_concept_id ON triples(concept_id);
-    CREATE INDEX IF NOT EXISTS idx_triples_user_id ON triples(user_id);
     CREATE INDEX IF NOT EXISTS idx_triples_subject_predicate ON triples(concept_id, subject, predicate);
     CREATE INDEX IF NOT EXISTS idx_triples_predicate ON triples(concept_id, predicate);
 
     CREATE TABLE IF NOT EXISTS tags (
       id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      catalog_id TEXT NOT NULL REFERENCES catalogs(id) ON DELETE CASCADE,
       name TEXT NOT NULL,
       created_at TEXT NOT NULL
     );
-    CREATE UNIQUE INDEX IF NOT EXISTS idx_tags_user_name ON tags(user_id, name);
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_tags_catalog_name ON tags(catalog_id, name);
 
     CREATE TABLE IF NOT EXISTS triple_tags (
       triple_id TEXT NOT NULL REFERENCES triples(id) ON DELETE CASCADE,
@@ -121,6 +138,8 @@ export function clearTestDb(db: TestDb): void {
   db.run(sql`DELETE FROM concepts`);
   db.run(sql`DELETE FROM topics`);
   db.run(sql`DELETE FROM decks`);
+  db.run(sql`DELETE FROM subscriptions`);
+  db.run(sql`DELETE FROM catalogs`);
   db.run(sql`DELETE FROM sessions`);
   db.run(sql`DELETE FROM users`);
 }
