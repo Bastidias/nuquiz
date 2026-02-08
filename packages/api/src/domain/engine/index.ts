@@ -5,7 +5,11 @@ export type {
   QuizTriple,
   PredicateGroup,
   ClassifiedObjects,
-  DistractorPool,
   QuestionOption,
   Question,
 } from "./types.js";
+
+export { groupByPredicate } from "./group.js";
+export { classifyObjects } from "./classify.js";
+export { sourceDistractors } from "./distractors.js";
+export { assembleQuestion } from "./assemble.js";

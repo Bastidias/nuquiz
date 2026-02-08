@@ -66,7 +66,11 @@ function assembleSelectAll(params: AssembleParams): Question {
 
   // All triples share the same subject+predicate — correct objects are all their objects
   const correctObjects = triples.map((t) => t.object);
-  const distractorValues = sourceDistractors(triples[0], groups, 2);
+  const correctSet = new Set(correctObjects);
+
+  // Over-request distractors to compensate for filtering out correct objects that leak through
+  const rawDistractors = sourceDistractors(triples[0], groups, 2 + correctObjects.length);
+  const distractorValues = rawDistractors.filter((d) => !correctSet.has(d)).slice(0, 2);
 
   const options: QuestionOption[] = shuffle([
     ...correctObjects.map((o) => ({ text: o, correct: true })),
@@ -93,27 +97,24 @@ function assembleTrueFalse(
 ): Question {
   const { axis, scope, format, groups } = params;
 
-  // Randomly decide to present the real triple (true) or a swapped one (false)
-  const swapIt = params.rng() < 0.5;
+  // Source distractors first — only flip the coin if a swap is possible
+  const distractorValues = sourceDistractors(triple, groups, 1);
 
-  if (swapIt) {
-    const distractorValues = sourceDistractors(triple, groups, 1);
-    if (distractorValues.length > 0) {
-      const swappedObject = distractorValues[0];
-      const prompt = `${triple.subject} | ${triple.predicate} → ${swappedObject}`;
-      return {
-        axis,
-        scope,
-        format,
-        prompt,
-        options: [
-          { text: "True", correct: false },
-          { text: "False", correct: true },
-        ],
-        correctAnswer: "false",
-        tripleIds: [triple.id],
-      };
-    }
+  if (distractorValues.length > 0 && params.rng() < 0.5) {
+    const swappedObject = distractorValues[0];
+    const prompt = `${triple.subject} | ${triple.predicate} → ${swappedObject}`;
+    return {
+      axis,
+      scope,
+      format,
+      prompt,
+      options: [
+        { text: "True", correct: false },
+        { text: "False", correct: true },
+      ],
+      correctAnswer: "false",
+      tripleIds: [triple.id],
+    };
   }
 
   // Present the real triple — answer is true

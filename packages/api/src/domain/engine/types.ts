@@ -36,11 +36,6 @@ export interface ClassifiedObjects {
   bySubject: Map<string, string[]>;
 }
 
-export interface DistractorPool {
-  predicate: string;
-  distractors: string[];
-}
-
 export interface QuestionOption {
   text: string;
   correct: boolean;
