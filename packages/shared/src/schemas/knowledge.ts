@@ -266,3 +266,75 @@ export const responseTripleSchema = z.object({
 });
 
 export type ResponseTriple = z.infer<typeof responseTripleSchema>;
+
+// ── Quiz Session Schemas ────────────────────────────────────────
+
+export const questionOptionSchema = z.object({
+  text: z.string(),
+  correct: z.boolean(),
+});
+
+export type QuestionOption = z.infer<typeof questionOptionSchema>;
+
+export const questionSchema = z.object({
+  axis: axisEnum,
+  scope: scopeEnum,
+  format: formatEnum,
+  prompt: z.string(),
+  options: z.array(questionOptionSchema),
+  correctAnswer: z.string(),
+  tripleIds: z.array(z.string()),
+});
+
+export type Question = z.infer<typeof questionSchema>;
+
+export const clientQuestionSchema = questionSchema.omit({ correctAnswer: true });
+
+export type ClientQuestion = z.infer<typeof clientQuestionSchema>;
+
+export const startQuizSessionSchema = z
+  .object({
+    deckId: z.string().optional(),
+    topicId: z.string().optional(),
+    conceptId: z.string().optional(),
+    axis: axisEnum.optional(),
+    format: formatEnum.optional(),
+    seed: z.number().int().optional(),
+    count: z.number().int().min(1).max(50).optional(),
+  })
+  .refine(
+    (data) =>
+      [data.deckId, data.topicId, data.conceptId].filter(Boolean).length === 1,
+    {
+      message: "Exactly one of deckId, topicId, or conceptId must be provided",
+    }
+  );
+
+export type StartQuizSession = z.infer<typeof startQuizSessionSchema>;
+
+export const quizSessionSchema = z.object({
+  id: z.string(),
+  conceptId: z.string(),
+  questions: z.array(clientQuestionSchema),
+  createdAt: z.string().datetime(),
+});
+
+export type QuizSession = z.infer<typeof quizSessionSchema>;
+
+export const submitQuizResponseSchema = z.object({
+  questionIndex: z.number().int().min(0),
+  selectedAnswer: z.string(),
+  responseTimeMs: z.number().int().min(0),
+});
+
+export type SubmitQuizResponse = z.infer<typeof submitQuizResponseSchema>;
+
+export const quizResponseResultSchema = z.object({
+  correct: z.boolean(),
+  correctAnswer: z.string(),
+  tripleIds: z.array(z.string()),
+  axis: axisEnum,
+  format: formatEnum,
+});
+
+export type QuizResponseResult = z.infer<typeof quizResponseResultSchema>;
