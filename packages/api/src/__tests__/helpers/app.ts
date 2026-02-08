@@ -5,6 +5,7 @@ import catalogRoutes from "../../routes/catalogs.js";
 import deckRoutes from "../../routes/decks.js";
 import importRoutes from "../../routes/import.js";
 import health from "../../routes/health.js";
+import quizRoutes from "../../routes/quiz.js";
 
 /**
  * Creates a test Hono app wired to the given test database.
@@ -25,6 +26,7 @@ export function createTestApp(db: TestDb, userId: string) {
   app.route("/", catalogRoutes);
   app.route("/", deckRoutes);
   app.route("/", importRoutes);
+  app.route("/", quizRoutes);
 
   return app;
 }

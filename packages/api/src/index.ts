@@ -11,6 +11,7 @@ import auth from "./routes/auth.js";
 import catalogRoutes from "./routes/catalogs.js";
 import deckRoutes from "./routes/decks.js";
 import importRoutes from "./routes/import.js";
+import quizRoutes from "./routes/quiz.js";
 import type { AppEnv } from "./env.js";
 
 const app = new Hono<AppEnv>();
@@ -32,7 +33,8 @@ const routes = app
   .route("/", auth)
   .route("/", catalogRoutes)
   .route("/", deckRoutes)
-  .route("/", importRoutes);
+  .route("/", importRoutes)
+  .route("/", quizRoutes);
 
 export type AppType = typeof routes;
 
