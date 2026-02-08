@@ -13,3 +13,5 @@ export { groupByPredicate } from "./group.js";
 export { classifyObjects } from "./classify.js";
 export { sourceDistractors } from "./distractors.js";
 export { assembleQuestion } from "./assemble.js";
+export { orchestrate } from "./orchestrate.js";
+export type { OrchestrateParams } from "./orchestrate.js";
