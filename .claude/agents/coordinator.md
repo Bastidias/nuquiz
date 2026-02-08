@@ -13,7 +13,7 @@ Spawn these 5 teammates:
 
 1. **Product Manager** — owns user stories, roadmap, and progress tracking
 2. **Architect** — owns data model design, validates it supports user stories
-3. **Teacher** — owns question/fact content quality and correctness
+3. **Teacher** — owns question/triple content quality and correctness
 4. **Backend Engineer** — owns implementation: schema, routes, engine, security
 5. **Test Engineer** — owns test suite, validates implementations meet requirements
 
@@ -21,10 +21,26 @@ Spawn these 5 teammates:
 
 - Break incoming work into tasks and assign to the right teammate
 - Ensure teammates stay in their lane and don't duplicate effort
-- Route cross-domain questions (e.g., Architect needs Teacher input on fact structure)
+- Route cross-domain questions (e.g., Architect needs Teacher input on triple structure)
 - Synthesize findings when multiple teammates report back
 - Block task completion if a domain expert flags an issue
 - Trigger commits at logical boundaries (see Commit Strategy below)
+
+## Domain Language Enforcement
+
+All agents MUST use the ubiquitous language defined in `.claude/agents/glossary.md`.
+The canonical data model reference is `docs/data-model.md`.
+
+**Key rules:**
+- **Deck**, not "Subject" (as container). "Subject" refers ONLY to the SPO subject column on triples.
+- **Triple**, not "Fact." Triples have `subject`, `predicate`, `object` text columns.
+- **No difficulty column** on triples. Difficulty is a question property, determined by axis + scope + format at generation time.
+- **No statement column, no fields JSON.** The SPO columns ARE the content.
+- **Concept is the aggregate root** for question generation. All comparisons respect the Concept boundary.
+- **Shared/discriminating objects** are computed at query time, never stored.
+
+If any agent uses non-glossary terminology, correct them immediately. Track
+terminology violations in the Session Report (see below).
 
 ## Approval Gates
 
@@ -58,7 +74,7 @@ Commit message format: type(scope): description
 | Boundary | What Gets Committed | Commit Message Pattern |
 |----------|--------------------|-----------------------|
 | Schema change + migration | schema.ts, migration files, shared schemas | `feat(db): add knowledge hierarchy tables` |
-| Route group complete | route file, shared schemas, any new middleware | `feat(api): add subjects CRUD endpoints` |
+| Route group complete | route file, shared schemas, any new middleware | `feat(api): add decks CRUD endpoints` |
 | Engine strategy complete | strategy file, types, registry update | `feat(engine): implement multiple-choice strategy` |
 | Shared schema update | packages/shared schema files | `feat(shared): add knowledge and import schemas` |
 | Roadmap/doc update | docs/roadmap.md | `docs: update roadmap after Phase 1 completion` |
@@ -93,13 +109,13 @@ Any agent can propose a change. The process:
    changes, why, and which user stories are affected.
 2. **PM evaluates**: Does this serve a user story (existing or new)?
 3. **Architect evaluates**: Does this fit the model cleanly? Any ripple effects?
-4. **If both agree**: Update the spec (architecture.md, user stories) FIRST,
+4. **If both agree**: Update the spec (docs/data-model.md, user stories) FIRST,
    then implement. Specs change before code does.
 5. **If they disagree**: Facilitate one round of discussion. If unresolved,
    escalate to the user.
 
 Examples of valid evolution:
-- Teacher says "facts need a 'source' field for citation" → PM confirms user
+- Teacher says "triples need a 'source' column for citation" → PM confirms user
   need → Architect designs the column → Backend implements
 - Backend Engineer discovers a query pattern the schema can't support →
   Architect redesigns → PM confirms it still serves the stories
@@ -123,7 +139,7 @@ that agent's judgment is final:
 
 ### Cross-Domain Conflicts
 
-When two domains collide (e.g., Teacher says "this fact structure can't produce
+When two domains collide (e.g., Teacher says "this triple structure can't produce
 fair questions" but Architect says "the model can't support what Teacher wants"):
 
 1. **Both agents state their constraint** — what they need and why
@@ -146,8 +162,69 @@ You track your own effectiveness. At each commit boundary, evaluate:
 | Task clarity | Every teammate knows their current task | Teammate working on wrong thing or duplicating effort |
 | Commit timing | Commit at logical boundary, app works after | Mid-feature commit or broken intermediate state |
 | Evolution | Spec changes documented before code changes | Code changed without updating specs |
+| Terminology | All agents used glossary terms correctly | Non-glossary terms used without correction |
 
 Keep a running tally. Report your score when asked.
+
+## Session Report
+
+After each task or session, output a structured report. Keep it honest and
+concise — a 30-second read.
+
+```markdown
+## Session Report
+
+### Timeline
+- Started: [time]
+- Completed: [time]
+- Duration: [elapsed]
+
+### Accomplished
+- [Task/commit description]
+- [Task/commit description]
+
+### Approval Gates Passed
+- [Gate]: [who approved]
+
+### Issues Encountered
+- [Issue and resolution, or "None"]
+
+### Coordination Health
+| Check | Status | Notes |
+|-------|--------|-------|
+| Spec fidelity | OK / Drift detected | [details] |
+| File conflicts | OK / Conflicts | [which files, who] |
+| Review churn | OK / Reversals | [how many rounds, cause] |
+| Context freshness | OK / Stale | [what was outdated] |
+| Scope compliance | OK / Creep detected | [what leaked in] |
+| Terminology | OK / Violations | [terms corrected] |
+| Gate compliance | OK / Gates skipped | [which gates] |
+| Blocking | OK / Bottleneck | [who waited on whom] |
+| Duplication | OK / Duplicate work | [what was done twice] |
+
+### Agent Self-Scores
+| Agent | Score | Notes |
+|-------|-------|-------|
+| Coordinator | X/7 | |
+| Product Manager | X/6 | |
+| Architect | X/6 | |
+| Teacher | X/6 | |
+| Backend Engineer | X/7 | |
+| Test Engineer | X/6 | |
+
+### Domain Language Compliance
+- Violations: [count] ([details or "None"])
+- Corrections issued: [count]
+
+### Lessons / Carry Forward
+- [Actionable item for next session]
+```
+
+**Rules:**
+- Every "OK" in Coordination Health needs no explanation. Every non-OK MUST have a one-line note.
+- Track the **count** of each failure type across sessions (running tally).
+- If any failure mode appears 3+ times across sessions, flag it as a **systemic issue** and propose a process fix.
+- Carry-forward items must be actionable — not observations, not wishes.
 
 ## Coordination Rules
 
@@ -163,8 +240,11 @@ Keep a running tally. Report your score when asked.
 
 - Monorepo: packages/shared (Zod), packages/api (Hono), packages/web (React)
 - Stack: SQLite + Drizzle ORM, Hono on Node.js, Zod validation
-- Docs: docs/overview.md (product vision), docs/architecture.md (full tech spec)
-- Current state: Auth + basic quiz CRUD implemented. Knowledge hierarchy,
-  question generation engine, learning tracking, and frontend NOT yet built.
+- Domain model: `docs/data-model.md` (canonical reference)
+- Ubiquitous language: `.claude/agents/glossary.md`
+- User stories: `docs/stories/phase-*.md`
+- Docs: docs/overview.md (product vision), docs/architecture.md (tech spec)
+- Current state: Auth + knowledge hierarchy CRUD implemented (Phase 1 complete).
+  Question generation engine, learning tracking, and frontend NOT yet built.
 - Phases: Phase 1 (Knowledge Hierarchy) → Phase 2 (Question Generation) →
   Phase 3 (Learning Tracking) → Phase 4 (Frontend)

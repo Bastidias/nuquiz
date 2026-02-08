@@ -23,7 +23,9 @@ This atomicity is what makes question generation, distractor sourcing, and per-f
 
 ### Content Layer: Test Structure
 
-Triples are organized into quizzable content through a hierarchy of **sections** and **topics**. Tags cross-reference triples across the content structure so the same triple can appear in multiple contexts.
+Triples are organized into quizzable content through a four-level hierarchy: **Deck > Topic > Concept > Triple**. A Deck is the top-level container (e.g., "Networking"). Topics group related areas within a Deck. Concepts define explicit comparison boundaries — the scope within which question generation sources distractors and compares Subjects.
+
+Tags cross-reference triples across the content structure so the same triple can appear in multiple contexts.
 
 The content layer defines how quizzes are assembled — which triples to pull, in what grouping. The knowledge layer stays independent and reusable.
 
@@ -31,7 +33,7 @@ The content layer defines how quizzes are assembled — which triples to pull, i
 
 - All tables defined via Drizzle ORM — never raw SQL
 - Triples stored as normalized rows (subject, predicate, object columns), not as JSON blobs
-- Content hierarchy (sections, topics) stored separately and references triples
+- Content hierarchy (decks, topics, concepts) stored as separate tables referencing triples
 - Tags stored as a many-to-many relation on triples
 - User progress tracked per-triple (see Learning Tracking below)
 
@@ -126,7 +128,7 @@ The progression logic should move independently along the axis, scope, and forma
 | Group | Purpose |
 |-------|---------|
 | `/auth/*` | OAuth login/logout/session |
-| `/subjects/*` | Content hierarchy CRUD (sections, topics, triples) |
+| `/decks/*` | Content hierarchy CRUD (decks, topics, concepts, triples) |
 | `/study/*` | Quiz sessions and review queue |
 | `/progress/*` | Mastery tracking and analytics |
 | `/import/*` | Content ingestion |
@@ -137,6 +139,76 @@ The progression logic should move independently along the axis, scope, and forma
 - All request/response shapes defined as Zod schemas in `packages/shared`, imported by both API and web
 - Use Hono RPC to export route types so the web client gets full type inference with zero manual type definitions
 - Quiz session responses should never send correct answers to the client before the student answers — validate server-side and return feedback after submission
+
+---
+
+## Domain Architecture
+
+The system contains three bounded contexts — sub-domains with distinct models, concerns, and reasons to change. Each context has its own types. At context boundaries, translation functions convert between representations.
+
+### Bounded Contexts
+
+| Context | Core concern | Key domain objects |
+|---------|-------------|-------------------|
+| **Knowledge Authoring** | Organizing content | Deck (aggregate root), Topic, Concept, Triple, Tag |
+| **Question Generation** | Producing quizzes | QuizTriple, PredicateGroup, DistractorPool, Question |
+| **Progress Tracking** | Measuring learning | ReviewCard, MasteryScore, ReviewQueue |
+
+A Triple means something different in each context:
+
+- **Authoring**: an entity you create, edit, reorder, tag. Identity is its UUID. Key fields: `id`, `sortOrder`, `createdAt`.
+- **Question Generation**: a value object you decompose and compare. Identity is its SPO content. Key fields: `subject`, `predicate`, `object`.
+- **Progress Tracking**: an entity referenced by review cards. Identity is its UUID as a stable FK target. Key fields: `tripleId`, `easeFactor`, `interval`.
+
+Each context gets the model it needs. None imports the others' types.
+
+### Aggregate: Deck Hierarchy
+
+The Deck is the aggregate root for the knowledge hierarchy. All access to Topics, Concepts, and Triples goes through the Deck — ownership is verified top-down through the full path, not by reaching directly to a leaf node.
+
+Tags live outside the aggregate. They span across Decks and are scoped per-user, not per-Deck.
+
+### Domain Services
+
+Operations that span multiple objects and don't belong to any single entity are domain services — pure functions with no side effects, no HTTP, no database access.
+
+- **Authoring**: `validateImportData()`, `buildHierarchy()` (transform import tree into flat insert batch)
+- **Question Generation**: `groupByPredicate()`, `classifyObjects()`, `sourceDistractors()`, `assembleQuestion()`
+- **Progress Tracking**: `scoreSM2()`, `rollUpMastery()`, `scheduleReview()`
+
+The test: if you can't describe what a function does without mentioning infrastructure ("it inserts rows", "it parses the request"), the domain logic hasn't been extracted yet.
+
+### Anti-Corruption Layers
+
+At each context boundary, a translation function converts between representations. Neither side imports the other's types.
+
+- `loadPredicateGroups()`: DB rows → engine types (`QuizTriple`, `PredicateGroup`)
+- `loadReviewCards()`: DB rows → progress types (`ReviewCard`)
+- `buildInsertBatch()`: `ImportDeck` → flat DB row objects
+
+The question engine never imports from `db/schema.ts`. It works with its own types. The translation layer is the only place both models meet.
+
+### Repositories
+
+Repositories are the data access boundary — domain code asks for objects by domain concepts, never constructs queries. Only repository code imports from `db/schema.ts`.
+
+- `DeckRepository`: `findById()`, `findByUser()`, `save()`
+- `TripleQueryRepository`: `byConcept()`, `byPredicate()` (engine needs)
+- `CardRepository`: `dueCards()`, `upsert()` (progress tracking needs)
+
+Data access is separated from authorization. Repositories find entities; ownership verification is a separate concern. This allows the question engine to load triples without redundant ownership checks — the user is already authenticated.
+
+### Domain Events
+
+When something meaningful happens, it's modeled as an explicit event — a named, immutable record of what occurred. The triggering code publishes the event; separate handlers react.
+
+Key events:
+
+- `QuestionAnswered { tripleId, correct, responseTimeMs, axis, format }` → triggers SM-2 update, mastery rollup, adaptive progression
+- `DeckImported { deckId, counts }` → triggers indexing, audit
+- `DeckDeleted { deckId }` → triggers review card cleanup
+
+Each handler is independently testable: given this event, assert these state changes.
 
 ---
 
@@ -155,8 +227,50 @@ Three paths for getting triple data into the system:
 ```
 packages/
   shared/   — Zod schemas + inferred types (knowledge, study, progress, import)
-  api/      — Hono backend (routes, engine, db, middleware)
+  api/      — Hono backend
   web/      — React SPA (Vite, Hono RPC client)
 ```
 
-The question generation engine lives in `packages/api/src/engine/` and should be organized around the three dimensions (axis, scope, format) rather than around fixed question "types."
+### API Package Layout
+
+```
+packages/api/src/
+  routes/              — Application layer (HTTP in/out, thin)
+    decks.ts               parse request → call domain/repo → respond
+    import.ts
+    quiz.ts            (Phase 2)
+    progress.ts        (Phase 3)
+
+  domain/              — Pure business logic (no HTTP, no DB)
+    authoring/
+      validate-import.ts   validateImportData()
+      build-hierarchy.ts   ImportDeck → flat row objects with IDs + sort orders
+    engine/                Organized by dimension, not by question "type"
+      types.ts             QuizTriple, PredicateGroup, Question
+      group.ts             groupByPredicate()
+      classify.ts          classifySharedDiscriminating()
+      distractors.ts       sourceDistractors()
+      assemble.ts          assembleQuestion()
+    progress/
+      types.ts             ReviewCard, MasteryScore
+      sm2.ts               scoreSM2(), updateCard()
+      rollup.ts            rollUpMastery()
+
+  repositories/        — Data access boundary (only layer that imports db/schema)
+    deck-repository.ts     findById, findByUser, save
+    triple-query-repo.ts   byConcept, byPredicate
+    card-repository.ts     dueCards, upsert
+
+  acl/                 — Context boundary translations
+    engine-loader.ts       DB rows → engine types
+    import-builder.ts      ImportDeck → flat insert batch
+
+  events/              — Domain events (Phase 2+)
+    types.ts               QuestionAnswered, DeckImported, ...
+    handlers.ts            register listeners
+
+  db/
+    schema.ts          — Drizzle table definitions (only repos import this)
+```
+
+Route handlers are thin: parse the request, call domain services and repositories, return a response. Business logic lives in `domain/` as pure functions. The `acl/` layer translates between bounded context models. Only `repositories/` imports from `db/schema.ts`.

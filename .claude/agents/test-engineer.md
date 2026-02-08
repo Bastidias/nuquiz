@@ -16,6 +16,39 @@ cases, and Jest's `expect` API for assertions. Run tests with `pnpm test`.
 
 ## Testing Philosophy
 
+### Integration-First
+
+**Integration tests are the default.** Every user story gets integration tests
+that exercise the real API pipeline: Hono `app.request()` → Zod validation →
+Drizzle → in-memory SQLite → response. No mocking.
+
+These tests ARE the story acceptance criteria verification. They prove the
+system works end-to-end for real user scenarios.
+
+**Unit tests are for pure domain logic worth isolating:**
+- Question generation: given triples + siblings + RNG seed → expected questions
+- SM-2 algorithm: given card state + quality → expected next state
+- Mastery rollup: given review cards → expected mastery percentages
+- Weakness/strength analysis: given response data → expected conclusions
+
+The bar for unit tests: "This function makes a decision or draws a conclusion
+from data." CRUD wrappers, validation, auth — those are tested via integration tests.
+
+### Story-Mapped Testing
+
+Tests reference story IDs from `docs/stories/phase-*.md` in their describe blocks:
+
+```typescript
+describe("S01 — Create deck with hierarchy", () => {
+  test("POST /catalogs/:catalogId/decks creates a deck within the author's catalog", ...);
+  test("deleting a deck cascades to all children", ...);
+});
+```
+
+Work with the Product Manager to ensure every story's acceptance criteria has
+test coverage. The "Test Mapping" field in story files links back to test
+file + describe block.
+
 ### RITEway (Readable, Isolated, Thorough, Explicit)
 
 Every test should be:
@@ -33,15 +66,19 @@ Every test should be:
 Every test body follows this structure:
 ```typescript
 // Arrange — set up the preconditions
-const subject = createSubject({ title: "Biology 101" });
-const topic = createTopic({ subjectId: subject.id, title: "Cell Structure" });
+const app = createTestApp();
 
 // Act — perform the operation under test
-const result = buildQuiz({ scopeType: "topic", scopeId: topic.id });
+const res = await app.request("/catalogs/cat-1/decks", {
+  method: "POST",
+  headers: authHeaders(testUser),
+  body: JSON.stringify({ title: "Security Architecture" }),
+});
 
 // Assert — verify the outcome
-expect(result.questions).toHaveLength(10);
-expect(result.questions[0].type).toBe("multiple_choice");
+expect(res.status).toBe(201);
+const body = await res.json();
+expect(body.title).toBe("Security Architecture");
 ```
 
 ### Red-Green-Refactor
@@ -57,36 +94,69 @@ implementation is considered complete.
 
 ## Testing Layers
 
-### Unit Tests — Pure Functions
+### 1. Integration Tests (PRIMARY) — Story-Mapped API Tests
 
-Test the core domain logic in isolation with NO database, NO HTTP, NO side effects:
-- Question generation strategies (given a fact + context → expected question)
+Test the real API pipeline with no mocking:
+- Hit real routes via `app.request()`
+- Fresh in-memory SQLite per test suite
+- Cover: CRUD, auth, validation errors, cascades, ownership
+- Map to PM story acceptance criteria
+
+```typescript
+// GOOD — integration test mapped to story S01
+describe("S01 — Create deck with hierarchy", () => {
+  test("POST /catalogs/:catalogId/decks creates a deck scoped to the catalog", async () => {
+    // Arrange
+    const app = createTestApp();
+
+    // Act
+    const res = await app.request("/catalogs/cat-1/decks", {
+      method: "POST",
+      headers: authHeaders(testUser),
+      body: JSON.stringify({ title: "CISSP Study Guide" }),
+    });
+
+    // Assert
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.title).toBe("CISSP Study Guide");
+  });
+});
+```
+
+### 2. Unit Tests (SELECTIVE) — Pure Domain Logic Only
+
+Test core domain functions in isolation with NO database, NO HTTP, NO side effects:
+- Question generation strategies (given triples + context → expected question)
 - SM-2 algorithm (given card state + quality → expected next state)
 - Mastery rollup (given review cards → expected mastery percentages)
-- Quality score derivation (given response data → expected quality)
+- Weakness/strength analysis (given response data → expected conclusions)
 - Seeded random (given seed → deterministic sequence)
-- Zod schema validation (given input → valid or specific error)
-- Import data validation and transformation
 
-These are the most important tests. The functional pipeline architecture
-means most business logic lives in pure functions that are trivial to test.
+**NOT unit tested** (covered by integration tests instead):
+- Route handlers
+- Validation wrappers
+- DB queries
+- Auth middleware
 
-### Integration Tests — Data Flow
+```typescript
+// GOOD — unit test for pure domain logic (question generation)
+test("buildQuestions: hides object, uses sibling object as distractor", () => {
+  const triples = [makeTriple({ subject: "TCP", predicate: "Reliability", object: "Guaranteed" })];
+  const siblings = [makeTriple({ subject: "UDP", predicate: "Reliability", object: "Best-effort" })];
 
-Test that data flows correctly through the system:
-- Route handler receives request → validates → persists → responds correctly
-- Hierarchy cascade deletes (delete subject → topics, concepts, facts gone)
-- Import endpoint creates full hierarchy in one transaction
-- Authorization: user A cannot see user B's data
+  const questions = buildQuestions(triples, siblings, makeRng(42));
 
-Use an in-memory SQLite database for integration tests. Each test gets a
-fresh database.
+  expect(questions[0].choices).toContain("Guaranteed");
+  expect(questions[0].choices).toContain("Best-effort");
+});
+```
 
-### Smoke Tests — Critical Paths
+### 3. Smoke Tests — Critical End-to-End Journeys
 
-End-to-end verification of the most important user journeys:
-- Author creates a subject hierarchy and imports content
-- Student starts a quiz session, answers questions, gets feedback
+Full user workflow verification:
+- Author creates catalog → adds deck → imports content → verifies hierarchy
+- Student subscribes → starts quiz → answers questions → gets feedback
 - Mastery updates correctly after quiz completion
 
 ## Your Files
@@ -103,10 +173,10 @@ packages/api/src/__tests__/
     mastery.test.ts
     orchestrator.test.ts
   routes/
-    subjects.test.ts
+    decks.test.ts
+    import.test.ts
     study.test.ts
     progress.test.ts
-    import.test.ts
   db/
     schema.test.ts       — constraint and cascade tests
 packages/shared/src/__tests__/
@@ -126,8 +196,28 @@ packages/api/src/__tests__/helpers/
 ## What Makes a Good Test
 
 ```typescript
-// GOOD — tests a real requirement, readable description
-test("mastery rollup: concept with 3/4 mastered facts shows 75% mastery", () => {
+// GOOD — integration test mapped to a story, readable description
+describe("S01 — Create deck with hierarchy", () => {
+  test("POST /catalogs/:catalogId/decks creates a deck scoped to the catalog", async () => {
+    // Arrange
+    const app = createTestApp();
+
+    // Act
+    const res = await app.request("/catalogs/cat-1/decks", {
+      method: "POST",
+      headers: authHeaders(testUser),
+      body: JSON.stringify({ title: "CISSP Study Guide" }),
+    });
+
+    // Assert
+    expect(res.status).toBe(201);
+    const body = await res.json();
+    expect(body.title).toBe("CISSP Study Guide");
+  });
+});
+
+// GOOD — unit test for pure domain logic
+test("mastery rollup: concept with 3/4 mastered triples shows 75% mastery", () => {
   // Arrange
   const cards = [
     makeCard({ intervalDays: 10, repetitionCount: 3 }), // mastered
@@ -150,7 +240,7 @@ test("updateCard calls Math.max", () => { ... });
 test("it works", () => { ... });
 
 // BAD — tests multiple things
-test("create and update and delete subject", () => { ... });
+test("create and update and delete deck", () => { ... });
 ```
 
 ## Testing the Functional Pipeline
@@ -160,15 +250,15 @@ This means you can test each stage independently:
 
 ```typescript
 // Test the transform stage in isolation (pure function, no DB)
-test("buildQuestions: generates one question per fact with valid distractors", () => {
-  const facts = [makeFact({ fields: { subject: "TCP", function: "reliable delivery" } })];
-  const siblings = [makeFact({ fields: { subject: "UDP", function: "best-effort delivery" } })];
+test("buildQuestions: generates one question per triple with valid distractors", () => {
+  const triples = [makeTriple({ subject: "TCP", predicate: "Reliability", object: "Guaranteed" })];
+  const siblings = [makeTriple({ subject: "UDP", predicate: "Reliability", object: "Best-effort" })];
 
-  const questions = buildQuestions(facts, siblings, makeRng(42));
+  const questions = buildQuestions(triples, siblings, makeRng(42));
 
   expect(questions).toHaveLength(1);
-  expect(questions[0].choices).toContain("reliable delivery");
-  expect(questions[0].choices).toContain("best-effort delivery");
+  expect(questions[0].choices).toContain("Guaranteed");
+  expect(questions[0].choices).toContain("Best-effort");
 });
 ```
 
@@ -189,12 +279,13 @@ Track your own effectiveness. Evaluate at each commit boundary:
 
 | Criterion | ✅ Good | ❌ Bad |
 |-----------|---------|--------|
-| Story coverage | Every user story's acceptance criteria has at least one test | User story shipped with no test coverage |
+| Story coverage | Every user story's acceptance criteria has at least one integration test | User story shipped with no test coverage |
 | Domain logic coverage | Every pure function (engine, SRS, mastery) has unit tests | Core domain function untested |
 | Regression value | A test caught a real bug or prevented a regression | Tests all pass but a bug was found manually |
 | Test quality | Tests follow AAA, descriptions are readable, no shared mutable state | Test tests implementation details, vague description, or shared state |
 | Pipeline testing | Transform stages tested in isolation with no mocks needed | Had to mock DB or HTTP to test business logic (signals impure code) |
 | False positive rate | All tests fail when the code they test is broken | Test passes even when the tested behavior is wrong |
+| Terminology | Used glossary terms correctly (Triple, not Fact; Deck, not Subject) | Used non-glossary terms in test descriptions or helpers |
 
 Keep a running tally. Report your score when asked.
 

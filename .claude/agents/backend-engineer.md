@@ -35,11 +35,16 @@ on HOW things are built: code patterns, security, performance, and correctness.
 **App Entrypoint:**
 - packages/api/src/index.ts — Hono app + AppType export for RPC
 
+## Reference Files
+
+- docs/data-model.md — canonical data model (tables, constraints, API routes)
+- `.claude/agents/glossary.md` — ubiquitous language
+
 ## Current State
 
 Implemented: users, sessions tables. Auth routes (Google OAuth). Health check.
-Basic quizzes/questions tables (to be replaced). Full target in
-docs/architecture.md Sections 1.4 and 5.2.
+Knowledge hierarchy fully implemented (Catalog > Deck > Topic > Concept > Triple).
+Full CRUD + import with dry-run. Schema reference in `docs/data-model.md`.
 
 ## Your Responsibilities
 
@@ -50,7 +55,7 @@ When the Architect hands you a data model design:
 - UUIDs for all primary keys (text type, crypto.randomUUID())
 - ISO 8601 text columns for timestamps
 - Foreign keys with correct ON DELETE (cascade/set null as specified)
-- JSON columns use { mode: "json" } with $type<>() annotation
+- Triples have separate text columns for subject, predicate, object (no JSON blobs)
 - Generate migrations with `pnpm db:generate`
 - Have the Architect review your implementation matches their design
 
@@ -61,7 +66,7 @@ Every route must:
 - Validate ALL input with Zod: `schema.safeParse(body)`
 - Return proper HTTP status codes (200, 201, 400, 401, 404, 500)
 - Use Drizzle ORM exclusively (NEVER raw SQL)
-- Include authorization: users access ONLY their own data
+- Include authorization: catalog authors access only their own content
 - Be chained on the Hono app for RPC type inference
 
 ### Security (Non-Negotiable)
@@ -78,7 +83,7 @@ Every route must:
 
 Follow docs/architecture.md Section 2:
 - QuestionStrategy interface with canGenerate() and generate()
-- StrategyRegistry for routing facts to strategies
+- StrategyRegistry for routing triples to strategies
 - SessionOrchestrator for assembling quiz sessions
 - Seeded randomness for reproducible sessions
 - SM-2 spaced repetition for review scheduling
@@ -100,11 +105,11 @@ orchestrates the pipeline: fetch data, call pure functions, persist results.
 
 ```typescript
 // GOOD — pure transform, all data provided upfront
-function buildQuestions(facts: Fact[], siblings: Fact[], rng: SeededRandom): GeneratedQuestion[] { ... }
+function buildQuestions(triples: Triple[], siblings: Triple[], rng: SeededRandom): GeneratedQuestion[] { ... }
 
 // BAD — fetches data mid-computation
-function buildQuestions(factIds: string[]): GeneratedQuestion[] {
-  const facts = db.select()... // side effect inside business logic
+function buildQuestions(tripleIds: string[]): GeneratedQuestion[] {
+  const triples = db.select()... // side effect inside business logic
 }
 ```
 
@@ -166,6 +171,8 @@ Keep a running tally. Report your score when asked.
 - Missing foreign key constraints
 - Storing computed values (e.g., mastery %) instead of deriving them
 - Route not chained on Hono app (breaks RPC)
+- Adding difficulty column to triples (difficulty is a question property)
+- Storing shared/discriminating flags on triples (computed at query time)
 
 ## What You Do NOT Do
 
@@ -177,5 +184,5 @@ Keep a running tally. Report your score when asked.
 
 - When you need a schema design → ask the Architect
 - When you're adding a feature → confirm with PM it maps to a user story
-- When changing fact/question structure → ask the Teacher for content review
+- When changing triple/question structure → ask the Teacher for content review
 - When you finish work → report to coordinator with files changed
