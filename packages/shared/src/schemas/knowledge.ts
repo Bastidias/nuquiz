@@ -231,3 +231,38 @@ export const importDryRunResultSchema = z.object({
 });
 
 export type ImportDryRunResult = z.infer<typeof importDryRunResultSchema>;
+
+// ── Quiz Engine Enums ───────────────────────────────────────────
+
+export const axisEnum = z.enum(["subject", "predicate", "object"]);
+export type AxisEnum = z.infer<typeof axisEnum>;
+
+export const scopeEnum = z.enum(["single", "cell", "paired", "subject_profile", "cross_subject"]);
+export type ScopeEnum = z.infer<typeof scopeEnum>;
+
+export const formatEnum = z.enum(["multiple_choice", "select_all", "true_false", "matching", "fill_blank"]);
+export type FormatEnum = z.infer<typeof formatEnum>;
+
+// ── Quiz Response Schemas ───────────────────────────────────────
+
+export const quizResponseSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  conceptId: z.string(),
+  axis: axisEnum,
+  format: formatEnum,
+  correct: z.boolean(),
+  responseTimeMs: z.number().int().min(0),
+  createdAt: z.string().datetime(),
+});
+
+export type QuizResponse = z.infer<typeof quizResponseSchema>;
+
+export const responseTripleSchema = z.object({
+  id: z.string(),
+  responseId: z.string(),
+  tripleId: z.string(),
+  correct: z.boolean(),
+});
+
+export type ResponseTriple = z.infer<typeof responseTripleSchema>;

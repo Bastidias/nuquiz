@@ -71,4 +71,16 @@ export {
   type ImportResult,
   type ImportValidationError,
   type ImportDryRunResult,
+  // Quiz engine enums
+  axisEnum,
+  scopeEnum,
+  formatEnum,
+  type AxisEnum,
+  type ScopeEnum,
+  type FormatEnum,
+  // Quiz responses
+  quizResponseSchema,
+  responseTripleSchema,
+  type QuizResponse,
+  type ResponseTriple,
 } from "./schemas/knowledge.js";
