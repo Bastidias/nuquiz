@@ -338,3 +338,104 @@ export const quizResponseResultSchema = z.object({
 });
 
 export type QuizResponseResult = z.infer<typeof quizResponseResultSchema>;
+
+// ── Review Card Schemas (Phase 3 — Learning Tracking) ────────
+
+export const reviewCardSchema = z.object({
+  id: z.string(),
+  userId: z.string(),
+  tripleId: z.string(),
+  easeFactor: z.number().min(1.3),
+  intervalDays: z.number().int().min(0),
+  repetitionCount: z.number().int().min(0),
+  lastQuality: z.number().int().min(0).max(5),
+  nextReviewAt: z.string().datetime(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+
+export type ReviewCard = z.infer<typeof reviewCardSchema>;
+
+// ── Mastery Score ────────────────────────────────────────────
+
+export const masteryScoreSchema = z.object({
+  level: z.enum(["concept", "topic", "deck"]),
+  entityId: z.string(),
+  masteryPercentage: z.number().min(0).max(100),
+  totalTriples: z.number().int().min(0),
+  masteredTriples: z.number().int().min(0),
+});
+
+export type MasteryScore = z.infer<typeof masteryScoreSchema>;
+
+// ── Review Queue Item ────────────────────────────────────────
+
+export const reviewQueueItemSchema = z.object({
+  tripleId: z.string(),
+  subject: z.string(),
+  predicate: z.string(),
+  object: z.string(),
+  cardType: z.enum(["review", "new"]),
+  intervalDays: z.number().int().nullable(),
+  overdueByDays: z.number().nullable(),
+});
+
+export type ReviewQueueItem = z.infer<typeof reviewQueueItemSchema>;
+
+// ── Weak Areas ───────────────────────────────────────────────
+
+export const weakTripleSchema = z.object({
+  tripleId: z.string(),
+  subject: z.string(),
+  predicate: z.string(),
+  object: z.string(),
+  easeFactor: z.number(),
+  incorrectCount: z.number().int().min(0),
+});
+
+export type WeakTriple = z.infer<typeof weakTripleSchema>;
+
+export const weakAreaSchema = z.object({
+  conceptId: z.string(),
+  conceptTitle: z.string(),
+  masteryPercentage: z.number().min(0).max(100),
+  status: z.enum(["weak", "not_started"]),
+  strugglingTriples: z.array(weakTripleSchema),
+});
+
+export type WeakArea = z.infer<typeof weakAreaSchema>;
+
+// ── Progress Route Request Schemas ───────────────────────────
+
+export const getMasterySchema = z
+  .object({
+    deckId: z.string().optional(),
+    topicId: z.string().optional(),
+    conceptId: z.string().optional(),
+  })
+  .refine(
+    (data) =>
+      [data.deckId, data.topicId, data.conceptId].filter(Boolean).length === 1,
+    {
+      message: "Exactly one of deckId, topicId, or conceptId must be provided",
+    }
+  );
+
+export type GetMastery = z.infer<typeof getMasterySchema>;
+
+export const getReviewQueueSchema = z.object({
+  deckId: z.string().optional(),
+  topicId: z.string().optional(),
+  conceptId: z.string().optional(),
+  limit: z.coerce.number().int().min(1).max(100).optional(),
+});
+
+export type GetReviewQueue = z.infer<typeof getReviewQueueSchema>;
+
+export const getWeakAreasSchema = z.object({
+  deckId: z.string().optional(),
+  topicId: z.string().optional(),
+  limit: z.coerce.number().int().min(1).max(50).optional(),
+});
+
+export type GetWeakAreas = z.infer<typeof getWeakAreasSchema>;

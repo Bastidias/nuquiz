@@ -136,6 +136,22 @@ export function createTestDb(): { db: TestDb; sqlite: InstanceType<typeof Databa
       correct INTEGER NOT NULL
     );
     CREATE INDEX IF NOT EXISTS idx_response_triples_response_id ON response_triples(response_id);
+
+    CREATE TABLE IF NOT EXISTS review_cards (
+      id TEXT PRIMARY KEY,
+      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      triple_id TEXT NOT NULL REFERENCES triples(id) ON DELETE CASCADE,
+      ease_factor REAL NOT NULL DEFAULT 2.5,
+      interval_days INTEGER NOT NULL DEFAULT 0,
+      repetition_count INTEGER NOT NULL DEFAULT 0,
+      last_quality INTEGER NOT NULL,
+      next_review_at TEXT NOT NULL,
+      created_at TEXT NOT NULL,
+      updated_at TEXT NOT NULL
+    );
+    CREATE UNIQUE INDEX IF NOT EXISTS idx_review_cards_user_triple ON review_cards(user_id, triple_id);
+    CREATE INDEX IF NOT EXISTS idx_review_cards_user_next_review ON review_cards(user_id, next_review_at);
+    CREATE INDEX IF NOT EXISTS idx_review_cards_user_ease ON review_cards(user_id, ease_factor);
   `);
 
   return { db, sqlite };
@@ -153,6 +169,7 @@ export function closeTestDb(sqlite: InstanceType<typeof Database>): void {
  * Useful between tests if sharing a database instance within a describe block.
  */
 export function clearTestDb(db: TestDb): void {
+  db.run(sql`DELETE FROM review_cards`);
   db.run(sql`DELETE FROM response_triples`);
   db.run(sql`DELETE FROM quiz_responses`);
   db.run(sql`DELETE FROM triple_tags`);

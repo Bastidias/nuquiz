@@ -1,4 +1,4 @@
-import { sqliteTable, text, integer, uniqueIndex, index } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, real, uniqueIndex, index } from "drizzle-orm/sqlite-core";
 
 // ── Auth ───────────────────────────────────────────────────────
 
@@ -197,4 +197,31 @@ export const responseTriples = sqliteTable(
     correct: integer("correct").notNull(),
   },
   (table) => [index("idx_response_triples_response_id").on(table.responseId)]
+);
+
+// ── Review Cards (SM-2 spaced repetition state) ──────────────
+
+export const reviewCards = sqliteTable(
+  "review_cards",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id, { onDelete: "cascade" }),
+    tripleId: text("triple_id")
+      .notNull()
+      .references(() => triples.id, { onDelete: "cascade" }),
+    easeFactor: real("ease_factor").notNull().default(2.5),
+    intervalDays: integer("interval_days").notNull().default(0),
+    repetitionCount: integer("repetition_count").notNull().default(0),
+    lastQuality: integer("last_quality").notNull(),
+    nextReviewAt: text("next_review_at").notNull(),
+    createdAt: text("created_at").notNull(),
+    updatedAt: text("updated_at").notNull(),
+  },
+  (table) => [
+    uniqueIndex("idx_review_cards_user_triple").on(table.userId, table.tripleId),
+    index("idx_review_cards_user_next_review").on(table.userId, table.nextReviewAt),
+    index("idx_review_cards_user_ease").on(table.userId, table.easeFactor),
+  ]
 );

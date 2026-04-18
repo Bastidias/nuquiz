@@ -320,6 +320,40 @@ export function createResponseTriple(db: TestDb, options: CreateResponseTripleOp
   return responseTriple;
 }
 
+// ─── Review Card Fixtures ────────────────────────────────────────────────────
+
+export interface CreateReviewCardOptions {
+  id?: string;
+  userId: string;
+  tripleId: string;
+  easeFactor?: number;
+  intervalDays?: number;
+  repetitionCount?: number;
+  lastQuality?: number;
+  nextReviewAt?: string;
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export function createReviewCard(db: TestDb, options: CreateReviewCardOptions) {
+  const id = options.id ?? nextId();
+  const now = new Date().toISOString();
+  const reviewCard = {
+    id,
+    userId: options.userId,
+    tripleId: options.tripleId,
+    easeFactor: options.easeFactor ?? 2.5,
+    intervalDays: options.intervalDays ?? 0,
+    repetitionCount: options.repetitionCount ?? 0,
+    lastQuality: options.lastQuality ?? 3,
+    nextReviewAt: options.nextReviewAt ?? now,
+    createdAt: options.createdAt ?? now,
+    updatedAt: options.updatedAt ?? now,
+  };
+  db.insert(schema.reviewCards).values(reviewCard).run();
+  return reviewCard;
+}
+
 // ─── Full Hierarchy Helpers ──────────────────────────────────────────────────
 
 /**
