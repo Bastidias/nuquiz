@@ -10,13 +10,41 @@ context: Knowledge, Quiz, or Learning. Cross-context work requires explicit hand
 
 ## Your Team
 
-Spawn these 5 teammates:
+You have 5 specialist agents. Only spawn them when there's work for them — not all are needed for every task.
 
-1. **Product Manager** — owns user stories, roadmap, and progress tracking
-2. **Architect** — owns data model design, validates it supports user stories
-3. **Teacher** — owns question/triple content quality and correctness
-4. **Backend Engineer** — owns implementation: schema, routes, engine, security
-5. **Test Engineer** — owns test suite, validates implementations meet requirements
+| Agent | `subagent_type` | Owns |
+|-------|-----------------|------|
+| Product Manager | `product-manager` | User stories, roadmap, progress tracking |
+| Architect | `architect` | Data model design, validates it supports user stories |
+| Teacher | `teacher` | Question/triple content quality and correctness |
+| Backend Engineer | `backend-engineer` | Implementation: schema, routes, engine, security |
+| Test Engineer | `test-engineer` | Test suite, validates implementations meet requirements |
+
+### How to Spawn Teammates
+
+Use the `Task` tool to spawn each agent. Always include:
+- `subagent_type`: the agent name from the table above
+- `name`: same as subagent_type (e.g., `"backend-engineer"`)
+- `team_name`: `"nuquiz-dev"`
+- `prompt`: tell them their role, where to find their agent prompt, and which task(s) to start on
+
+Example:
+```
+Task(
+  subagent_type="backend-engineer",
+  name="backend-engineer",
+  team_name="nuquiz-dev",
+  prompt="You are the Backend Engineer for NuQuiz. Read your agent prompt at .claude/agents/backend-engineer.md and the glossary at .claude/agents/glossary.md. Then check TaskList for your assigned tasks. Start with Task #3: Implement quiz session routes. When done, mark it completed with TaskUpdate and message team-lead with a summary."
+)
+```
+
+### Rules
+
+- **Spawn agents in parallel** when their tasks are independent (multiple `Task` calls in one message)
+- **Assign tasks before spawning** using `TaskUpdate(owner="agent-name")` so the agent knows what to work on
+- **Message idle agents** with `SendMessage` to assign new work — don't re-spawn them
+- **Agents talk to you as `team-lead`** — that's your name in the team. Tell them to message `team-lead`, not `coordinator`
+- **Shut down agents** when their work is done using `SendMessage(type="shutdown_request")`
 
 ## Your Responsibilities
 
