@@ -3,21 +3,36 @@
 **Domain:** 4 — Communication and Network Security &nbsp;|&nbsp; **Pattern:** Dimensions &nbsp;|&nbsp; **Tags:** 4.1, 4.3
 **Status:** draft (SME review pending)
 
-The three Layer-4 transport protocols. TCP and UDP are heavily tested; SCTP appears less often but is included so the engine can demonstrate distractor sourcing across three rows.
+The three Layer-4 transport protocols. TCP and UDP are heavily tested; SCTP appears less often but is included so the engine can demonstrate distractor sourcing across three Rows and shared-Value detection (TCP and SCTP share several attribute Values that the parentheticals in earlier drafts had hidden).
 
-| Protocol | connection type | reliability | ordering | flow control | congestion control | header size | typical use cases | OSI layer |
-|---|---|---|---|---|---|---|---|---|
-| TCP | Connection-oriented (3-way handshake) | Reliable (retransmission of lost segments) | Ordered (sequence numbers) | Yes (sliding window) | Yes (slow start, congestion avoidance, fast retransmit) | 20 bytes minimum<br>60 bytes with options | Web (HTTP, HTTPS)<br>Email (SMTP, IMAP)<br>File transfer (FTP, SFTP)<br>Remote access (SSH) | Transport (Layer 4) |
-| UDP | Connectionless | Unreliable (no retransmission) | Unordered | No | No | 8 bytes (fixed) | DNS<br>DHCP<br>VoIP<br>Video streaming<br>SNMP<br>NTP | Transport (Layer 4) |
-| SCTP | Connection-oriented (4-way handshake) | Reliable | Partially ordered (per-stream ordering) | Yes | Yes | 12 bytes minimum | Telephony signaling (SS7 / SIGTRAN)<br>WebRTC data channels | Transport (Layer 4) |
+| Protocol | connection type | handshake style | reliability | ordering | flow control | congestion control | min header size | max header size | OSI layer | typical use cases |
+|---|---|---|---|---|---|---|---|---|---|---|
+| TCP | Connection-oriented | 3-way handshake | Reliable | Ordered | Yes | Yes | 20 bytes | 60 bytes | Transport | Web (HTTP, HTTPS)<br>Email (SMTP, IMAP)<br>File transfer (FTP, SFTP)<br>Remote access (SSH) |
+| UDP | Connectionless | None | Unreliable | Unordered | No | No | 8 bytes | 8 bytes | Transport | DNS<br>DHCP<br>VoIP<br>Video streaming<br>SNMP<br>NTP |
+| SCTP | Connection-oriented | 4-way handshake | Reliable | Partially ordered | Yes | Yes | 12 bytes | 12 bytes | Transport | Telephony signaling<br>WebRTC data channels |
 
 ## Notes
 
-- **Cell convention:** each `<br>`-separated item is one atomic fact. Parenthetical clarifications scope a single fact (e.g., "Yes (sliding window)" is one fact about flow control).
+- **Cell convention:** each `<br>`-separated item is one atomic Fact. **No parentheticals in cells.** Mechanism details that earlier drafts smuggled into cells (`(sliding window)`, `(retransmission of lost segments)`, `(per-stream ordering)`, `(slow start, congestion avoidance, fast retransmit)`) are listed below as context, not as Facts. They can later become their own Concept (e.g., `tcp-congestion-control.md`) if we want to test them.
+- **Why the table looks like this now.** Splitting `connection type` from `handshake style`, and stripping mechanism parentheticals from `reliability` / `flow control` / `congestion control`, exposes shared Values across Rows: TCP and SCTP both = `Connection-oriented`, both = `Reliable`, both = `Yes` for flow control, both = `Yes` for congestion control. The engine can now generate questions like `? | reliability → Reliable` (select all) and detect the TCP/SCTP pairing — impossible when the cells were `Reliable (retransmission of lost segments)` vs `Reliable`.
+
+### Mechanism context (reference, not Facts)
+
+- **TCP:** reliability mechanism is retransmission of lost segments. Flow control mechanism is sliding window. Congestion control mechanisms include slow start, congestion avoidance, and fast retransmit. Ordering mechanism is sequence numbers.
+- **UDP:** none of the above (Unreliable, no flow control, no congestion control, unordered).
+- **SCTP:** reliable like TCP. Ordering is per-stream. Flow control and congestion control mechanisms similar to TCP at a high level; specifics differ (multi-homing, multi-streaming) and warrant their own Concept.
+
+### Other notes
+
+- **OSI layer Column** carries just `Transport`. The `(Layer 4)` parenthetical was removed because the layer number is a separate Fact already addressable in the OSI layers Concept, and including it here would smuggle a second Fact into one cell.
 - The TCP-vs-UDP comparison is the canonical CISSP transport question. Almost every exam tests "which protocol" reasoning.
-- Engine demo opportunities:
-  - Hide the row identifier → "Which protocol is connectionless?" → UDP
-  - Hide a value → "TCP | reliability → ?" with UDP/SCTP values as discriminating distractors
-  - Cross-cell select-all → "Which protocols provide flow control?" (TCP and SCTP yes; UDP no)
-- **SCTP is intentionally included** even though less tested — it gives the engine a third row to source distractors from, and demonstrates "shared vs. discriminating" classification (e.g., "Reliable" is shared between TCP and SCTP, discriminating against UDP).
-- QUIC is intentionally excluded for now — relatively new, layered on UDP, not heavily tested on CISSP yet. Add as a row if (ISC)² adds it to the outline.
+- **SCTP is intentionally included** even though less tested — it gives the engine a third Row to source distractors from, and (now that parentheticals are out of the cells) demonstrates shared-Value detection cleanly.
+- QUIC is intentionally excluded for now — relatively new, layered on UDP, not heavily tested on CISSP yet. Add as a Row if (ISC)² adds it to the outline.
+
+### Engine demo opportunities
+
+- Hide the Row identifier: `? | connection type → Connectionless` → UDP
+- Hide a Value: `TCP | reliability → ?` with `Unreliable` (UDP) and `Partially ordered` (cross-Column from `ordering`) as distractors
+- Cross-Row select-all: `? | flow control → Yes` → TCP and SCTP (shared-Value detection)
+- Cross-Row select-all: `? | reliability → Reliable` → TCP and SCTP
+- Composite Row profile: TCP across all Columns, with one cell swapped to a UDP or SCTP Value

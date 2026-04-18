@@ -22,7 +22,7 @@ The four canons of the (ISC)² Code of Ethics, in their official preference orde
 - One of the smallest Concepts in the deck (~12 facts) — fully fleshable. Use as a benchmark for what "complete" looks like at the small end.
 - Consider an additional Concept: **Canon conflict resolution scenarios** — paired situations where two canons collide and the student must pick the higher-priority obligation.
 - Engine demo opportunities:
-  - "What is the Intent of Canon 2?" → Personal conduct must be above reproach
-  - "Which canon takes priority over personal honor?" → Canon 1 (axis: hide row identifier)
-  - "What is an Example violation of Canon 3?" → Charging for a vulnerability assessment without performing one
-  - Cross-canon: "If Canon 1 and Canon 2 conflict, which takes priority?" → Canon 1
+  - `Canon 2 | Intent → ?` → Personal conduct must be above reproach.
+  - `? | Intent → Public welfare comes first when interests conflict` → Canon 1.
+  - `Canon 3 | Example violation → ?` → Charging for a vulnerability assessment without performing one.
+  - Conflict resolution (sequence-derived): `min(Canon n where Canon n ∈ {Canon 1, Canon 2})` → Canon 1. The lower-numbered canon wins; this is a structural Fact carried by the Row order.

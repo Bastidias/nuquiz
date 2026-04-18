@@ -21,8 +21,8 @@ The three-step handshake that establishes a TCP connection. Tested for sequence 
   - **SYN flood** — exploits Step 2 by leaving half-open connections, exhausting server resources
   - **Sequence number prediction** — pre-RFC 1948 vulnerability where attackers could predict ISN values
 - Engine demo opportunities:
-  - "What is the Name of Step 2?" → SYN-ACK; distractors from other steps' Names
-  - "Which step is sent from server to client?" → Step 2 (axis: hide row identifier)
-  - "What is one purpose of Step 1?" → Request connection / Propose initial sequence number (multi-fact cell)
-  - Sequence: "Which step comes after SYN-ACK?" → Step 3 (ACK)
+  - `Step 2 | Name → ?` → SYN-ACK. Distractors from other Steps' Names.
+  - `? | Direction → Server → Client` → Step 2.
+  - `Step 1 | Purpose → ?` → Request connection / Propose initial sequence number (multi-Fact cell).
+  - Sequence (adjacency): `Step (n+1 where Step n | Name → SYN-ACK) | Name → ?` → ACK. (Or simply hide Step 3's Name.)
 - Some textbooks describe the handshake as SYN / SYN+ACK / ACK rather than SYN-ACK. Both are equivalent.

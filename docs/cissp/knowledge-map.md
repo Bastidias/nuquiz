@@ -67,7 +67,7 @@ Every fact must be independently learnable, distractable, and gradable. The engi
 - **No "and"-joined compound facts.** "Define scope, roles, and resources" is three facts, not one. Split with `<br>`.
 - **No comma-joined lists in cells.** Same reason — split with `<br>`.
 - **Terse over verbose.** "Connection established" beats "The connection is now established between client and server."
-- **Parenthetical clarifications are OK.** "Yes (sliding window)" or "Hashing (SHA-256, SHA-3)" — the parenthetical scopes a single fact.
+- **Parentheticals are dangerous.** They mask sharing across Rows and smuggle separate Facts into cells. **Default to no parentheticals.** The narrow exceptions are listed below — if you're not sure, keep it out and put context in Notes.
 - **Names and identifiers are exempt.** "(ISC)² Code of Ethics" stays as one identifier even though it contains "of"; "Plan testing, training, and exercises" is the official NIST 800-34 phase name and stays whole.
 
 If a cell would naturally be a paragraph, the Concept is at the wrong level of granularity — split the row or revisit the column choice.
@@ -75,6 +75,66 @@ If a cell would naturally be a paragraph, the Concept is at the wrong level of g
 ### Why this matters
 
 A compound fact ("Define scope, roles, and resources") tested as one multiple-choice option grades as a single right/wrong. A student who knows "scope" and "roles" but not "resources" gets the same wrong answer as someone who knows nothing. That's bad diagnostics. Splitting into three facts lets the engine identify the specific gap — which is the entire point of NuQuiz.
+
+### Parenthetical safety check
+
+Authors regularly want to write things like `Yes (sliding window)`, `Reliable (retransmission of lost segments)`, or `IP (IPv4, IPv6)` in a cell. **Almost all of these break atomicity.** Run this check before keeping any parenthetical in a cell:
+
+1. **Strip every parenthetical from the Column.** If any two cells in the same Column become identical, the parenthetical was load-bearing for sharing — *the engine can no longer detect that those Rows share a Value*. **Fix:** move the parenthetical contents into a separate Column.
+   - Example: `Reliable (retransmission of lost segments)` (TCP) and `Reliable` (SCTP) — the parenthetical hides that both Rows have `reliability = Reliable`. Split into a `reliability` Column (`Reliable` / `Unreliable`) and a `reliability mechanism` Column (`Retransmission of lost segments` / `None`).
+
+2. **Does the parenthetical name a separate attribute?** If yes, it belongs in its own Column.
+   - Example: `Connection-oriented (3-way handshake)` smuggles `handshake style` into `connection type`. Split.
+
+3. **Does the parenthetical contain a comma-list?** If yes, those are sub-Facts. Split with `<br>` or move to a separate Column.
+   - Example: `IP (IPv4, IPv6)` is two protocol Facts bundled with a family name. Use `IPv4<br>IPv6`.
+
+4. **Is the parenthetical editorial / meta?** If yes, it doesn't belong in a Fact — move to Notes.
+   - Example: `SSL/TLS (debated placement)` — "debated placement" is editor commentary about classification, not a Fact about SSL/TLS itself. Notes.
+
+**The narrow allowed cases:**
+
+- **Inseparable canonical names.** `(ISC)² Code of Ethics`, `Plan Testing, Training, and Exercises` — the parenthetical (or the comma) is part of the proper name as it appears in source. Test: would a textbook print this without the parens? If no, keep.
+- **Abbreviation introduction unique to one Row.** `Client sends initial sequence number (ISN_c)` — `(ISN_c)` introduces an abbreviation unique to this Row that would never appear in another Row's cell to mask sharing. Borderline. Prefer moving the abbreviation to Notes.
+
+The default is no parenthetical. The cost of stripping context is a Notes entry. The cost of leaving a bad parenthetical is the engine missing a shared Value forever.
+
+---
+
+## Deterministic Prompt & Answer Notation
+
+The engine never generates English to describe a question. Prompts and answer options are constructed mechanically from cell data plus a small grammar of operators. **No English question words** ("What", "Which", "How", "Where", "Identify the…", etc.) appear in a generated prompt — those are descriptive language, and descriptive language is exactly what we promised we wouldn't put in the runtime.
+
+### The grammar
+
+| Symbol | Meaning |
+|---|---|
+| `Row | Column → Value` | A complete Fact |
+| `?` | The hidden side of the Fact (the thing the student supplies) |
+| `,` (between Rows) | Cross-Row scope (e.g., `? | reliability → Reliable` selects all matching Rows) |
+| `→ ?` | Hide the Value |
+| `Row | ?` | Hide the Column |
+| `? | Column` | Hide the Row |
+
+Every student-facing prompt is one of these forms. Answer options are literal cell text — never paraphrased.
+
+### Universal UI scaffolding is not generated text
+
+These phrases are part of the app, not the engine, and may appear around prompts:
+
+- "Select all that apply"
+- "True or false?"
+- "Order these"
+- "Match the items"
+- "Identify the missing Row" (puzzle-mode instruction)
+
+UI scaffolding is the same for every question of that format. It's not generated *about* the data — it's app chrome. The line: if the sentence describes the specific data being tested, it's generated content and must be coordinate. If it's the same instruction for every question of this format, it's UI.
+
+### Engine demo opportunities in Concept files
+
+When listing engine demo opportunities at the bottom of a Concept file, write them as coordinates, not as English questions. Bad: "What is the PDU at the Network layer?" Good: `Network | PDU → ?` → Packet.
+
+This keeps the demo notes honest — they show what the engine actually produces.
 
 ---
 

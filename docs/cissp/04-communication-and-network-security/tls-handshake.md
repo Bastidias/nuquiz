@@ -24,9 +24,9 @@ Simplified to five logical steps. The full TLS 1.2 handshake includes optional s
 - **Mutual TLS (mTLS)** adds a client certificate exchange. Worth a separate Concept (`mtls-handshake.md`).
 - **Certificate validation** (chain of trust, revocation checks) is a separate Concept. The handshake assumes the certificate is valid.
 - Engine demo opportunities:
-  - "Which step authenticates the server?" → Step 2
-  - "What is one item in the Content of Step 1?" → Supported TLS version / Supported cipher suites / Client random
-  - "Which step transitions to encrypted communication?" → Step 4
-  - "What is the Security Property of Step 5?" → Verify handshake integrity
-  - Sequence: "Which step comes immediately before Finished?" → Step 4 (Change Cipher Spec)
+  - `? | Security Property → Authenticate server via certificate` → Step 2.
+  - `Step 1 | Content → ?` → Supported TLS version / Supported cipher suites / Client random (multi-Fact cell).
+  - `? | Security Property → Transition to encrypted channel` → Step 4.
+  - `Step 5 | Security Property → ?` → Verify handshake integrity.
+  - Sequence (adjacency): `Step (n-1 where Step n | Name → Finished) | Name → ?` → Change Cipher Spec.
 - Common exam confusion: Step 3 (Key Exchange) is *not* the same as Step 4 (Change Cipher Spec). Key Exchange establishes the shared secret. Change Cipher Spec announces the switch.

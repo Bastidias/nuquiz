@@ -25,7 +25,7 @@ The seven-phase Business Continuity Planning process from NIST SP 800-34. Each p
 - Common exam trap: confusing **BCP** (the planning process) with **BIA** (a single phase output) or **DRP** (the IT-centric subset). Worth a separate disambiguation Concept.
 - DR test types in Phase 6 (tabletop, walkthrough, parallel, full-interruption) deserve their own Concept under Domain 7 (Security Operations).
 - Engine demo opportunities:
-  - "What is the Name of Phase 4?" → Create contingency strategies
-  - "Which phase produces the BIA report?" → Phase 2
-  - "What is one Key Activity of Phase 5?" → Document procedures / Document roles / Document responsibilities (multi-fact cell)
-  - Sequence: "Which phase comes after Conduct BIA?" → Phase 3 (Identify preventive controls)
+  - `Phase 4 | Name → ?` → Create contingency strategies.
+  - `? | Typical Output → BIA report` → Phase 2.
+  - `Phase 5 | Key Activity → ?` → Document procedures / Document roles / Document responsibilities (multi-Fact cell).
+  - Sequence (adjacency): `Phase (n+1 where Phase n | Name → Conduct BIA) | Name → ?` → Identify preventive controls.
