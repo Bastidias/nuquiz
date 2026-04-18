@@ -1,53 +1,30 @@
-# NuQuiz — Project Conventions
+# NuQuiz — Working in This Repo
 
-## Stack
+This repo is **demo content only**. App code, strategy, roadmap, stories, agent briefs, and the question-design framework were intentionally removed. There is no build, no tests, no implementation in this tree. Don't reintroduce architectural commitments without explicit user approval.
 
-| Layer | Choice |
-|-------|--------|
-| Monorepo | pnpm workspaces |
-| Backend | Hono on Node.js |
-| Frontend | React + Vite |
-| DB | SQLite (better-sqlite3) + Drizzle ORM |
-| Validation | Zod (shared schemas) |
-| Auth | Arctic (OAuth 2.0) |
-| Type-safe client | Hono RPC (`hono/client`) |
-| Testing | Jest |
-
-## Structure
+## What's here
 
 ```
-packages/
-  shared/   — Zod schemas + inferred types
-  api/      — Hono backend (Node.js)
-  web/      — React SPA (Vite)
+docs/cissp/             — CISSP demo content authored against the current model
+.claude/                — settings only (agents and commands removed)
 ```
 
-## Commands
+## Conventions when editing demo content
 
-```bash
-pnpm install          # Install all dependencies
-pnpm dev              # Run API (:3001) + web (:5173) concurrently
-pnpm build            # Build all packages
-pnpm db:generate      # Generate Drizzle migrations
-pnpm db:migrate       # Run Drizzle migrations
-```
+The conventions live inside `docs/cissp/knowledge-map.md`. Read it before editing Concept files. Key points:
 
-## Patterns
+- **Hierarchy:** Deck → Topic → Concept → Fact.
+- **Atomicity:** each `<br>`-separated item in a cell is one Fact. No "and"-joined compounds, no comma-joined lists.
+- **Pattern picker:** Concept files declare a Pattern (Dimensions, Ordered, or Aspects). Pattern is an authoring/presentation choice, not a commitment to how data must be stored.
+- **File naming:** kebab-case, short (`cia-triad.md`).
 
-- **Shared validation**: Define Zod schemas in `packages/shared`, import in both API and web
-- **Type-safe API calls**: Use Hono RPC client in web — no manual type definitions for endpoints
-- **DB access**: Always use Drizzle ORM — never raw SQL strings
-- **Auth**: OAuth via Arctic, sessions stored in SQLite, HTTP-only cookies
-- **Route organization**: One file per route group in `packages/api/src/routes/`
-- **Security defaults**: CORS, CSRF, secure headers enabled on all routes
-- **Functional pipelines**: Separate data fetching from transformation from persistence. Business logic lives in pure functions with no side effects. Pattern: fetch all data → transform/build (pure) → output → persist. Never pull data mid-computation.
-- **Testing**: Jest with AAA (Arrange/Act/Assert) pattern. RITEway principles (Readable, Isolated, Thorough, Explicit). Test pure transform functions in isolation. Red-green-refactor for core domain logic.
+## What this repo deliberately does not contain
 
-## Conventions
+- Application code.
+- A vision / strategy document.
+- A roadmap.
+- User stories.
+- A question-design framework.
+- Architectural commitments (database schema, framework choices, route layouts, storage shape).
 
-- TypeScript strict mode everywhere
-- ESM modules (`"type": "module"`)
-- Zod for all input validation on API endpoints
-- Parameterized queries only (Drizzle handles this)
-- HTTP-only, Secure, SameSite=Lax session cookies
-- No `any` types — use `unknown` and narrow with Zod
+If you find yourself wanting to write any of the above, surface the desire to the user first. The minimal-repo posture is intentional — the team is realigning before committing things to writing.
