@@ -124,9 +124,10 @@ Each Concept is one `.md` file in its domain folder. Required fields:
 - [x] Top-level scaffold (this file)
 - [x] Atomicity rules formalized
 - [x] Pattern model corrected (Ordered uses rows-as-steps; Depth collapsed into column ordering)
-- [x] Domain 1 Concept breakdown (see [`01-security-and-risk-management/README.md`](01-security-and-risk-management/README.md))
-- [x] Domain 4 demo Concepts drafted (see [`04-communication-and-network-security/README.md`](04-communication-and-network-security/README.md))
-- [ ] Domains 2-3, 5-8 Concept breakdowns (sub-objectives stubbed only; SME to confirm/expand)
-- [ ] Authoring guide with full Concept file template
-- [ ] Terminology pass on remaining files (some still use "Predicate style" header instead of "Pattern")
-- [ ] Atomization audit on Dimensions Concepts (some "and" survivors in cia-triad, risk-treatment, osi-layers)
+- [x] Terminology pass complete (Pattern / Rows / Columns / Facts in all author-facing docs; SPO is internal-only)
+- [x] All 8 Domain READMEs drafted with proposed Concept lists for SME review
+- [x] Domain 1 demo Concepts authored (4 — CIA Triad, risk treatment, BCP phases, Code of Ethics canons)
+- [x] Domain 4 demo Concepts authored (4 — TCP/UDP/SCTP, OSI layers, TCP handshake, TLS handshake)
+- [ ] SME pass on each Domain README to confirm Concept lists, naming, and counts
+- [ ] Authoring guide with full Concept file template (currently knowledge-map.md serves this role; could be split out)
+- [ ] Bulk Concept authoring: estimated ~200 Concept files to create after SME signoff
