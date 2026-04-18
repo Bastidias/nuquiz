@@ -10,9 +10,9 @@ D4 exercises all three Predicate styles in a single domain, so it's the best pla
 
 | Pattern | Example Concepts | Demonstrates |
 |---|---|---|
-| Dimensions (compare-contrast) | TCP vs UDP vs SCTP | Same-predicate distractor sourcing, discriminating-Object questions |
+| Dimensions (compare-contrast) | TCP vs UDP vs SCTP | Same-column distractor sourcing, discriminating-cell questions |
 | Dimensions (wide) | OSI Layers | Many-row comparison, "which layer" axis-hiding |
-| Positions with depth rows | TCP 3-way handshake, TLS handshake | Sequence recall, progressive-mastery depth |
+| Ordered (rows = steps, columns = attributes left → right) | TCP 3-way handshake, TLS 1.2 handshake | Sequence recall, step-attribute recall, cross-procedure comparison |
 
 ---
 
@@ -30,8 +30,8 @@ D4 exercises all three Predicate styles in a single domain, so it's the best pla
 
 - [`tcp-udp-sctp.md`](tcp-udp-sctp.md) — Transport protocols compared (Dimensions)
 - [`osi-layers.md`](osi-layers.md) — 7-layer OSI model (Dimensions)
-- [`tcp-handshake.md`](tcp-handshake.md) — 3-way connection establishment (Positions + depth)
-- [`tls-handshake.md`](tls-handshake.md) — TLS 1.2 handshake flow (Positions + depth)
+- [`tcp-handshake.md`](tcp-handshake.md) — 3-way connection establishment (Ordered)
+- [`tls-handshake.md`](tls-handshake.md) — TLS 1.2 handshake flow (Ordered)
 
 ## Proposed additional Concepts (not yet drafted)
 
@@ -46,4 +46,4 @@ D4 exercises all three Predicate styles in a single domain, so it's the best pla
 - DNS query flow — Positions with depth rows
 - Kerberos authentication flow — Positions with depth rows (also relevant to D5 IAM — tag both)
 
-Est. total for D4: ~22-26 Concepts × ~25 triples avg = ~600 triples. Target met.
+Est. total for D4: ~22-26 Concepts × ~25 facts avg = ~600 facts. Target met.

@@ -42,7 +42,7 @@ NuQuiz generates questions from any knowledge that fits a table — atomic cells
 | **Ordered** | Rows = steps in sequence, columns = step attributes (left → right increasing detail) | Sequential or hierarchical processes (handshakes, BCP phases, IR steps) | Sequence recall, step-attribute recall, cross-procedure comparison |
 | **Aspects** | One row, columns = facets | Single concept with multiple facets (definition, purpose, example, exception) | Definition recall, exception-finding |
 
-Authors pick the Predicate style that fits the content — usually via Builder UI templates ("Compare-contrast table", "Procedural with depth", "Procedural with positions", "Concept with aspects"). The engine doesn't care which style was chosen; it operates on the table.
+Authors pick the column pattern that fits the content — usually via Builder UI templates ("Compare-contrast table", "Procedural / sequential", "Single concept with aspects"). The engine doesn't care which pattern was chosen; it operates on the table.
 
 ### What still resists the engine
 
@@ -59,7 +59,7 @@ This is the engine's natural scope. Scope claimed honestly is a positioning asse
 ## Resolved Bets
 
 ### 1. LLM stance
-Deterministic engine in production. LLMs allowed **only** in authoring tooling (prose → triple extraction, candidate distractors, phrasing drafts) with human review before data enters the system. No AI required to use the app.
+Deterministic engine in production. LLMs allowed **only** in authoring tooling (prose → fact extraction, candidate distractors, phrasing drafts) with human review before data enters the system. No AI required to use the app.
 
 ### 2. Market & vertical
 - **Beachhead:** CISSP — premium buyer, iOS-heavy, corporate reimbursement, founder has domain.
@@ -79,9 +79,9 @@ Deterministic engine in production. LLMs allowed **only** in authoring tooling (
 
 ### 5. Content strategy
 - **v1 author:** Founder. No contractors needed for CISSP.
-- **Pipeline:** AI-assisted extraction from legal sources (vendor-published exam outlines, open educational resources, founder-written prose, public domain) → founder review → validated triples.
+- **Pipeline:** AI-assisted extraction from legal sources (vendor-published exam outlines, open educational resources, founder-written prose, public domain) → founder review → validated facts.
 - **Legal posture:** Never reproduce exam questions. Facts are not copyrightable; selection and arrangement can be. Avoid AI extraction from copyrighted textbooks as the primary source.
-- **Content bar for CISSP v1:** ~5,000 quality triples across 8 domains. Below this, users churn and the app dies.
+- **Content bar for CISSP v1:** ~5,000 quality facts across 8 domains. Below this, users churn and the app dies.
 
 ### 6. Engagement philosophy
 Drop absolute streaks. Use a three-layer motivation stack:
@@ -119,7 +119,7 @@ All gain-framed. Notifications are respectful ("2 more days to your weekly goal"
 | 1-2 | Team onboarding. This doc reviewed + amended. Phase 3 stories written. |
 | 2-6 | Phase 3 engine work: FSRS, mastery rollup, review queue, readiness score |
 | 4-8 | Builder UI (Phase 2.5) — authoring tool for founder-driven content work |
-| 6-12 | CISSP content authoring (founder, AI-assisted, reviewed). Target: 5,000 triples. |
+| 6-12 | CISSP content authoring (founder, AI-assisted, reviewed). Target: 5,000 facts. |
 | 10-14 | iOS client scaffold (SwiftUI, talks to existing API) |
 | 14+ | Closed beta — 30 CISSP candidates from founder's network |
 
@@ -150,7 +150,7 @@ Dates are ranges because content and client work run partially in parallel. Foun
 ## Definition of "v1 Ships"
 
 - iOS app live on the App Store for CISSP
-- ≥5,000 validated triples across 8 CBK domains
+- ≥5,000 validated facts across 8 CBK domains
 - Readiness score, domain mastery radar, weekly rhythm goal, weak-area drilling all functional
 - Deterministic question generation validated in closed beta (30 users)
 - Week-1 retention ≥50%, week-4 retention ≥30% in beta (revisit after signal)

@@ -29,37 +29,37 @@
 Starter set (~28 Concepts). Each will become a file in this folder.
 
 ### 1.1 Ethics
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
-| (ISC)² Code of Ethics canons | Positions | — | Canon 1, 2, 3, 4 | 1.1 | ~8 |
+| (ISC)² Code of Ethics canons | Ordered | Canon 1-4 (priority order) | Text, Intent, Example violation | 1.1 | ~12 |
 
 ### 1.2 Security Concepts
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | CIA Triad components | Dimensions | Confidentiality, Integrity, Availability | definition, common threats, common controls, example | 1.2 | ~12 |
 | AAA and extensions | Dimensions | Authentication, Authorization, Accounting, Auditing, Identification | definition, mechanism, example | 1.2 | ~15 |
 | Security concept frameworks | Dimensions | CIA, DAD, IAAA, Parkerian Hexad | components, focus, when used | 1.2 | ~12 |
 
 ### 1.3 Governance
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Governance roles | Dimensions | Board, Senior Mgmt, Data Owner, Data Custodian, System Owner, User, Auditor | responsibilities, accountability, reports to | 1.3 | ~21 |
 | Governance documents | Dimensions | Policy, Standard, Procedure, Guideline, Baseline | definition, required?, example, who writes | 1.3, 1.7 | ~20 |
 
 ### 1.4 Compliance
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Privacy laws | Dimensions | GDPR, CCPA, HIPAA, PIPEDA, LGPD | jurisdiction, scope, key rights, penalties, enforcement | 1.4, 1.5 | ~25 |
 | Industry standards | Dimensions | PCI-DSS, SOX, GLBA, FISMA | scope, enforcer, key requirements | 1.4 | ~12 |
 
 ### 1.5 Legal Issues
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | IP protections | Dimensions | Copyright, Trademark, Patent, Trade Secret | what it protects, duration, registration required?, example | 1.5 | ~16 |
 | Computer crime categories | Dimensions | Military/intel, Business, Financial, Terrorist, Grudge, Fun/thrill | motivation, typical target, example | 1.5 | ~18 |
 
 ### 1.6 Investigation Types
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Investigation types | Dimensions | Administrative, Criminal, Civil, Regulatory, Industry | burden of proof, who conducts, outcome, evidence rules | 1.6 | ~20 |
 | Evidence types | Dimensions | Real, Documentary, Testimonial, Demonstrative, Hearsay | definition, admissibility, example | 1.6 | ~15 |
@@ -68,21 +68,21 @@ Starter set (~28 Concepts). Each will become a file in this folder.
 Covered in 1.3 "Governance documents" — tag both.
 
 ### 1.8 Business Continuity
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
-| BCP phases | Positions | — | Phase 1-7 (or 4-phase model — pick one) | 1.8 | ~14 |
+| BCP phases | Ordered | Phase 1-7 (NIST SP 800-34) | Name, Key Activity, Typical Output | 1.8 | ~21 |
 | BIA components | Dimensions | Critical functions, MTD, RTO, RPO, WRT, MTBF | definition, what it measures, relation to others, example | 1.8 | ~24 |
 | Recovery site types | Dimensions | Hot, Warm, Cold, Mobile, Cloud, Reciprocal | cost, setup time, resources ready, typical RTO | 1.8 | ~24 |
 
 ### 1.9 Personnel Security
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Personnel controls | Dimensions | Background check, NDA, SoD, Job rotation, Mandatory vacation, Least privilege, Need to know | purpose, when applied, threat mitigated | 1.9 | ~21 |
-| Onboarding/offboarding phases | Positions | — | Phase 1-N | 1.9 | ~10 |
+| Onboarding/offboarding phases | Ordered | Phase 1-N (in sequence) | TBD step attributes | 1.9 | ~10 |
 | Termination types | Dimensions | Voluntary, Involuntary friendly, Involuntary hostile, Retirement, Layoff | security posture, access revocation timing, exit interview? | 1.9 | ~15 |
 
 ### 1.10 Risk Management
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Risk treatment options | Dimensions | Accept, Avoid, Transfer, Mitigate | definition, when chosen, example, residual risk | 1.10 | ~16 |
 | Quantitative risk formulas | Dimensions | AV, EF, SLE, ARO, ALE, Safeguard value | formula, what it measures, example calculation | 1.10 | ~18 |
@@ -92,29 +92,29 @@ Covered in 1.3 "Governance documents" — tag both.
 | Control types | Dimensions | Administrative, Technical/Logical, Physical | definition, example, typical owner | 1.10 | ~9 |
 
 ### 1.11 Threat Modeling
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Threat modeling methodologies | Dimensions | STRIDE, PASTA, DREAD, VAST, TRIKE, Attack Trees | focus, steps/structure, output, when used | 1.11 | ~24 |
 | STRIDE categories | Dimensions | Spoofing, Tampering, Repudiation, Info disclosure, DoS, Elevation | property violated, example attack, typical mitigation | 1.11 | ~18 |
 
 ### 1.12 Supply Chain Risk (SCRM)
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Supply chain risks | Dimensions | Counterfeit, Tampering, Insertion, Vendor lock-in, Subcontractor breach | description, mitigation, real-world example | 1.12 | ~15 |
 | Third-party assessment artifacts | Dimensions | SOC 1, SOC 2 Type I, SOC 2 Type II, SOC 3, ISO 27001 cert | scope, audience, assertion, when required | 1.12 | ~20 |
 
 ### 1.13 Security Awareness Training
-| Concept | Predicate style | Subjects | Predicates | Tags | Est. triples |
+| Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Training audiences | Dimensions | General user, Privileged user, Executive, Developer, Incident responder | content focus, frequency, delivery method | 1.13 | ~15 |
-| Training program phases | Positions | — | Phase 1-N | 1.13 | ~8 |
+| Training program phases | Ordered | Phase 1-N (in sequence) | TBD step attributes | 1.13 | ~8 |
 
 ---
 
 ## Domain 1 Totals
 
 - **Concepts:** ~28
-- **Estimated triples:** ~750-800 (matches target)
+- **Estimated facts:** ~750-800 (matches target)
 
 ---
 
@@ -125,7 +125,7 @@ Covered in 1.3 "Governance documents" — tag both.
 - [ ] Concept list trimmable — what's noise?
 - [ ] Predicate styles appropriate per Concept
 - [ ] Subjects and Predicates lists correct (within each Concept)
-- [ ] Triple count estimates realistic
+- [ ] Fact count estimates realistic
 
 ---
 
