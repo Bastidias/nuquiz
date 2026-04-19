@@ -53,7 +53,7 @@ The six wireless-specific attack classes CISSP candidates should discriminate: r
 
 ## Sources
 
-- `[s1]`: "Wi-Fi deauthentication attack," Wikipedia community entry (retrieved 2026-04-19, https://en.wikipedia.org/wiki/Wi-Fi_deauthentication_attack)
+- `[s1]`: John Bellardo and Stefan Savage, "802.11 Denial-of-Service Attacks: Real Vulnerabilities and Practical Solutions," USENIX Security Symposium 2003 — primary academic source for the deauthentication-frame attack and unprotected-management-frame exploitation (retrieved 2026-04-19, https://www.usenix.org/legacy/event/sec03/tech/full_papers/bellardo/bellardo.pdf)
 - `[s2]`: Mathy Vanhoef and Frank Piessens, "Key Reinstallation Attacks: Forcing Nonce Reuse in WPA2," ACM CCS 2017; summary at krackattacks.com (retrieved 2026-04-19, https://www.krackattacks.com/ and https://papers.mathyvanhoef.com/ccs2017.pdf)
 - `[s3]`: Mathy Vanhoef and Eyal Ronen, "Dragonblood: Analyzing the Dragonfly Handshake of WPA3 and EAP-pwd," IEEE S&P 2020 (retrieved 2026-04-19, https://wpa3.mathyvanhoef.com/ and https://papers.mathyvanhoef.com/dragonblood.pdf)
 - `[s4]`: CISA Alert, "Wi-Fi Protected Setup (WPS) Vulnerable to Brute-Force Attack" (January 2012, retrieved 2026-04-19, https://www.cisa.gov/news-events/alerts/2012/01/06/wi-fi-protected-setup-wps-vulnerable-brute-force-attack)

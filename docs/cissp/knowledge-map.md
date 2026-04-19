@@ -170,6 +170,20 @@ Each Concept is one `.md` file in its domain folder. Required fields:
 
 ---
 
+## Source Provenance Status (Demo Content, Pre-SME Pass)
+
+The Concepts authored in Domains 4 and 5 during the 2026-04-19 session carry per-cell `[sN]` citations and a Sources registry at the bottom of each file, but the following provenance limitations apply across the set and should be resolved before any Concept is treated as reference-grade:
+
+- **Most NIST and RFC citations were extracted from WebSearch result summaries rather than from direct reads of the source documents.** The WebSearch tool returns a short excerpt-plus-synthesis; each Concept was drafted against that summary and the URL was recorded in the Sources registry. This is accurate in good faith but not independently verified against the primary document. This applies to essentially every Concept citing NIST SP 800-series publications, IETF RFCs, and OASIS specifications.
+- **Direct HTML reads were performed for:** NIST SP 800-63B (via pages.nist.gov HTML landing page), NIST CSRC glossary pages, OWASP community pages.
+- **Direct PDF reads were NOT performed.** An attempted fetch of the NIST SP 800-41 Rev 1 PDF failed because `pdftoppm` / `poppler-utils` was not installed in the environment. No NIST PDF was ever parsed directly; all NIST SP content was drawn from search-result summaries. Same applies to the academic papers cited in `wireless-attacks` and `wireless-standards` (Bellardo & Savage 2003, Fluhrer-Mantin-Shamir 2001, KRACK CCS 2017, Dragonblood IEEE S&P 2020) — listed by URL, not read in full.
+- **One skill-allowlist deviation was corrected.** `wireless-attacks.md` originally cited the Wikipedia entry on Wi-Fi deauthentication attacks as `[s1]`; replaced with Bellardo & Savage (USENIX Security 2003), the canonical academic primary source.
+- **Values drawn from CISSP pedagogical consensus** (no traced primary citation) are enumerated in each Concept's "Values without a direct public citation" table. These are the highest-priority SME-review items.
+
+An SME pass should (a) fetch and verify the cited NIST SP sections against the cell values, (b) upgrade any `[needs source]`-like markers in the unsourced tables, and (c) add primary citations where CISSP pedagogical claims lack them.
+
+---
+
 ## Open Questions for the SME
 
 1. **Domain naming in UI.** "Domain" (CISSP term, buyer-familiar) vs "Topic" (NuQuiz term, consistent with engine). Lean: "Domain" in student-facing UI, "Topic" internally.
