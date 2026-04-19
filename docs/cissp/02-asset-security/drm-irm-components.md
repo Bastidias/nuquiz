@@ -1,0 +1,11 @@
+# DRM / IRM Components
+
+**Domain:** 2 — Asset Security &nbsp;|&nbsp; **Pattern:** Dimensions &nbsp;|&nbsp; **Tags:** 2.6
+**Status:** TODO — stub only, not yet authored
+
+> **TODO:** Author this Concept per `.claude/skills/research-cissp-concept/SKILL.md`.
+
+- **Pattern:** Dimensions
+- **Rows:** License management, Persistent protection, Auditing, Policy enforcement
+- **Columns:** definition, typical use case, weakness
+- **Est. facts:** ~12
