@@ -219,6 +219,98 @@ Notice what's NOT a distractor here: `Reliable`, `Yes` (flow control), and `Yes`
 
 ---
 
+## Behind the Loop — Q9 → DM1 → state writes → Q10
+
+The forward tour showed what the engine *produces*. This section inverts: take the Q9 → Q10 loop and trace every rendered element and every state write back to either a Fact ID, fixed app chrome, or a read/write against a student-state table. If the data model holds, nothing sits between those categories — no generated text, no paraphrase, no per-question authored remediation.
+
+### Stage 1 — Q9 rendered
+
+T/F is a hide-Value prompt where the Value shown is a real Fact from elsewhere in the table, pinned to the wrong Row. The engine reads one Fact, then picks a second coordinate where that Fact's text does *not* belong.
+
+```
+Transport | key devices → Routers — True or False?
+```
+
+| Element | Type | Origin |
+|---|---|---|
+| `Transport \| key devices` | Prompt coord | Target coord `(osi-layers, Transport, key_devices)` rendered via `{row} \| {column}` |
+| `Routers` | Fact (literal cell text) | `osi-layers:Network:key_devices` — pulled as a *displaced* Value; real coord retained for grading |
+| `→ Routers — True or False?` | Chrome template | T/F format: prepend `→ Value`, append `— True or False?` |
+
+### Stage 2 — student submits `True`
+
+Grading is a single equality check. There's no free text to parse, so no classifier in the loop.
+
+```
+picked         = True
+target_values  = lookup(target = (osi-layers, Transport, key_devices))   // → {Stateful firewalls, Load balancers}
+asserted_value = "Routers"                                               // from osi-layers:Network:key_devices
+is_correct     = (asserted_value ∈ target_values) == picked              // False == True → WRONG
+```
+
+Three Fact IDs are now in scope for what comes next: the target coord, the displaced Fact (`Routers`), and the target's correct Facts (`Stateful firewalls`, `Load balancers`).
+
+### Stage 3 — DM1 rendered
+
+Every line is either fixed chrome or a template filled from the Fact IDs collected in Stage 2. Nothing in this screen is free prose about the data.
+
+| Line | Type | Origin |
+|---|---|---|
+| `✗ Incorrect.` | Chrome | Fixed on wrong answers |
+| `Picked: True` | Chrome echo | Student input |
+| `Real Fact: Routers belongs to Network \| key devices, not Transport \| key devices.` | Template | `{displaced.text} belongs to {displaced.coord}, not {target.coord}` |
+| `Correct Fact: Transport \| key devices → Stateful firewalls, Load balancers.` | Coord render | `{target.coord} → {values}` — literal cell text joined by `,` |
+| `⚠ Confusion pair: Routers ↔ Stateful firewalls.` | Template | `{displaced.text} ↔ {first_correct.text}` |
+| `Swap count: 2.` | Counter | Post-Stage-4 read of `confusion_graph[pair]` |
+| `Adding both Facts to review queue, paired.` | Chrome | Fixed description of the queue write |
+
+### Stage 4 — state writes
+
+Submitting Q9 commits three writes. These are the *only* inputs that distinguish this student's future Q10 from a default one — no per-question remediation text is authored or stored anywhere.
+
+```
+response_history.append({
+  coord:          (osi-layers, Transport, key_devices),
+  picked:         True,
+  displaced_fact: osi-layers:Network:key_devices,          // what the prompt asserted
+  correct_facts:  {osi-layers:Transport:key_devices:*},
+  result:         WRONG,
+})
+
+confusion_graph.increment(
+  pair = (osi-layers:Network:key_devices,                  // Routers
+          osi-layers:Transport:key_devices:Stateful_firewalls)   // first correct at target
+)  // 1 → 2
+
+review_queue.add_paired(
+  osi-layers:Network:key_devices,
+  osi-layers:Transport:key_devices:Stateful_firewalls,
+)
+```
+
+### Stage 5 — Q10, the receipt
+
+Q10 (`Network | key devices → ?`) arrives later in the session. Its option set is the closure of the loop: Stage-4 writes dictate which Facts get pinned.
+
+```
+Network | key devices → ?
+( ) Switches
+( ) Routers
+( ) Hubs
+( ) Stateful firewalls
+```
+
+| Option | Fact ID | Set by |
+|---|---|---|
+| `Switches` | `osi-layers:Data_Link:key_devices` | History policy — student's past wrong pick for this coord (earlier session) |
+| `Routers` | `osi-layers:Network:key_devices` | Correct answer |
+| `Hubs` | `osi-layers:Physical:key_devices` | Column filler — same Column, far Row, under-tested |
+| `Stateful firewalls` | `osi-layers:Transport:key_devices` | **Confusion-graph policy — pinned because Stage 4 incremented `(Routers, Stateful firewalls)` to ≥ 2** |
+
+The bolded row is the closure. Q9 → DM1 → state write → Q10-pin is a mechanical chain: if any link required generated text, per-question authored content, or a stored string that couldn't be resolved back to a Fact ID, the chain would break. That's what `pre-team-discussion.md §3` means by "the text is not the ID, position is not the ID" — the reverse trace is the test for whether the data shape is good enough.
+
+---
+
 ## What this demo does NOT show (and why)
 
 - **Scenario-framed questions in natural language.** Possible eventually, but every word would either be authored or LLM-generated — both violate the deterministic-naming invariant for v1. Coordinate prompts only.

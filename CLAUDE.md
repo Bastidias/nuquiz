@@ -1,13 +1,18 @@
 # NuQuiz — Working in This Repo
 
-This repo is **demo content only**. App code, strategy, roadmap, stories, agent briefs, and the question-design framework were intentionally removed. There is no build, no tests, no implementation in this tree. Don't reintroduce architectural commitments without explicit user approval.
+This repo is **demo content only**. App code, strategy, roadmap, stories, and agent briefs were intentionally removed. There is no build, no tests, no implementation in this tree. Don't reintroduce architectural commitments without explicit user approval.
 
 ## What's here
 
 ```
-docs/cissp/             — CISSP demo content authored against the current model
-.claude/                — settings only (agents and commands removed)
+docs/cissp/                                         — CISSP demo content
+.claude/skills/research-cissp-concept/SKILL.md      — Skill: research and author one CISSP Concept from public sources
+.claude/                                            — settings (agents and commands removed)
 ```
+
+## Skills
+
+- **`research-cissp-concept`** — invoke when authoring, expanding, re-citing, or restructuring a CISSP Concept. One Concept per invocation. Hybrid public-source research with per-Cell citations, lint-gated format, and combined citation + exam-fit review. See `.claude/skills/research-cissp-concept/SKILL.md` for the full workflow.
 
 ## Conventions when editing demo content
 
@@ -21,7 +26,7 @@ The conventions live inside `docs/cissp/knowledge-map.md`. Read it before editin
 ## What this repo deliberately does not contain
 
 - Application code.
-- A vision / strategy document.
+- A commitment-laden strategy document. (A landscape / tradeoffs doc at `docs/landscape.md` is in scope — background thinking, no roadmap, no commitments.)
 - A roadmap.
 - User stories.
 - A question-design framework.
