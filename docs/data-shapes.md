@@ -87,7 +87,7 @@ Below, the same Concept in each shape.
 
 ## Shape 1 — Table-native (Rows × Columns × cells)
 
-Storage matches the authoring view. A Concept is a table; a cell is addressed by `(concept_id, row_id, column_id)`; a cell contains an ordered list of Fact IDs.
+Storage matches the authoring view. A Concept is a table; a cell is addressed by `(concept_id, row_id, column_id)`; a cell contains an ordered list of Fact IDs. The one-to-many from cell to Facts is native — a cell is a list, not a scalar — and each Fact is a first-class entity with its own properties (text, order within cell, citation, authored-at, etc.), carried as columns on a Facts table. Multi-Fact cells are storage-level; the `<br>` in markdown is just the authoring surface for the list, not the model. Anything SPO carries as a triple qualifier (ordering, provenance, timestamp) table-native carries as a column on the Fact row.
 
 ```
 concept:        tcp-udp-sctp                       (id: cpt-0042)
@@ -107,7 +107,6 @@ fact-7792:      text="Reliable", in_cell=(cpt-0042, row-3, col-B)
 
 **Cons**
 - Cross-Concept queries ("every Fact whose Value is `Reliable`") require scanning every table or maintaining a secondary index. SPO and graph get this for free.
-- Multi-Fact cells (our `<br>` convention) need a sub-ordering. Either the cell stores an ordered list of Fact IDs (clean) or you re-parse text at read time (breaks the invariant — see `pre-team-discussion.md` §3).
 - Facts that span multiple Rows or multiple Columns (rare but real — e.g., a caveat that applies to two cells) don't have an obvious home.
 - The shape is strong inside a Concept, weak between Concepts. If a Fact in one Concept *is* a Row in another (e.g., `Kerberos` appears both as a Row in auth-protocols and as a Fact in SSO-examples), you either duplicate or build a side-channel linking table — which is SPO by the back door.
 
@@ -140,7 +139,7 @@ Concept membership is metadata: `concept(tcp-udp-sctp) contains rows {TCP, UDP, 
 
 **Cons**
 - Authoring UX is the hard problem. A triples editor is a spreadsheet from hell unless you build a table view on top — at which point you're projecting back to Shape 1 for the author.
-- Multi-Fact cells (`<br>` lists) have no native representation. You need ordering metadata (`fact-7802` comes before `fact-7803` *within the cell*), which is an extra property and a source of drift.
+- Multi-Fact cells have no native representation. Within-cell ordering needs an extra predicate or qualifier on every triple (`fact-7802` comes before `fact-7803` *within the cell*) — a source of drift. Table-native carries the same ordering as a plain column on the Fact row; graph carries it as an edge property. SPO is the shape that pays most for this metadata.
 - Ordered Concepts (TCP handshake, BCP phases) need explicit order predicates. Easy but verbose.
 - Aggregations that feel like SQL GROUP BY get awkward in pure triple stores. Most teams end up with a SQL-backed triples table, not a real RDF store.
 - "How big is this Concept?" requires a count query, not a row inspection.
@@ -178,7 +177,7 @@ The graph model (Neo4j, Memgraph, and the property-graph flavor of most modern g
 
 **Pros**
 - Multi-hop reasoning is cheap. "Every protocol whose reliability is `Reliable` and whose typical use case includes something at OSI Layer 7" is a graph traversal. SPO can do it; graphs make it pleasant.
-- Edges-with-properties elegantly handle `<br>` ordering and per-Fact citation without a second table.
+- Edges-with-properties carry per-Fact metadata (within-cell ordering, citation, timestamp) directly on the edge. Table-native carries the same metadata as columns on the Facts table; the gain over table-native here is ergonomic, not capability.
 - Visual reasoning tools (graph UIs) are mature.
 - Natural fit for confusion pairs — a confusion relationship *is* an edge.
 
