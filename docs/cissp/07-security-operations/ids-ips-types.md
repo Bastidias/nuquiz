@@ -22,6 +22,15 @@ The four detection methodologies an Intrusion Detection System (IDS) or Intrusio
 - **Stateful protocol analysis is the only method that catches protocol abuse.** Signatures and anomaly detection look at content and statistics; stateful protocol analysis tracks the *expected sequence* of protocol operations (e.g., FTP must authenticate before it can transfer files) and alerts on out-of-state behavior. This is the discriminating feature on the exam.
 - **Gaps marked `[needs source]`:** four Facts — the entire heuristic row, plus the "resource-intensive per session" weakness for stateful protocol analysis. Heuristic gaps reflect that NIST SP 800-94 does not formally define heuristic detection; sourcing would require a vendor IDPS reference or a CISSP courseware citation.
 
+### Tricky distractors
+
+- **Signature catches known; anomaly catches unknown.** Trade-off: low-FP signatures vs FP-prone anomaly detection. Wrong-answer pattern: claiming signatures catch zero-days — they can't, by definition.
+- **Anomaly-based has high false positives.** Statistical baselines are noisy. Wrong-answer pattern: claiming anomaly detection has low FPs because it's "smart" — it's the opposite.
+- **Stateful protocol analysis catches protocol abuse.** Out-of-sequence operations. Wrong-answer pattern: claiming signatures catch protocol-state violations — they don't unless explicitly written for each.
+- **IDS detects; IPS prevents.** Inline vs passive. Wrong-answer pattern: confusing IDS and IPS — the suffix indicates active response capability.
+- **Detection method is orthogonal to deployment.** Network vs host (NIDS/HIDS) is a separate axis. Wrong-answer pattern: conflating signature/anomaly with NIDS/HIDS — they're independent dimensions.
+- **Tuning matters more than method.** Untuned signatures still fire on benign traffic. Wrong-answer pattern: claiming detection method alone determines effectiveness — environment-specific tuning is critical.
+
 ## Engine demo opportunities
 
 - `? | detection method → Compare observed activity to statistical baseline of normal` → Anomaly-based

@@ -26,6 +26,15 @@ The six application-security analysis tool categories CISSP candidates are expec
 - **Secrets scanning catches "did we commit a key by mistake."** Hard-coded credentials in source repositories are a top breach vector. Secrets scanning looks for high-entropy strings, known credential patterns (AWS access key prefixes `AKIA`, GitHub PATs starting `ghp_`, etc.), and matches against secret lists. Run pre-commit to prevent leaks; run on existing repository history to find leaks already present.
 - **Out of scope for this Concept:** specific SAST tools (Semgrep, SonarQube, CodeQL, Checkmarx), DAST tools (OWASP ZAP, Burp Suite, Nuclei), IAST tools (Contrast Security), RASP tools, SCA tools (Snyk, Dependabot, Trivy), the OWASP Top 10 vulnerabilities themselves (separate Concept — `owasp-top-10`), software-testing taxonomy at the unit/integration/system level (separate Concept — `test-execution-types` in D6).
 
+### Tricky distractors
+
+- **SAST = static; DAST = dynamic.** SAST analyzes code; DAST analyzes running app. Wrong-answer pattern: confusing them — most-tested distinction.
+- **SAST has high FP rate.** Abstract code-path analysis flags unreachable issues. Wrong-answer pattern: claiming SAST has low FPs because it sees source code — opposite is true.
+- **SCA finds vulnerable dependencies, not your code.** Different scope from SAST. Wrong-answer pattern: claiming SCA detects coding errors — it matches packages to CVE database.
+- **RASP is production runtime defense.** Not a testing tool. Wrong-answer pattern: classifying RASP alongside SAST/DAST as a discovery tool — RASP defends against attacks, doesn't find vulns.
+- **IAST combines SAST + DAST.** Instrumentation during dynamic testing. Wrong-answer pattern: claiming IAST is purely static — the instrumentation observes runtime execution.
+- **Secrets scanning has its own category.** Not just SAST. Wrong-answer pattern: lumping Secrets scanning under SAST — it matches credential patterns specifically.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

@@ -25,6 +25,15 @@ The six password-attack classes CISSP candidates are expected to discriminate. T
 - **Slow hashing defends against all offline attacks.** bcrypt, scrypt, Argon2 (and to a lesser extent PBKDF2) deliberately take significant CPU/memory per hash operation, multiplying the cost of brute-force and dictionary searches by thousands to millions. NIST SP 800-132 [s2] specifies PBKDF2 for password-based key derivation; NIST SP 800-63B endorses memorized-secret verifiers using "an approved key derivation function" (typically PBKDF2, or more modern choices like Argon2).
 - **Out of scope for this Concept:** specific hashing algorithms (bcrypt vs Argon2 vs scrypt comparison — could be a `password-hashing-algorithms` Concept), password-policy specifics (length, rotation, composition), passwordless flows (FIDO2, WebAuthn, passkeys), credential-stuffing detection-and-response workflows, specific tool syntax (Hashcat, John the Ripper, Burp intruder).
 
+### Tricky distractors
+
+- **Salt defeats rainbow tables.** Per-user salt requires per-user rainbow table — infeasible. Wrong-answer pattern: claiming MFA defeats rainbow tables — MFA is for live-service attacks; salt is for offline.
+- **Credential stuffing vs Password spraying.** Stuffing: full breached credential pairs (assumes reuse). Spraying: one password tried against many accounts (avoids lockout). Wrong-answer pattern: collapsing them.
+- **Spraying defeats per-account lockout.** Slow distribution across accounts. Wrong-answer pattern: claiming standard account lockout stops spraying — distributed rate limiting is needed.
+- **Phishing bypasses password strength.** Strong unique passwords still get phished. Wrong-answer pattern: claiming complexity requirements defeat phishing — only phishing-resistant MFA does.
+- **Slow hashing fights offline attacks.** bcrypt, Argon2, scrypt. Wrong-answer pattern: claiming SHA-256 alone is enough for password storage — it's too fast.
+- **Online vs offline target matters.** Online attacks face rate limits; offline attacks face only hash-cost. Wrong-answer pattern: applying online defenses (MFA, lockout) to offline-hash threats.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

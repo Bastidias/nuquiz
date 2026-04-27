@@ -27,6 +27,15 @@ The seven roles that participate in an information security governance program, 
 - **The User role is small but pivotal.** Users are responsible for their own compliance with policy. Many breaches trace back to a user clicking a phish, sharing a password, or bypassing a control. Security awareness training (`training-program-phases.md`) is the program by which users are equipped to fulfill the User role responsibilities.
 - **Gaps marked `[needs source]`:** one Fact — Data Custodian's "reports to" entry. Practitioner consensus but the formal reporting line varies by org structure.
 
+### Tricky distractors
+
+- **Data Owner vs Data Custodian.** Owner classifies and decides access (accountability). Custodian implements controls (responsibility). Wrong-answer pattern: claiming the custodian decides classification — that's the owner's job.
+- **Accountability cannot be delegated.** Responsibility can. Wrong-answer pattern: claiming a Data Owner can delegate accountability by hiring a custodian — only execution can be delegated.
+- **Senior Management vs Board.** Senior Management runs the program; Board oversees. Wrong-answer pattern: claiming the Board approves day-to-day security strategy — it sets risk appetite; senior management approves strategy.
+- **System Owner vs Data Owner.** System Owner owns the system; Data Owner owns the data residing on it. Wrong-answer pattern: collapsing them — one system may host data from multiple Data Owners.
+- **Authorizing Official signs the ATO.** Often the System Owner; accepts residual risk on behalf of the organization. Wrong-answer pattern: claiming the auditor signs the ATO — auditors assess, they don't authorize.
+- **Auditor reports outside the audited line.** Internal auditor → audit committee, not to executives. Wrong-answer pattern: claiming the auditor reports to the CISO — that breaks independence.
+
 ## Engine demo opportunities
 
 - `? | responsibilities → Classify data` → Data Owner

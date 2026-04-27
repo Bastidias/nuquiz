@@ -24,6 +24,15 @@ Four conceptual frameworks the CISSP exam uses to teach the foundational securit
 - **Other frameworks (intentionally not on this table).** STRIDE (in `stride-categories.md` for threat modeling), DREAD (risk scoring; deprecated), SABSA (enterprise security architecture), TOGAF (enterprise architecture). These operate at different levels of abstraction than the four security-property frameworks here.
 - **Gaps marked `[needs source]`:** none — all Facts are CISSP-canonical.
 
+### Tricky distractors
+
+- **CIA vs DAD.** CIA = properties to protect. DAD = threats that violate. Wrong-answer pattern: collapsing them — they're complementary perspectives.
+- **Parkerian Hexad adds Possession, Authenticity, Utility.** Parker 1998 extension. Wrong-answer pattern: claiming the Hexad has three components — it's six (CIA plus three).
+- **Possession ≠ Confidentiality.** Lost encrypted USB violates Possession but not Confidentiality. Wrong-answer pattern: collapsing them — Parker specifically separated these.
+- **Authenticity ≠ Integrity.** Authenticity is "what it claims to be"; integrity is "unmodified". Wrong-answer pattern: equating them — supply-chain spoofing violates authenticity even with intact data.
+- **Utility ≠ Availability.** Encrypted data with lost key has integrity and availability but no utility. Wrong-answer pattern: claiming utility is just availability under another name — it's distinct.
+- **STRIDE is threat modeling, not a security-property framework.** Different level of abstraction. Wrong-answer pattern: listing STRIDE alongside CIA/DAD/IAAA — different category.
+
 ## Engine demo opportunities
 
 - `? | components → Disclosure` → DAD

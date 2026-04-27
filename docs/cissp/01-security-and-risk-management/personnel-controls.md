@@ -25,6 +25,15 @@ The seven personnel-security controls that span hiring through ongoing employmen
 - **NDA survives termination.** The confidentiality obligation in the NDA continues after employment ends (often perpetually for trade secrets, finite period for general confidential info). This is why exit interviews remind the departing person of the still-active obligation — it preserves the legal claim.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard NIST or CISSP personnel-control framing.
 
+### Tricky distractors
+
+- **NDA survives termination.** Confidentiality obligation continues post-employment. Wrong-answer pattern: claiming NDAs only apply during employment — the legal claim depends on continuing obligation.
+- **Background check depth scales with role.** High-clearance roles get deeper checks. Wrong-answer pattern: applying uniform background check depth — the principle is commensurate with risk.
+- **Pre-hire vs Pre-access timing.** Background check before hire; NDA before access. Wrong-answer pattern: collapsing them into "pre-employment" — they may happen at different times for contractors.
+- **Need-to-know vs Least privilege.** NTK restricts information; LP restricts permissions. Wrong-answer pattern: confusing them — same distinction tested across multiple Concepts.
+- **SoD is preventive; rotation/vacation are detective.** Wrong-answer pattern: classifying all three as preventive.
+- **Personnel controls span hiring through termination.** Lifecycle approach. Wrong-answer pattern: limiting personnel controls to onboarding — they apply throughout employment.
+
 ## Engine demo opportunities
 
 - `? | when applied → Pre-hire` → Background check

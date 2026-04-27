@@ -23,6 +23,15 @@ The four approaches to deriving security signal from collected logs, ordered by 
 - **What is intentionally not on this table.** Log collection, log normalization, log retention, and log integrity protection (e.g., write-once storage, hash chains) are upstream of analysis and live elsewhere. Visualization and dashboarding are downstream. This Concept is about *deriving signal from logs that already exist*.
 - **Gaps marked `[needs source]`:** three Facts — manual review's strength, manual review's typical use, and ML's "requires training data and tuning" weakness. All are widely accepted but not yet sourced to a primary publication in this research pass.
 
+### Tricky distractors
+
+- **Rule-based catches known; ML catches unknown.** Same trade-off across detection. Wrong-answer pattern: claiming rules catch zero-days — they can't unless someone wrote a rule.
+- **UEBA is ML on user/entity telemetry.** Specialization, not a separate technology. Wrong-answer pattern: claiming UEBA is unrelated to ML — it's ML applied to behavioral data shape.
+- **UEBA targets insiders and account takeover.** Different from generic SIEM rules. Wrong-answer pattern: choosing rule-based correlation for insider threat detection — UEBA is the canonical answer.
+- **Manual review doesn't scale.** Not a shortcoming of skill, just throughput. Wrong-answer pattern: claiming manual analysis is universally inferior — it's superior for targeted forensic depth.
+- **Modern SIEMs combine rules and ML.** Not exclusive. Wrong-answer pattern: framing them as alternatives — production stacks layer both.
+- **ML requires baseline data.** Cold start problem. Wrong-answer pattern: claiming ML works out-of-the-box — it requires representative training data.
+
 ## Engine demo opportunities
 
 - `? | strengths → Detects insider risk through behavioral deviation` → UEBA

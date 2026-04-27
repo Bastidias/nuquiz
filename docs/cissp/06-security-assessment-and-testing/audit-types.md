@@ -28,6 +28,15 @@ The four audit categories CISSP candidates are expected to discriminate. The dis
 - **Same-firm conflicts.** A firm cannot serve as both External auditor (hired by client) and Third-party auditor (attesting on behalf of a framework) for the same client without independence concerns. Sarbanes-Oxley specifically addressed this by limiting non-audit services that financial-statement auditors can provide. Similar restrictions apply to SOC 2 auditors providing remediation consulting.
 - **Out of scope for this Concept:** specific audit firms and certifications, audit committee charters and Board-reporting structures, conflict-of-interest rules, audit professional certifications (CPA, CISA, CIA), audit techniques (sampling, analytical procedures, walkthroughs).
 
+### Tricky distractors
+
+- **Internal auditor reports to audit committee.** Not to executives. Wrong-answer pattern: claiming internal auditor reports to CISO or CFO — that breaks independence.
+- **Third-party ≠ External.** External: hired by org for own use. Third-party: hired by org but attesting on behalf of regulator/framework. Wrong-answer pattern: equating SOC 2 auditor (third-party) with external consultant (external).
+- **Regulatory audits are coercive.** Cannot decline. Wrong-answer pattern: claiming organizations can refuse regulatory audits — they can't without consequences.
+- **Independence ladder.** Internal < External < Third-party = Regulatory. Wrong-answer pattern: claiming external is more independent than third-party — third-party has higher independence because of framework-driven scope.
+- **SOC 2 auditor cannot also be remediation consultant.** Independence rule. Wrong-answer pattern: claiming the same firm can do both — independence rules forbid it.
+- **Internal findings can be disputed.** Management response is part of the report. External and especially regulatory findings are harder to dispute. Wrong-answer pattern: treating all audit findings equally binding.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -28,6 +28,15 @@ The three indicator types CISSP candidates are expected to discriminate. KPIs me
 - **Cross-Concept link.** Sibling Concept `software-security-metrics` in D8 covers software-specific metrics with similar leading-vs-lagging framing. Account-management metrics (`account-management-metrics`) and backup-verification metrics (`backup-verification-metrics`) are domain-specific instances of KCIs.
 - **Out of scope for this Concept:** specific metric design (SMART criteria, GQM — Goal Question Metric), balanced scorecard frameworks, OKRs (Objectives and Key Results) as an alternative to KPIs, FAIR-style quantitative risk metrics (covered in `risk-frameworks` in D1), executive dashboard visualization design.
 
+### Tricky distractors
+
+- **KPI = performance; KRI = risk; KCI = control.** Three different questions. Wrong-answer pattern: collapsing them — each answers a different management question.
+- **KRI is leading; KPI/KCI are lagging.** KRI is the only canonical leading indicator in this set. Wrong-answer pattern: claiming KPIs are leading because they measure trends — they measure past performance.
+- **Threshold-based alerting drives indicator usage.** Green/yellow/red bands. Wrong-answer pattern: claiming indicators have binary state — bands enable graduated escalation.
+- **All three feed the security program.** Complementary, not substitutes. Wrong-answer pattern: claiming KRIs replace KPIs — they answer different questions.
+- **KCIs are mostly lagging.** Some monitoring approaches leading. Wrong-answer pattern: classifying KCIs as fully leading — most are detective.
+- **Patch deployment rate is KPI; vuln backlog is KRI.** Performance vs risk. Wrong-answer pattern: confusing them — same data viewed through different lenses.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

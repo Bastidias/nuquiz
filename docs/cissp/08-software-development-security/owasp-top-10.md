@@ -33,6 +33,15 @@ The ten most critical web application security risks per OWASP's 2021 ranking [s
 - **OWASP Top 10 is web-app-focused.** Sister projects cover other domains: OWASP API Security Top 10 (separate Concept — `api-security-risks`), OWASP Mobile Top 10, OWASP LLM Top 10. CISSP testing focuses on the canonical web Top 10 unless a question is specifically API-scoped.
 - **Out of scope for this Concept:** OWASP ASVS (Application Security Verification Standard — depth requirements per category), OWASP cheat sheets per category, specific CVE examples beyond Log4Shell, the OWASP Top 10 for LLM Applications, OWASP API Security Top 10 (covered in `api-security-risks`).
 
+### Tricky distractors
+
+- **A01 Broken Access Control.** Currently #1. Was #5 in 2017. The 2021 promotion reflects how often access-control flaws still appear. Wrong-answer pattern: associating "Broken Access Control" with authentication — it's *authorization* (after authentication, what can the user do).
+- **A03 absorbed XSS.** XSS was its own category (A07) in 2017; in 2021 it's a sub-class of A03 Injection. Wrong-answer pattern: looking for "XSS" as a separate Top-10 entry in 2021 — it isn't.
+- **A04 Insecure Design is architectural.** No amount of *secure coding* fixes a missing rate limit or absent threat model. Wrong-answer pattern: treating A04 as a coding issue when it's a design issue.
+- **A06 Vulnerable Components.** This is the dependency / SBOM category. Log4Shell exposure is the canonical example. Wrong-answer pattern: confusing A06 with A02 Cryptographic Failures (which is about *using* weak crypto, not vulnerable libraries that happen to do crypto).
+- **A07 vs A01.** A07 Authentication Failures = login mechanism is flawed. A01 Broken Access Control = authentication worked but authorization is wrong. Wrong-answer pattern: choosing A07 for an authorization scenario.
+- **A10 SSRF.** Server-Side Request Forgery: the *server* fetches an attacker-controlled URL. Cloud metadata service attacks use this. Wrong-answer pattern: confusing SSRF with CSRF — CSRF is *client-side* (browser fooled into making a request); SSRF is *server-side*.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

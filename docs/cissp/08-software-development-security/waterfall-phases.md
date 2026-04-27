@@ -26,6 +26,15 @@ The five-phase simplified Waterfall model. Royce 1970 [s1] originally sketched s
 - **Maintenance dominates total lifecycle cost.** Industry rule-of-thumb: 60-80% of total software cost is incurred in Phase 5 (maintenance, operations, updates). Out of scope as a cell value because it's not a phase activity; worth flagging for exam-context.
 - **Out of scope for this Concept:** V-Model phase detail (separate Concept — `waterfall-phases` covers the linear Waterfall only; V-Model adds test-pair structure), Spiral iterations, Agile sprints, SDLC-security-activity mapping (separate Concept — `security-activities-by-phase`), CI/CD pipeline stages.
 
+### Tricky distractors
+
+- **Unit test is Phase 3; Integration/System/Acceptance are Phase 4.** Different testing boundaries. Wrong-answer pattern: putting all testing in Phase 4 — unit testing belongs with implementation.
+- **Waterfall is linear; no feedback loop.** As taught. Wrong-answer pattern: claiming Waterfall iterates back to earlier phases — that's a critique that prompts other models.
+- **Royce argued against pure linear flow.** Persistent mis-citation. Wrong-answer pattern: invoking Royce as the originator of the strict linear Waterfall — he criticized that approach.
+- **Maintenance dominates lifecycle cost.** 60-80% of total. Wrong-answer pattern: assuming development cost dominates — operational/maintenance cost is much larger over the system lifetime.
+- **Verification vs Validation.** Verification = building right; Validation = building right thing. Wrong-answer pattern: collapsing them — they answer different questions.
+- **Phase order: Requirements → Design → Implementation → Verification → Maintenance.** Wrong-answer pattern: putting Verification before Implementation — testing requires built code.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -29,6 +29,15 @@ The seven evidence sources, ordered from most volatile (vanishes fastest) to lea
 - **Tie to other Concepts.** This Concept governs the *order* in which the artifacts in `forensics-artifact-types.md` are collected during Step 2 (Collection) of `evidence-handling-chain.md`. The Order column here corresponds to acquisition priority within that step.
 - **Gaps marked `[needs source]`:** three Facts — capture tools for tiers 1, 2, and 7. Hardware register/cache acquisition tools are specialized and rarely used; backup-recovery tools exist but are not consistently named in primary publications. Practitioner consensus only.
 
+### Tricky distractors
+
+- **Don't pull power first.** Tiers 1-5 lost instantly. Wrong-answer pattern: claiming pulling power preserves evidence — it destroys volatile data.
+- **RAM before disk.** Live memory acquisition before disk imaging. Wrong-answer pattern: imaging disk first, then memory — by then memory is gone.
+- **Network state ages quickly.** ARP, routes, TCP connections drift in seconds. Wrong-answer pattern: deferring network capture — it's tier 4 for a reason.
+- **Disk is "volatile-ish".** Journals, swap, unallocated space change. Wrong-answer pattern: claiming disk is immutable — file-system structures churn continuously.
+- **CPU registers and cache rarely captured.** Specialized tools required; data gone before responder arrives. Wrong-answer pattern: assuming standard forensic kits capture register state.
+- **Order is RFC 3227-prescribed.** Authoritative source. Wrong-answer pattern: reordering by perceived "importance" — volatility is the criterion.
+
 ## Engine demo opportunities
 
 - `? | Name → Network state` → Order 4

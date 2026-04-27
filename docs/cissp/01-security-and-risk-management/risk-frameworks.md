@@ -25,6 +25,15 @@ Five risk-management frameworks the CISSP exam tests by name. NIST RMF is the U.
 - **What is intentionally not on this table.** ISO 31000 (general enterprise risk management, not security-specific), COSO ERM (financial-controls framework), and COBIT (IT governance with risk module) are adjacent frameworks that touch security risk but are not primarily *security* risk frameworks.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the published framework documentation.
 
+### Tricky distractors
+
+- **NIST RMF six-step order.** Categorize → Select → Implement → Assess → Authorize → Monitor. Wrong-answer pattern: putting Authorize before Assess — Authorize comes after Assess and before Monitor.
+- **FAIR is quantitative; OCTAVE is qualitative/asset-centric.** Wrong-answer pattern: claiming OCTAVE produces dollar risk figures — that's FAIR.
+- **NIST RMF authorizes systems.** RMF is system-level. ISO 27005 is enterprise-level. Wrong-answer pattern: applying RMF to enterprise risk reporting — the unit of analysis is the system.
+- **TARA covers OT and supply chain.** Most-cited cyber-physical risk framework. Wrong-answer pattern: confusing TARA (threat/asset risk) with TVRA, OCTAVE, or other acronyms.
+- **ISO 27005 ≠ ISO 27001.** 27001 is the ISMS standard; 27005 is its risk-management companion. Wrong-answer pattern: treating them as interchangeable.
+- **Multiple frameworks coexist.** Most large organizations run NIST + ISO + FAIR side by side. Wrong-answer pattern: claiming an organization should pick one framework — fit-for-purpose, not exclusive.
+
 ## Engine demo opportunities
 
 - `? | focus → Quantitative loss exposure analysis` → FAIR

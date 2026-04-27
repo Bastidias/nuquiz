@@ -32,6 +32,15 @@ The seven biometric modalities CISSP candidates are expected to discriminate by 
 - **NIST testing programs.** FpVTE (Fingerprint Vendor Technology Evaluation) [s1] benchmarks fingerprint matchers. IREX (Iris Exchange) [s2] benchmarks iris recognition. FRVT (Face Recognition Vendor Test) [s3] benchmarks face recognition. There is no equivalent NIST program for voice, hand geometry, retina, or behavioral biometrics at the same scale.
 - **Out of scope for this Concept:** specific FRR / FAR / CER numerics per modality (covered conceptually in `biometric-error-types`), liveness detection mechanisms in detail, biometric template protection (NIST SP 800-76), GDPR / BIPA privacy implications of biometric storage, multimodal fusion techniques.
 
+### Tricky distractors
+
+- **Iris vs Retina.** Iris scans the colored ring (visible, IR illumination); retina scans blood vessels at the back of the eye (laser, intrusive). Wrong-answer pattern: confusing them — retina is rare in practice; iris dominates today.
+- **Iris is most accurate; Face is most-deployed.** Different optimization targets. Wrong-answer pattern: claiming face is more accurate than iris — face has lower accuracy but lower friction.
+- **Liveness detection counters replay.** Photo + face = bypass without liveness. Wrong-answer pattern: claiming face recognition alone defeats photo attacks — liveness is what makes it secure.
+- **Behavioral spans multiple sub-modalities.** Keystroke, mouse, gait, signature dynamics. Wrong-answer pattern: assuming "behavioral" means only keystroke dynamics.
+- **Voice replay defeated by liveness phrases.** Random challenge phrases per session. Wrong-answer pattern: claiming voice recognition is inherently secure — recorded samples replay easily.
+- **Hand geometry is moderate accuracy.** Largely displaced by fingerprint and face today. Wrong-answer pattern: ranking hand geometry alongside iris/retina — it's middle-tier.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

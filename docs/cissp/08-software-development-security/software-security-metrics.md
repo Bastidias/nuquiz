@@ -24,6 +24,15 @@ The five software security metrics most often cited in CISSP frameworks. Three a
 - **Security test coverage 100 percent target.** Unlike code coverage, security test coverage *should* be 100 percent — every defined security requirement should have at least one verifying test. Anything less means a security requirement exists that no test verifies, which is a known risk.
 - **Out of scope for this Concept:** specific vulnerability-tracking tooling (Jira, GitHub Security Advisories), CVSS scoring (separate Concept — `vulnerability-severity-scoring` in D6), CVE / CWE references, FAIR / quantitative risk modeling, vendor-specific SLA frameworks, OKRs or balanced-scorecard frameworks for security programs.
 
+### Tricky distractors
+
+- **Leading vs Lagging.** Leading = predicts future outcomes (coverage). Lagging = measures past outcomes (defects). Wrong-answer pattern: claiming MTTR is a leading indicator — it measures past response time.
+- **Code coverage ≠ test quality.** 95% coverage with no security checks is worse than 60% with good security tests. Wrong-answer pattern: claiming high code coverage guarantees secure code.
+- **Security test coverage targets 100%.** Every security requirement should have a verifying test. Wrong-answer pattern: applying 80% target to security test coverage — that's code coverage.
+- **MTTR is duration; coverage is percentage.** Different units. Wrong-answer pattern: confusing the two — common composite-distractor target.
+- **Vulnerability backlog target is zero critical.** SLA-bound for others. Wrong-answer pattern: claiming any non-zero critical backlog is acceptable — zero-critical is the canonical target.
+- **Defect density per KLOC.** Defects per thousand lines. Wrong-answer pattern: claiming defect density is per-line — it's per-KLOC.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

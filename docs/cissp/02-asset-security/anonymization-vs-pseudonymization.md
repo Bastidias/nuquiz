@@ -23,6 +23,15 @@ The three privacy-preserving data transformation techniques CISSP courseware tes
 - **Differential privacy (intentionally not a row).** Differential privacy is a mathematical framework that adds calibrated noise to data outputs to bound re-identification risk. It is the strongest known anonymization approach but applies primarily to *queries against datasets* rather than to dataset publication. Could be a future row or its own Concept.
 - **Gaps marked `[needs source]`:** none — all Facts trace to GDPR text or PCI DSS framing.
 
+### Tricky distractors
+
+- **Anonymization is irreversible; pseudonymization is reversible.** Wrong-answer pattern: claiming pseudonymization is irreversible — it requires the mapping table for reversal but is reversible by design.
+- **Pseudonymized data is still personal data.** GDPR scope is unchanged. Wrong-answer pattern: claiming pseudonymization removes data from regulatory scope — only true anonymization does.
+- **Tokenization vs encryption.** Token has no mathematical relationship to original; encryption produces recoverable ciphertext via key. Wrong-answer pattern: treating them as equivalent — they have different security properties (vault vs key compromise).
+- **Tokenization reduces PCI scope.** When the vault is at a third-party processor. Wrong-answer pattern: claiming tokenization eliminates PCI obligations everywhere — only systems handling tokens with vault access stay in scope.
+- **True anonymization is hard.** AOL search release, Netflix Prize re-identification both showed "anonymized" data can be linked to identify subjects. Wrong-answer pattern: assuming removing names creates anonymity — quasi-identifiers can re-identify.
+- **k-anonymity, l-diversity, differential privacy are anonymity guarantees.** Each gives mathematical bounds. Wrong-answer pattern: confusing them with techniques — they're properties datasets must satisfy.
+
 ## Engine demo opportunities
 
 - `? | reversibility → Irreversible by design` → Anonymization

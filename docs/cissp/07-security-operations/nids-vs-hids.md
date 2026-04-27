@@ -21,6 +21,15 @@ The two intrusion-detection deployment topologies plus the hybrid that combines 
 - **Hybrid is the realistic answer.** Most enterprise deployments are hybrid in practice: NIDS at network egress and east-west chokepoints, HIDS/EDR on managed endpoints. The exam may present a scenario that explicitly requires both — e.g., detecting both lateral movement (network signal) and post-compromise persistence (host signal).
 - **Gaps marked `[needs source]`:** one Fact — Hybrid's "Coverage depends on weakest leg" blind spot. Practitioner consensus but not yet sourced to a primary publication.
 
+### Tricky distractors
+
+- **NIDS can't see encrypted payloads.** TLS opacity. Wrong-answer pattern: claiming NIDS detects malicious activity inside HTTPS — only HIDS/EDR sees post-decryption.
+- **HIDS only covers agented hosts.** Unmanaged devices invisible. Wrong-answer pattern: claiming HIDS provides universal endpoint coverage — depends on agent deployment.
+- **NIDS sees network; HIDS sees host.** Different data sources. Wrong-answer pattern: confusing them — most basic distinction.
+- **Inline NIDS = IPS-capable.** SPAN/mirror is detection-only. Wrong-answer pattern: claiming all NIDS can block — only inline placement allows prevention.
+- **Hybrid is realistic default.** Both deployments needed. Wrong-answer pattern: claiming organizations choose NIDS or HIDS — production is usually both.
+- **Lateral movement = network signal.** Persistence = host signal. Wrong-answer pattern: claiming HIDS detects lateral movement — that's a NIDS strength.
+
 ## Engine demo opportunities
 
 - `? | what it sees → Network packet contents` → NIDS

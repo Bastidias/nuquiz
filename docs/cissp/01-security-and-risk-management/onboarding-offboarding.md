@@ -28,6 +28,15 @@ The six sequential phases of the personnel security lifecycle. Onboarding (Phase
 - **Why "Exit interview" is its own phase.** Exit interviews surface insider risk (departing employee may disclose security concerns they were uncomfortable raising before), reinforce ongoing obligations (NDA still applies after departure), and document final acknowledgments. Many organizations skip Phase 6 and lose this signal.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard CISSP personnel-lifecycle framing.
 
+### Tricky distractors
+
+- **Revoke access before notification (hostile termination).** Don't give the soon-to-be-terminated employee a heads-up window. Wrong-answer pattern: claiming the employee should be told first as courtesy — that creates retaliation risk.
+- **NDA precedes access.** Phase 2 before Phase 3. Wrong-answer pattern: granting access then asking for NDA signature — too late for legal protection.
+- **Access creep happens without active revocation.** Adding new access without removing old. Wrong-answer pattern: claiming role changes automatically clean up old access — they don't unless explicitly designed to.
+- **Offboarding includes asset return and credential rotation.** Not just account disable. Wrong-answer pattern: classifying asset return as separate from offboarding — it's part of Phase 5/6.
+- **Exit interview captures insider risk signals.** Departing employees disclose concerns. Wrong-answer pattern: skipping exit interviews — loses signal and final acknowledgments.
+- **Background check is liability shield.** Negligent hiring claims defended by documented screening. Wrong-answer pattern: treating background check as just due diligence — it has specific legal value.
+
 ## Engine demo opportunities
 
 - `? | Name → Provisioning` → Phase 3

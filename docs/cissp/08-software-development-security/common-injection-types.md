@@ -25,6 +25,15 @@ The six injection-attack classes CISSP candidates should distinguish — all col
 - **OS command injection is the highest-impact.** A successful OS command injection typically gives the attacker arbitrary code execution on the server with the privileges of the application user — frequently leading to full system compromise. Avoiding shell invocation entirely (e.g., using `subprocess` with an argument array rather than `shell=True` in Python) is the canonical defense.
 - **Out of scope for this Concept:** XSS variants in detail (separate Concept — `xss-variants`), CSRF (a different attack class), SSRF (covered in `owasp-top-10` A10), template injection (Server-Side Template Injection — increasingly common but not yet on most exam outlines), header injection, deserialization attacks (covered indirectly in `owasp-top-10` A08), prototype pollution.
 
+### Tricky distractors
+
+- **Parameterized queries fix SQLi; output encoding fixes XSS.** Different mitigations per interpreter. Wrong-answer pattern: claiming input validation fixes XSS — output encoding is what works because data flows to the browser.
+- **All injection shares one principle.** Separate code from data. Wrong-answer pattern: treating each injection class as needing fundamentally different defenses — they all use parameterization or its analog.
+- **Input validation is necessary but not sufficient.** Allowlist helps but doesn't replace parameterization. Wrong-answer pattern: claiming input validation alone prevents SQLi — it can be bypassed.
+- **XSS targets the browser.** Server-side parsers aren't the interpreter. Wrong-answer pattern: classifying XSS as a server-side injection — the interpreter is the user's browser.
+- **NoSQL injection still exists.** Operator smuggling via JSON. Wrong-answer pattern: claiming NoSQL databases are immune to injection — they're vulnerable to operator-level injection.
+- **OS command injection often equals RCE.** Shell access with app's privileges = full system risk. Wrong-answer pattern: classifying OS command injection as a low-severity bug — it's typically critical.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

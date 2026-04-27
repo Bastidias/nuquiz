@@ -26,6 +26,15 @@ The six account categories CISSP candidates are expected to discriminate by typi
 - **Cross-Concept link.** Account review activities (`account-review-activities` in D5) covers what is *done* during account review; this Concept covers *which accounts get reviewed* and at what cadence. Identity lifecycle phases (`identity-lifecycle-phases` in D5) covers when accounts are created, modified, and deprovisioned.
 - **Out of scope for this Concept:** specific PAM tooling, workload identity standards (SPIFFE/SPIRE), break-glass account procedures, machine-to-machine authentication protocols (mTLS, OAuth client credentials), customer-account specifics for B2C platforms.
 
+### Tricky distractors
+
+- **Shared accounts break accountability.** Audit logs can't attribute actions to a specific human. Wrong-answer pattern: claiming shared accounts are acceptable for convenience — they're a top audit finding.
+- **Service accounts are non-human.** Application-to-system. Wrong-answer pattern: classifying service accounts as a privileged human account — they're non-human, with their own risk profile.
+- **Privileged accounts get continuous PAM controls.** Just-in-time, session recording, frequent rotation. Wrong-answer pattern: claiming annual review is sufficient for privileged accounts — quarterly is baseline.
+- **Guest accounts are time-bounded.** Per-session review. Wrong-answer pattern: leaving guest accounts indefinitely active — fails review.
+- **Non-human accounts outnumber human.** Modern enterprises have far more service identities than humans. Wrong-answer pattern: assuming user accounts dominate — workload identities scale orders of magnitude faster.
+- **Workload identities replace long-lived service credentials.** Short-lived per-workload tokens (IRSA, MSI). Wrong-answer pattern: claiming password-based service accounts are still best practice — workload identity is the modern pattern.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

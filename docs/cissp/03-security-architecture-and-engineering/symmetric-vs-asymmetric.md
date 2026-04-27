@@ -22,6 +22,15 @@ The two foundational cryptography paradigms plus the hybrid pattern that combine
 - **Cross-Concept link.** Sibling Concepts: `symmetric-algorithms` covers AES, 3DES, etc. `asymmetric-algorithms` covers RSA, ECC, DH, etc. `key-management-lifecycle` covers how keys are generated, distributed, rotated, and destroyed across both paradigms.
 - **Out of scope for this Concept:** specific protocols implementing hybrid (TLS handshake details, PGP packet formats), forward secrecy via ephemeral key exchange, post-quantum hybrid encryption, key-encapsulation mechanisms (KEM), key-derivation functions (KDF).
 
+### Tricky distractors
+
+- **Symmetric is fast; asymmetric is slow.** 100-1000x performance gap. Wrong-answer pattern: claiming asymmetric is fast — its slowness is why hybrid exists.
+- **N-party key counts.** Symmetric: N(N-1)/2 (quadratic). Asymmetric: 2N (linear). Wrong-answer pattern: applying symmetric formula to asymmetric — the linear scaling is the key advantage.
+- **Hybrid is the practical pattern.** TLS, S/MIME, PGP, IPsec, SSH all combine asymmetric (key exchange) + symmetric (bulk). Wrong-answer pattern: claiming TLS uses pure asymmetric encryption — bulk data is symmetric.
+- **Asymmetric solves key distribution.** Public key can travel in cleartext. Wrong-answer pattern: claiming asymmetric also requires secure pre-shared channel — the whole point is it doesn't.
+- **Symmetric requires pre-shared secret.** Out-of-band exchange or asymmetric key wrap. Wrong-answer pattern: claiming symmetric keys can travel in cleartext.
+- **Session keys are ephemeral.** Generated per session, not stored long-term. Wrong-answer pattern: counting session keys in the long-term key count for hybrid.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

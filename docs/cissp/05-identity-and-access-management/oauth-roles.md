@@ -23,6 +23,15 @@ The four OAuth 2.0 roles defined by RFC 6749 §1.1 [s1]. Paired Concept to `oaut
 - **Comparison to SAML.** OAuth 2.0's Authorization Server ≈ SAML's IdP. OAuth's Resource Server ≈ SAML's SP for the protected-resource side (though SAML SPs typically don't separate authorization-server and resource-server concerns because SAML is authentication-focused). OAuth's Client has no direct SAML analog because SAML does not have the "on-behalf-of" delegation concept — SAML authenticates a user session at the SP; OAuth authorizes a third-party client to act on behalf of the user.
 - **Out of scope for this Concept:** the Authorization Code flow step-by-step (separate Concept — `oauth-authorization-code-flow`), grant-type matrix (`oauth-grant-types`), token formats (JWT vs opaque), token introspection (RFC 7662), token revocation (RFC 7009), DPoP / mTLS sender-constrained tokens, OIDC-specific role extensions.
 
+### Tricky distractors
+
+- **Client is the application, not the user.** The user is the Resource Owner. Wrong-answer pattern: equating Client with End User — most persistent OAuth confusion.
+- **AS issues tokens; RS validates them.** Logically separate even when co-located. Wrong-answer pattern: claiming the Resource Server issues access tokens — only the AS does.
+- **Resource Owner grants authorization.** Not the AS. Wrong-answer pattern: claiming the AS grants permission — the AS facilitates and records the grant; the user authorizes.
+- **OAuth has 4 formal roles.** User-Agent (browser) is not a formal role. Wrong-answer pattern: listing User-Agent as a fifth OAuth role.
+- **AS/RS trust is set up out-of-band.** Signing keys, introspection credentials. Wrong-answer pattern: claiming the trust is established at request time — it's federation-setup.
+- **OAuth Client ≠ HTTP client.** OAuth Client is the application registered with the AS. Wrong-answer pattern: equating "OAuth client" with "the browser making HTTP requests."
+
 ### Values without a direct public citation
 
 No cell in this table relies on inference beyond what RFC 6749 [s1] §1.1 specifies. The role descriptions are paraphrases of the RFC's role definitions and map cleanly back to the spec.

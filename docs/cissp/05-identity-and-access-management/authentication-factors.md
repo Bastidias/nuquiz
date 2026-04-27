@@ -23,6 +23,15 @@ The five authentication-factor categories CISSP expects candidates to discrimina
 - **Location as a factor is contested.** Location is informational and trivially spoofed (GPS spoofing, VPN, proxy). Whether it qualifies as an *authentication* factor or only as *risk signal* for adaptive authentication is debated. CISSP includes it as a fifth factor; many security practitioners treat it as a sub-signal of a broader adaptive/continuous authentication policy.
 - **Out of scope for this Concept:** specific biometric modalities and error rates (separate Concepts — `biometric-modalities`, `biometric-error-types`), AAL1 / AAL2 / AAL3 NIST assurance levels, FIDO2 / WebAuthn protocol details, password-policy specifics (rotation, complexity, length), passwordless authentication flows.
 
+### Tricky distractors
+
+- **MFA requires multiple categories, not multiple instances.** Two passwords = still single-factor. Wrong-answer pattern: claiming password + PIN is two-factor — both are Knowledge.
+- **Smart card + PIN = two-factor.** Card (have) + PIN (know). Wrong-answer pattern: classifying smart card as single-factor — the PIN activation requirement adds Knowledge.
+- **Biometric replay is a real attack.** Captured fingerprint or face image can be replayed. Liveness detection mitigates. Wrong-answer pattern: claiming biometrics defeat replay — they don't without liveness checks.
+- **Behavior is dynamic; Inherence is static.** Typing rhythm vs fingerprint pattern. Wrong-answer pattern: lumping them — exam may distinguish for continuous authentication.
+- **Location is contested as a factor.** Trivially spoofed via GPS spoof or VPN. Wrong-answer pattern: treating location as authentication-grade — many practitioners treat it as adaptive risk signal only.
+- **NIST treats biometrics as activation factors only.** SP 800-63B says biometrics must bind to a physical authenticator. Wrong-answer pattern: applying NIST treatment when CISSP question uses CISSP factor framing — both are correct in their context.
+
 ### Values without a direct public citation
 
 Most cell values in this table are drawn from standard CISSP pedagogical framing rather than NIST SP 800-63B [s1], which organizes authentication differently (by authenticator type, not factor category). The `example` column maps cleanly to [s1] authenticator types for Knowledge/Possession/Inherence; the `strengths` and `typical attacks` columns reflect CISSP pedagogical consensus.

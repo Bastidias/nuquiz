@@ -22,6 +22,15 @@ The four core data structures inside a Configuration Management Database (CMDB).
 - **Change history vs. the change-management lifecycle.** The lifecycle (`change-management-lifecycle.md`) is the *process* a change passes through; the change history in the CMDB is the *record* left behind once the change closes. The lifecycle's Phase 7 (Close) writes into the CMDB's change history.
 - **Gaps marked `[needs source]`:** one Fact — "Baseline effective date" as a content element. Standard CMDB practice but not yet sourced to a primary publication.
 
+### Tricky distractors
+
+- **Relationships enable impact analysis.** The CMDB value over flat inventory. Wrong-answer pattern: claiming an asset list is equivalent to a CMDB — relationships are the differentiator.
+- **Baseline ≠ current state.** Approved configuration, not whatever's running. Wrong-answer pattern: equating CMDB baseline with current running config — drift is the gap between them.
+- **CI is broader than just hardware.** ITIL definition includes software, networks, people, documentation. Wrong-answer pattern: limiting CIs to physical assets — CMDB scope is broader.
+- **CMDB is configuration; not asset management.** ITAM is parallel. Wrong-answer pattern: claiming CMDB replaces asset management — they're related but distinct.
+- **Change history follows change closure.** Lifecycle Phase 7 writes the record. Wrong-answer pattern: claiming change history captures requests as well as completions — only completions land.
+- **CMDB drift indicates ungoverned changes.** Comparison reveals problems. Wrong-answer pattern: claiming drift is normal and acceptable — it's the signal change management failed.
+
 ## Engine demo opportunities
 
 - `? | purpose → Map dependencies between CIs` → Relationships

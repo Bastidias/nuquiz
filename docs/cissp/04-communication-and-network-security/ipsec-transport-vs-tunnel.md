@@ -20,6 +20,15 @@ The two IPsec encapsulation modes. Transport mode protects only the payload and 
 - **Mode is chosen per SA, not per peer.** An IPsec implementation can have one SA in Transport mode and another in Tunnel mode with the same peer — the modes describe how a *particular* Security Association encapsulates, not a global property of the IPsec relationship.
 - **Out of scope for this Concept:** AH vs ESP (separate Concept — `ipsec-ah-vs-esp`), IKE phases and SA establishment (separate Concept), transport-adjacency vs iterated-tunneling bundle topologies, BITS (Bump-in-the-Stack) and BITW (Bump-in-the-Wire) implementations.
 
+### Tricky distractors
+
+- **Tunnel mode adds a new IP header.** Transport preserves the original. Wrong-answer pattern: claiming Transport mode adds a new IP header — only Tunnel does.
+- **Tunnel mode is mandatory for gateways.** Site-to-site VPN must use Tunnel. Wrong-answer pattern: applying Transport to gateway-to-gateway VPN — the original destination would be the far host, not the gateway.
+- **Transport mode is host-to-host.** Both endpoints speak IPsec natively. Wrong-answer pattern: using Transport for site-to-site — that's Tunnel.
+- **Tunnel hides internal addresses.** Original IP header is encrypted inside ESP payload. Wrong-answer pattern: claiming Transport hides internal topology — only Tunnel does.
+- **NAT breaks Transport mode AH.** Outer header is rewritten; AH ICV fails. Wrong-answer pattern: claiming AH Transport works through NAT — it doesn't.
+- **Mode is per SA, not per peer.** Same peer can have multiple SAs in different modes. Wrong-answer pattern: claiming a single peer relationship picks one mode.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

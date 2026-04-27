@@ -30,3 +30,12 @@ Simplified to five logical steps. The full TLS 1.2 handshake includes optional s
   - `Step 5 | Security Property → ?` → Verify handshake integrity.
   - Sequence (adjacency): `Step (n-1 where Step n | Name → Finished) | Name → ?` → Change Cipher Spec.
 - Common exam confusion: Step 3 (Key Exchange) is *not* the same as Step 4 (Change Cipher Spec). Key Exchange establishes the shared secret. Change Cipher Spec announces the switch.
+
+### Tricky distractors
+
+- **Key Exchange vs Change Cipher Spec.** Key Exchange establishes the shared secret. Change Cipher Spec signals the switch to encrypted transmission. Wrong-answer pattern: collapsing them into one step.
+- **TLS authenticates the server, not the user.** The X.509 certificate proves server identity. Client identity comes from mTLS or application-layer auth. Wrong-answer pattern: claiming TLS authenticates the user.
+- **TLS 1.3 is not just faster TLS 1.2.** TLS 1.3 removed RSA key transport, mandates forward secrecy, and changes message ordering. Wrong-answer pattern: applying TLS 1.2 step-counts to TLS 1.3 — it's 1-RTT minimum.
+- **Forward secrecy requires DHE/ECDHE.** RSA key transport leaks all past sessions if the server private key is compromised later. Wrong-answer pattern: claiming all TLS provides forward secrecy — only DHE/ECDHE cipher suites do.
+- **Finished message is encrypted.** It's the first message under the negotiated cipher and includes a hash of all prior handshake messages — this is what defeats handshake tampering. Wrong-answer pattern: claiming Finished is plaintext.
+- **TLS sits above TCP, below application.** Layer 5/6 in OSI terms. Wrong-answer pattern: classing TLS as a transport-layer protocol — TCP is transport; TLS rides on top.

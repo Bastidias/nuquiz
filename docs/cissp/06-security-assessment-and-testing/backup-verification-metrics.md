@@ -23,6 +23,15 @@ The four metrics CISSP candidates are expected to track for backup-and-recovery 
 - **Cross-Concept link.** Sibling Concept `recovery-objectives` in D7 (and `bia-components` in D1) covers the RTO/RPO definitions. Sibling `backup-strategies` in D7 covers the backup-method options. This Concept covers measurement of all three.
 - **Out of scope for this Concept:** specific backup software, RPO / RTO numeric targets per data type, 3-2-1 backup rule, immutable / air-gapped backup techniques, ransomware-resilient backup architectures, BIA-derived recovery prioritization, vendor-lock issues with backup storage.
 
+### Tricky distractors
+
+- **Backup success ≠ recoverability.** Job completion is not restoration validation. Wrong-answer pattern: claiming high success rate proves recovery capability — restore tests are required.
+- **RPO is data window; RTO is duration.** Different objectives. Wrong-answer pattern: confusing them — RPO requires backup frequency; RTO requires recovery infrastructure.
+- **RPO/RTO compliance is binary.** 100% target. Wrong-answer pattern: claiming 80% RTO compliance is acceptable — any breach is non-compliance.
+- **Without restore tests, RTO is aspirational.** Untested RTO is not measured. Wrong-answer pattern: claiming a documented RTO equals achieving RTO — only exercise proves it.
+- **Restore test frequency is industry-variable.** Quarterly is canonical CISSP target. Wrong-answer pattern: claiming most organizations test restores monthly — quarterly is the standard.
+- **Backup is one half of recovery.** Restore is the other half. Wrong-answer pattern: focusing only on backup metrics — restore validation is equally important.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

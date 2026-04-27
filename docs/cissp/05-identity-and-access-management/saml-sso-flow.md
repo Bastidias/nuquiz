@@ -28,6 +28,15 @@ The seven-step SP-initiated SAML 2.0 Web Browser SSO flow — the workhorse of e
 - **Assertion delivery via HTTP POST Binding.** The Step 5 SAMLResponse is returned to the user's browser as an HTML form that immediately POSTs to the SP's Assertion Consumer Service (ACS) URL. The form auto-submits via JavaScript (or requires one click if JS is disabled). The POST binding is used because SAML assertions routinely exceed the size limits of the HTTP Redirect binding.
 - **Out of scope for this Concept:** SAML actor roles (separate Concept — `saml-actors`), IdP-initiated flow step-by-step, Single Logout (SLO) flow, SAML attribute queries, federation metadata exchange format, SAML-over-HTTP-Artifact binding, SAML-to-OAuth token exchange (RFC 7522).
 
+### Tricky distractors
+
+- **Browser is the courier.** No direct SP↔IdP back-channel in pure SAML SSO. Wrong-answer pattern: claiming the SP fetches the assertion directly from the IdP — the assertion arrives via browser POST.
+- **SP-initiated vs IdP-initiated.** SP-initiated starts at SP and is more secure (correlates request/response). IdP-initiated has no SAMLRequest. Wrong-answer pattern: treating IdP-initiated as default — SP-initiated is the standard, IdP-initiated is vulnerable to unsolicited-response attacks.
+- **RelayState is the SAML state parameter.** Carries SP context across the round trip; CSRF and post-login redirect mechanism. Wrong-answer pattern: confusing RelayState with the SAMLRequest itself.
+- **HTTP POST binding for assertions.** Assertions exceed URL-length limits, so they're delivered via auto-submitting HTML form POST. Wrong-answer pattern: claiming assertions are delivered as HTTP redirects — only small SAMLRequests use Redirect binding.
+- **IdP authentication is opaque to SAML.** SAML doesn't specify how the IdP authenticates the user (password, MFA, Kerberos, FIDO2, etc.). Wrong-answer pattern: claiming SAML mandates a specific authentication method — it only mandates the signed assertion output.
+- **Assertion signature is the trust anchor.** SP validates with IdP's public key from federation metadata. Wrong-answer pattern: claiming TLS provides assertion integrity — TLS protects transport; XML-DSIG protects the assertion itself.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

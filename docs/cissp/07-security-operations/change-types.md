@@ -21,6 +21,15 @@ The three ITIL change categories that determine which approval path a change fol
 - **Standard ≠ low priority.** Pre-approval is granted because the change *procedure* is well-known and the *outcome* is predictable, not because the change is unimportant. A password reset for the CEO is still a standard change.
 - **Gaps marked `[needs source]`:** none.
 
+### Tricky distractors
+
+- **Standard ≠ unimportant.** Pre-approved means procedure is known, not that the change is trivial. Wrong-answer pattern: claiming standard changes don't need approval — they have category-level pre-approval.
+- **Emergency uses ECAB.** Compressed timeline, not skipped governance. Wrong-answer pattern: claiming emergency changes bypass approval entirely — ECAB grants expedited approval.
+- **Normal changes go to CAB.** Standard CAB review. Wrong-answer pattern: routing normal changes to ECAB — only emergencies go there.
+- **CAB ≠ CCB.** ITIL term vs NIST term. Wrong-answer pattern: treating them as different bodies — same role in different vocabularies.
+- **Three change types, not more.** ITIL 4 standard. Wrong-answer pattern: adding "minor" or "major" as separate types — those are sub-classifications, not ITIL types.
+- **Pre-approval is for the change category, not the instance.** Wrong-answer pattern: claiming each standard change instance is reviewed individually — it's the category that's approved.
+
 ## Engine demo opportunities
 
 - `? | approval path → Pre-approved without per-instance review` → Standard

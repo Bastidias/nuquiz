@@ -24,6 +24,15 @@ The five software-supply-chain attack classes CISSP candidates should distinguis
 - **Executive Order 14028 (May 2021).** US federal directive that drove SBOM adoption and the SLSA framework as supply-chain controls. Not cited primary-source per cell because the EO is policy framing rather than per-risk technical guidance; SBOM and SLSA are referenced via [s3].
 - **Out of scope for this Concept:** hardware supply chain attacks (counterfeit chips, implants — covered in `supply-chain-risks` in D1), open-source license risks (separate Concept — `open-source-license-types`), CI/CD pipeline integrity attacks (covered in `repository-security-controls` and `ci-cd-pipeline-stages`), insider-threat attacks against trusted maintainers, social engineering of code reviewers.
 
+### Tricky distractors
+
+- **Compromised dependency vs Malicious package.** Compromised = legitimate package subverted later. Malicious = published with intent. Wrong-answer pattern: collapsing them — different mitigations.
+- **Typosquatting is a delivery vector.** The squatted package is malicious by definition. Wrong-answer pattern: claiming typosquatting itself isn't an attack — installing it executes the malicious payload.
+- **SBOM helps with compromised dependency.** Bill of materials enables traceability. Wrong-answer pattern: claiming SBOM prevents compromise — it provides post-incident visibility.
+- **Reproducible builds defeat backdoored binaries.** Bit-for-bit reproducibility detects build tampering. Wrong-answer pattern: claiming code review alone catches backdoored binaries — Ken Thompson trust scenario.
+- **SolarWinds was compromised dependency, not malicious package.** Update pipeline breached. Wrong-answer pattern: classifying SolarWinds as a vendor breach — the attack vector was the build pipeline.
+- **EO 14028 drove SBOM mandate.** May 2021 federal directive. Wrong-answer pattern: claiming SBOM is voluntary in federal contexts — it's required.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

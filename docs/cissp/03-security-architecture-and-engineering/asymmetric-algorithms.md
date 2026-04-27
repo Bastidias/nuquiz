@@ -25,6 +25,15 @@ The five asymmetric algorithms CISSP courseware tests by name. Each pairs a *mat
 - **Quantum vulnerability does not mean immediate break.** A cryptographically-relevant quantum computer (CRQC) does not yet exist. The migration urgency comes from "harvest now, decrypt later" attacks — adversaries collecting encrypted data today to decrypt when CRQC arrives. High-confidentiality data (long retention, high sensitivity) should migrate first.
 - **Gaps marked `[needs source]`:** one Fact — ElGamal modern usage. Practitioner consensus that ElGamal is rarely deployed but specific publications confirming this are not standard.
 
+### Tricky distractors
+
+- **Diffie-Hellman is key-exchange only.** DH cannot encrypt arbitrary messages or produce signatures. Wrong-answer pattern: claiming DH performs encryption — that's RSA or ElGamal.
+- **RSA is multi-purpose; DSA is signing-only.** RSA does encryption, signing, and key transport. DSA only signs. Wrong-answer pattern: choosing DSA for encryption — DSA has no encryption mode.
+- **ECC key-size advantage.** 256-bit ECC ≈ 3072-bit RSA in equivalent security. Wrong-answer pattern: comparing ECC and RSA key sizes head-to-head as if they're directly comparable bit-for-bit.
+- **All five are quantum-vulnerable.** RSA, DSA, ECC, ElGamal, DH all break under Shor's algorithm. Wrong-answer pattern: claiming ECC is quantum-resistant because of its smaller key size — size doesn't help against Shor.
+- **Post-quantum cryptography is separate.** ML-KEM (FIPS 203), ML-DSA (FIPS 204), SLH-DSA (FIPS 205) are the NIST PQC standards. Wrong-answer pattern: listing PQC algorithms as "asymmetric algorithms" alongside RSA/ECC — they share the asymmetric paradigm but are a distinct family.
+- **Harvest-now-decrypt-later urgency.** Quantum threat is not "wait until CRQC exists" — adversaries are collecting ciphertext today. Wrong-answer pattern: deferring PQC migration based on "no quantum computer yet" — high-retention data must migrate now.
+
 ## Engine demo opportunities
 
 - `? | mathematical basis → Integer factorization difficulty` → RSA

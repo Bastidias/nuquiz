@@ -23,6 +23,15 @@ Four high-impact compliance regimes the CISSP exam tests by name. PCI-DSS govern
 - **Compliance is a floor, not a ceiling.** All four standards specify *minimum* requirements. A control program that does only what compliance requires will likely fail audits at the next maturity check; mature programs use compliance as a baseline and exceed it where business risk justifies. CISSP questions sometimes test this — "is compliance enough?" → No, it is the floor.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the regulating bodies' published material.
 
+### Tricky distractors
+
+- **PCI-DSS is contractual, not statutory.** Enforced via merchant agreement. Wrong-answer pattern: claiming PCI-DSS is government regulation — it's industry contract.
+- **SOX vs GLBA scope.** SOX = public companies (any industry). GLBA = financial institutions (any public status). Wrong-answer pattern: equating them — different scope axes.
+- **FISMA mandates NIST RMF.** Federal agencies follow SP 800-53 and SP 800-37. Wrong-answer pattern: claiming FISMA is industry-agnostic — federal-government-only.
+- **Compliance is the floor.** Mature programs exceed minimum. Wrong-answer pattern: claiming compliance equals security — meeting only minimum is the bar to clear, not aspire to.
+- **HIPAA is privacy-framed.** Lives in `privacy-laws`, not industry standards. Wrong-answer pattern: classifying HIPAA alongside SOX — different framework category.
+- **PCI-DSS v4.0 is current.** Replaced v3.2.1 in 2024. Wrong-answer pattern: citing older PCI versions — current is v4.0.
+
 ## Engine demo opportunities
 
 - `? | enforcer → SEC and PCAOB` → SOX

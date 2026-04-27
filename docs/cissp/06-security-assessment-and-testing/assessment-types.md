@@ -29,6 +29,15 @@ The seven canonical security assessment types CISSP candidates are expected to d
 - **Frequency is regulation-driven for the audit / compliance rows.** PCI DSS requires quarterly vulnerability scans and annual penetration tests; SOX requires annual control audits; HIPAA requires periodic risk assessments. Cell values reflect dominant patterns; specific organizations align to applicable regulations.
 - **Out of scope for this Concept:** assessment perspectives (sibling Concept `assessment-perspectives` — internal vs external vs third-party), pen test execution phases (sibling Concept `penetration-test-phases`), pen test perspectives (sibling Concept `pen-test-perspectives` — black/grey/white box), CVSS scoring (sibling Concept `vulnerability-severity-scoring`), specific tools per assessment type.
 
+### Tricky distractors
+
+- **Vuln scan identifies; pen test exploits.** Headline distinction. Wrong-answer pattern: collapsing them — pen test goes deeper than scan.
+- **Audit vs Compliance assessment.** Audits verify control effectiveness against framework. Compliance verifies regulatory adherence. Wrong-answer pattern: equating them — every compliance assessment is an audit, but not every audit is compliance.
+- **Vuln scan runs continuously; pen test annually.** Different cadences. Wrong-answer pattern: claiming pen tests run continuously — they're depth activities.
+- **Code review vs SAST.** Code review can be manual or automated. SAST is the automated subset. Wrong-answer pattern: collapsing them — manual code review catches business logic; SAST catches patterns.
+- **Risk assessment synthesizes other assessments.** It's the apex, not a peer. Wrong-answer pattern: treating risk assessment as same-level as vuln scans — risk assessment consumes their outputs.
+- **Configuration review checks misconfiguration; vuln scan checks known-CVE.** Different focus. Wrong-answer pattern: collapsing them — CIS baseline check ≠ Nessus scan.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

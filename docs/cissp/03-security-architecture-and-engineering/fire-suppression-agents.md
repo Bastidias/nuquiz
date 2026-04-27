@@ -26,6 +26,15 @@ The six fire-suppression agents CISSP courseware tests. Each pairs *fire classes
 - **Pre-action vs. wet-pipe vs. dry-pipe sprinklers.** Water-based fire suppression in data centers typically uses pre-action systems — pipes are dry until a fire detection occurs, then fill with water but only release if a sprinkler head opens. This reduces the risk of accidental water release damaging equipment. Wet-pipe (always-pressurized) systems are common in offices; dry-pipe in unheated spaces.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NFPA 12, 2001, or vendor agent documentation.
 
+### Tricky distractors
+
+- **CO2 is fatal to occupants at extinguishing concentration.** Pre-discharge alarms required. Wrong-answer pattern: deploying CO2 in occupied spaces — only unoccupied equipment rooms.
+- **Halon is banned for new installations.** Montreal Protocol 1987. Wrong-answer pattern: recommending Halon for new data centers — banned.
+- **Clean agents leave no residue.** FM-200, Novec, inert gas. Wrong-answer pattern: claiming dry chemical is data-center safe — leaves corrosive residue.
+- **FM-200 high GWP; Novec 1230 low GWP.** Environmental shift. Wrong-answer pattern: treating them as environmentally equivalent — Novec is replacement choice.
+- **Inert gases reduce O2 to 12-15%.** Suppress without asphyxiation. Wrong-answer pattern: claiming inert gas suffocates occupants like CO2 — engineered to be survivable.
+- **Pre-action sprinklers for data centers.** Pipes dry until detection. Wrong-answer pattern: using wet-pipe sprinklers in data center — accidental release risk.
+
 ## Engine demo opportunities
 
 - `? | typical environment → Unoccupied equipment rooms` → CO2

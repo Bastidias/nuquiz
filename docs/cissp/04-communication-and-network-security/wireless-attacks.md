@@ -26,6 +26,15 @@ The six wireless-specific attack classes CISSP candidates should discriminate: r
 - **WEP `primary mitigation = Abandon WEP`.** WEP's weakness is structural — 24-bit IVs with RC4 guarantee key recovery given enough traffic. No patch fixes WEP. The mitigation is replacement, not tuning.
 - **Out of scope for this Concept:** BlueBorne / Bluetooth attacks, Zigbee / Z-Wave attacks, IoT protocol attacks, RFID / NFC cloning, cellular (IMSI catchers / Stingrays), wireless jamming at the Physical layer (spectrum-level, not frame-level). Each deserves its own Concept. Also out of scope: the specific CVE numbers for KRACK and Dragonblood — cited inline in Notes but not exploded as Rows.
 
+### Tricky distractors
+
+- **KRACK targets WPA/WPA2; Dragonblood targets WPA3.** Don't swap them. Wrong-answer pattern: claiming KRACK affects WPA3 — WPA3 uses SAE, not the vulnerable 4-way handshake.
+- **WEP cannot be patched.** Structural cryptographic weakness. Wrong-answer pattern: recommending firmware updates for WEP — only replacement works.
+- **WPS reduces to ~11,000 guesses.** Split verification of the 8-digit PIN. Wrong-answer pattern: claiming WPS provides 10^8 strength — split-half verification reduces it dramatically.
+- **PMF (802.11w) defeats deauth attacks.** WPA3 mandates PMF. Wrong-answer pattern: claiming WPA3 is vulnerable to deauth — protected management frames stop the attack.
+- **Evil Twin works against any standard.** It exploits client auto-connect, not crypto. Wrong-answer pattern: claiming WPA3 prevents Evil Twin attacks — it doesn't.
+- **Deauth is often paired with Evil Twin.** Kick client off legit AP, capture re-association. Wrong-answer pattern: treating deauth and Evil Twin as unrelated — they're often combined.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

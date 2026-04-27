@@ -25,6 +25,15 @@ The four dynamic routing protocols CISSP candidates are expected to discriminate
 - **Security note.** None of these protocols encrypt their updates by default. RIPv2, OSPFv2, and BGP support message authentication (MD5 for RIPv2/OSPFv2; TCP-AO / MD5 for BGP); EIGRP supports HMAC-SHA. Full routing-security discussion (RPKI, BGPsec, route leaks, route hijacking) belongs in a separate Concept.
 - **Out of scope for this Concept:** OSPFv3 (IPv6), RIPng (IPv6), IS-IS, MP-BGP extensions, route redistribution, routing-protocol attack surface (route hijacking, BGP prefix hijacks, RPKI validation). Each warrants its own Concept.
 
+### Tricky distractors
+
+- **BGP is the only EGP.** RIP, OSPF, EIGRP are IGPs. Wrong-answer pattern: classifying BGP as Interior — it's the public-Internet routing glue.
+- **RIP max hop = 15.** 16 = infinity. Wrong-answer pattern: claiming RIP scales beyond 15 hops — diameter limit makes RIP unsuitable for large networks.
+- **BGP uses TCP 179; OSPF uses IP 89; EIGRP uses IP 88.** RIP is UDP 520. Wrong-answer pattern: assuming all routing protocols use UDP — only RIP does.
+- **OSPF is link-state; RIP is distance-vector.** Most-confused pair. Wrong-answer pattern: swapping algorithm types — Dijkstra (OSPF) vs Bellman-Ford (RIP).
+- **EIGRP is hybrid (Cisco origin).** RFC 7868 published it as informational. Wrong-answer pattern: classifying EIGRP as pure distance-vector — RFC frames it as hybrid.
+- **None encrypt by default.** Authentication available (MD5, HMAC-SHA), encryption is not. Wrong-answer pattern: claiming routing protocols are encrypted out-of-the-box.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

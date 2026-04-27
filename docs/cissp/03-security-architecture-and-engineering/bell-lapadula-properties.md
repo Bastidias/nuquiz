@@ -24,6 +24,14 @@ The four properties that define the Bell-LaPadula confidentiality model. Bell-La
 - **The Bell-LaPadula model is implemented by MLS systems.** Multi-Level Security (MLS) operating systems (SELinux MLS mode, Trusted Solaris) enforce BLP at the OS level. Cross-Domain Solutions (CDS) implement BLP-conformant transfer between security domains.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the original Bell-LaPadula paper.
 
+### Tricky distractors
+
+- **Simple Security vs *-property.** Simple Security = "no read up." *-property = "no write down." Wrong-answer pattern: confusing which property has which direction. Mnemonic: "*-property has *star* in the name and *star*ts the no-write rule." (Also: simple security is the *first* property historically — the simpler/older one — about reading.)
+- **No write down — counterintuitive.** A Top Secret subject cannot write to a Confidential document. Wrong-answer pattern: assuming higher-cleared subjects can do anything. The rule prevents accidental classification leakage.
+- **BLP is confidentiality-only.** Doesn't address integrity. Wrong-answer pattern: claiming BLP also enforces integrity (Biba does that, with inverted rules).
+- **Strong vs weak tranquility.** Strong = labels never change at runtime. Weak = labels change only in security-preserving ways (e.g., approved declassification). Wrong-answer pattern: claiming strong tranquility allows controlled label changes — that's weak.
+- **BLP discretionary security property.** Sometimes counted as a third property. The "ds-property" requires access to also conform to a discretionary access matrix (DAC layered on MAC). Wrong-answer pattern: claiming BLP is *purely* mandatory — most formulations include the ds-property too.
+
 ## Engine demo opportunities
 
 - `? | content → Subject cannot read object at higher classification` → simple security property

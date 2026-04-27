@@ -20,6 +20,15 @@ The reference monitor is the abstract concept at the center of every formal acce
 - **Cross-Concept link.** Sibling Concept `secure-design-principles` covers Saltzer-Schroeder principles, several of which underpin reference-monitor properties (complete mediation = always-invoked; economy of mechanism = verifiable). `bell-lapadula-properties` and `biba-properties` are policies the reference monitor enforces.
 - **Out of scope for this Concept:** specific Security Kernel implementations (KSOS, GEMSOS, SCOMP), TCSEC's TCB requirements, separation-kernel architectures, microkernel-based reference monitors, formal verification tools (HOL, Coq, Isabelle).
 
+### Tricky distractors
+
+- **Reference Monitor vs Security Kernel vs TCB.** RM = abstract concept. Security Kernel = implementation. TCB = supporting infrastructure. Wrong-answer pattern: equating Security Kernel with TCB — TCB is broader (kernel + dependencies).
+- **Three NEAT properties.** Tamper-proof (Non-bypassable in protection), Evaluable, Always-invoked, Tamperproof. Wrong-answer pattern: omitting any of the three or adding a fourth — Anderson specified exactly three.
+- **Always-invoked = complete mediation.** Every access checked, no bypass paths. Wrong-answer pattern: claiming "checked at login" satisfies always-invoked — every access, not once.
+- **Verifiable = small.** Cannot verify what cannot be analyzed. Wrong-answer pattern: claiming verifiable means peer-reviewed — it specifically requires formal-verification tractability.
+- **TCB minimality is a design goal.** Smaller TCB = smaller attack surface = more verifiable. Wrong-answer pattern: claiming larger TCB equals more security — opposite.
+- **The kernel mediates; the policy decides.** RM enforces; doesn't decide policy. Wrong-answer pattern: treating RM as policy author — Bell-LaPadula, Biba, etc. define policy.
+
 ### Values without a direct public citation
 
 No cells in this table rely on inference beyond what Anderson's 1972 report [s1] specifies. The "three properties" framing is canonical CISSP teaching directly from the report.

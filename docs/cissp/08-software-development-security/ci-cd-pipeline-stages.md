@@ -27,6 +27,15 @@ The seven canonical stages of a modern CI/CD pipeline from developer commit thro
 - **Pre-commit is Stage 0.** Many DevSecOps programs run lightweight checks (lint, secrets scanning, format) on the developer's machine via Git hooks before the commit lands. Not represented as a separate Row because pre-commit is *off-pipeline*; the seven-stage table assumes the code has already arrived in the shared repository.
 - **Out of scope for this Concept:** specific pipeline orchestrators (Jenkins, GitLab CI, GitHub Actions, Argo, Tekton), deployment strategies (blue-green, canary, rolling — covered in `patch-deployment-strategies` in D7), repository security controls (separate Concept — `repository-security-controls`), supply-chain controls within CI/CD (separate Concept — `software-supply-chain-controls`), GitOps patterns.
 
+### Tricky distractors
+
+- **CI vs CD.** CI = stages 1-3. Continuous Delivery = up to manual deploy approval. Continuous Deployment = automatic to production. Wrong-answer pattern: collapsing Delivery and Deployment.
+- **Security scan precedes Package.** Don't ship unscanned code. Wrong-answer pattern: putting security scan after deploy — defeats the gating purpose.
+- **Stage 7 (Verify) anchors rollback.** Health checks trigger rollback or canary halt. Wrong-answer pattern: claiming pipelines end at Deploy — verification is the survival gate.
+- **Pre-commit is off-pipeline.** Git hooks before code lands in repo. Wrong-answer pattern: counting pre-commit as Stage 0 — the seven-stage table starts at the shared repo.
+- **Failed security stage breaks the pipeline.** Gating, not advisory. Wrong-answer pattern: claiming security findings are merely informational — DevSecOps treats them as build-breaking.
+- **Build (Stage 2) ≠ Compile.** Build resolves dependencies plus compile. Wrong-answer pattern: equating build with single-language compile — modern builds include dependency resolution and packaging prep.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -27,6 +27,15 @@ The four AICPA SOC reports CISSP candidates are expected to discriminate. Each p
 - **Cross-Concept link.** Sibling Concepts: `soc2-trust-service-criteria` (the five TSCs scoped by SOC 2 / SOC 3), `audit-types` (the broader audit taxonomy that includes SOC reports as third-party audit outputs), `third-party-assessment-artifacts` in D1 (the supply-chain-risk angle on the same SOC reports plus ISO 27001 certification).
 - **Out of scope for this Concept:** SAS 70 (the predecessor to SSAE 18), SOC for Cybersecurity (an emerging variant), SOC for Supply Chain, ISAE 3402 (the international parallel to SOC 1), specific TSC requirements per criterion, SOC report bridge letters between report periods.
 
+### Tricky distractors
+
+- **Type I vs Type II.** Type I = point in time (design only). Type II = 6-12 months (design + operating effectiveness). Wrong-answer pattern: claiming Type I is sufficient for ongoing assurance — Type II is required.
+- **SOC 1 ≠ SOC 2.** SOC 1 = financial reporting controls (ICFR). SOC 2 = Trust Services Criteria. Wrong-answer pattern: using SOC 1 for security assessment — wrong scope.
+- **SOC 3 is for public distribution.** SOC 2 typically under NDA. Wrong-answer pattern: marketing SOC 2 reports publicly — they contain testing detail; SOC 3 is the public-distribution variant.
+- **SOC 2 has 5 Trust Services Criteria.** Security is always required; the others are optional scope. Wrong-answer pattern: claiming all five are mandatory in every SOC 2.
+- **SOC 2 Type II requires period observation.** Auditor observes over months. Wrong-answer pattern: claiming Type II can be completed in a day — minimum periods apply.
+- **SOC reports are third-party (independence).** Issued by licensed CPA firm. Wrong-answer pattern: claiming an organization can self-issue SOC reports — they cannot.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

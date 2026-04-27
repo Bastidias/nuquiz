@@ -24,6 +24,15 @@ The four hardware-and-OS memory protection mechanisms CISSP candidates are expec
 - **Cross-Concept link.** Sibling Concept `architecture-vulnerabilities` covers buffer overflow, race conditions, and confused-deputy issues — these mechanisms mitigate buffer overflow specifically. `common-coding-vulnerabilities` in D8 covers the language-level coding errors that produce memory-corruption bugs.
 - **Out of scope for this Concept:** specific ASLR implementation entropy values, kASLR (kernel ASLR), CFI (Control Flow Integrity) and CET (Control-flow Enforcement Technology), shadow stacks, MTE (Memory Tagging Extension), hardened allocators, BLISS / IBM PowerPC-specific protections.
 
+### Tricky distractors
+
+- **ASLR randomizes addresses; DEP marks data non-executable.** Different mechanisms, different attack classes. Wrong-answer pattern: confusing them — ASLR doesn't prevent code execution, DEP doesn't randomize.
+- **DEP doesn't stop ROP.** Return-Oriented Programming reuses existing executable code. Wrong-answer pattern: claiming DEP/NX defeats all code-execution attacks — it doesn't defeat ROP.
+- **Stack canaries don't protect heap.** Canaries detect stack-based return-address overwrites. Heap overflows need separate protection. Wrong-answer pattern: claiming canaries protect all overflows.
+- **W^X is the principle behind DEP.** Pages writable XOR executable, not both. Wrong-answer pattern: claiming pages can be both writable and executable in modern OSes — they shouldn't be.
+- **PAC requires ARMv8.3.** Apple A12 onward; not available on x86. Wrong-answer pattern: claiming pointer authentication is universal — it's an ARM-specific feature.
+- **Mitigations chain to defeat exploits.** Modern attacks chain leaks (defeat ASLR) + ROP (defeat DEP) + tailored payloads (avoid canaries). Wrong-answer pattern: claiming any single mitigation makes a system exploit-proof.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

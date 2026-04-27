@@ -25,6 +25,15 @@ The five cryptographic hash functions CISSP candidates are expected to discrimin
 - **NIST SP 800-131A on transition.** Specifies the federal transition timeline for hash functions: SHA-1 disallowed for digital signatures and HMAC after 2014; allowed for legacy verification. SHA-256+ required for new federal applications.
 - **Out of scope for this Concept:** HMAC construction (sibling Concept `mac-functions`), hash-based message authentication, password hashing functions (bcrypt, scrypt, Argon2), Merkle trees and hash-based signatures, post-quantum hash functions.
 
+### Tricky distractors
+
+- **MD5 and SHA-1 are deprecated.** Both have practical collision attacks. MD5 broken in 2004, SHA-1 broken in 2017 (SHAttered). Wrong-answer pattern: recommending MD5 or SHA-1 for any security purpose where collision resistance matters (signatures, certificates, code signing).
+- **MD5 output is 128 bits, not 160.** SHA-1 is 160 bits. Wrong-answer pattern: swapping the output sizes — confusing MD5 (128) with SHA-1 (160).
+- **SHA-2 vs SHA-3 construction.** SHA-2 uses Merkle-Damgård; SHA-3 uses sponge (Keccak). Wrong-answer pattern: claiming SHA-3 was standardized because SHA-2 was broken — it wasn't, SHA-3 is a hedge against future weaknesses.
+- **Length-extension vulnerability.** SHA-2 (Merkle-Damgård) is vulnerable; SHA-3 (sponge) is not. Wrong-answer pattern: claiming all modern hashes resist length-extension. Use HMAC over naive `H(key || message)` regardless.
+- **HMAC is not a hash function.** HMAC is a MAC construction *built on* a hash. Wrong-answer pattern: listing HMAC alongside MD5/SHA as a hash algorithm — it's a keyed authentication primitive.
+- **MD5 acceptable for non-security uses.** File deduplication and non-cryptographic checksums are still fine. Wrong-answer pattern: claiming MD5 must never be used — collision attacks only matter when collision resistance matters.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -24,6 +24,15 @@ The four deployment models for data residency, from public cloud (lowest control
 - **What is intentionally not on this table.** Hybrid cloud, multicloud, and community cloud are deployment topologies that combine the four base models; they could be added in a future revision. Edge / fog computing is a deployment-architecture model with data-residency implications but lives in network architecture rather than asset security.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST cloud computing definitions and EU sovereign-cloud guidance.
 
+### Tricky distractors
+
+- **Private cloud ≠ On-premises.** Private = single-tenant; can be hosted by third party. On-premises = customer-operated facility. Wrong-answer pattern: collapsing them.
+- **Sovereign cloud is post-Schrems-II.** Operated by national entity, staffed in-jurisdiction. Wrong-answer pattern: claiming any regional cloud satisfies sovereign requirements — must include legal isolation.
+- **Public cloud location is contractual.** Provider may route through other regions. Wrong-answer pattern: claiming public cloud guarantees absolute data location — contract terms vary.
+- **Cost rises with control.** Inverse trade-off across the ladder. Wrong-answer pattern: claiming on-premises is cheapest — capital cost is highest.
+- **Most large orgs run all four.** Different workloads, different models. Wrong-answer pattern: claiming organizations should pick one model — workloads vary in sensitivity and cost-tolerance.
+- **Shared Responsibility Model varies by deployment.** Customer responsibility shifts. Wrong-answer pattern: applying one shared-responsibility split to all cloud models — they differ.
+
 ## Engine demo opportunities
 
 - `? | data location guarantees → Provider chooses region from contract options` → Public cloud

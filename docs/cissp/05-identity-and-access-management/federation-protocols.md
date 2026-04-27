@@ -25,6 +25,15 @@ The four federated-identity protocols CISSP expects candidates to discriminate. 
 - **Federation vs identity management.** All four protocols federate identity across security domains — the IdP authenticates the user once, and the SP (relying party) trusts the assertion. Identity provisioning across domains (SCIM, JIT provisioning) is a separate concern and out of scope here.
 - **Out of scope for this Concept:** specific SAML flow (separate Ordered Concept — `saml-sso-flow`), OAuth authorization code flow (separate Concept — `oauth-authorization-code-flow`), OIDC-specific flows, OAuth grant types (separate Concept — `oauth-grant-types`), SAML actor roles (separate Concept — `saml-actors`), trust-relationship models (hub-and-spoke, mesh, transitive), federation attacks (assertion forgery, token replay, golden SAML).
 
+### Tricky distractors
+
+- **OAuth is not authentication.** OAuth 2.0 is authorization-only. OIDC layers authentication on top. Wrong-answer pattern: claiming "OAuth signs users in." OAuth grants delegated API access; OIDC tells the SP who the user is.
+- **OAuth vs SAML version timing.** SAML 2.0 (2005) predates OAuth 2.0 (2012). Wrong-answer pattern: claiming SAML is "newer" because of the "2.0" suffix — they share a version number but SAML is older.
+- **OIDC vs OAuth.** OIDC is built *on* OAuth 2.0 — it adds an ID Token (JWT). OIDC reuses OAuth's authorization code flow. Wrong-answer pattern: treating them as competing protocols.
+- **WS-Federation status.** Microsoft-centric, increasingly legacy. Wrong-answer pattern: choosing WS-Fed for new deployments — almost never recommended now.
+- **Token type per protocol.** SAML = SAML assertion (XML). OAuth = access token (often opaque). OIDC = ID token (always JWT). Wrong-answer pattern: claiming "all federation protocols use JWT" — only OIDC is JWT-required.
+- **IdP / SP terminology.** SAML uses *Identity Provider* and *Service Provider*. OIDC uses *OpenID Provider* and *Relying Party*. Wrong-answer pattern: thinking SAML and OIDC use different concepts — they use different *names* for the same roles.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

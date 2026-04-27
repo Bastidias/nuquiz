@@ -28,6 +28,15 @@ The six-step OAuth 2.0 Authorization Code grant flow as defined in RFC 6749 §4.
 - **OIDC layers on top.** When the `scope` in Step 1 includes `openid`, the authorization server is signaling an OIDC flow. Step 5 then also returns an `id_token` (a signed JWT) alongside the access token. The six-step structure is unchanged; OIDC adds the identity-assertion artifact.
 - **Out of scope for this Concept:** Refresh Token grant (separate Concept if promoted from Notes), PKCE step-level detail (captured in `oauth-grant-types` and its own future Concept), OIDC-specific variants (`hybrid flow`, `response_type=code id_token`), OAuth actors and roles (separate Concept — `oauth-roles`), token introspection and revocation, token-binding and DPoP, consent UX.
 
+### Tricky distractors
+
+- **Authorization code ≠ access token.** Code is one-time, short-lived, exchanged for token in Step 4. Wrong-answer pattern: claiming the user agent receives the access token directly — that's Implicit grant (deprecated), not Authorization Code.
+- **Front-channel vs back-channel.** Steps 1-3 ride the browser; Steps 4-5 are direct server-to-server. Wrong-answer pattern: claiming the token exchange goes through the browser — only the code does.
+- **Client secret never appears in front-channel.** It's presented only in Step 4 (or replaced by PKCE code_verifier for public clients). Wrong-answer pattern: claiming the secret is sent in the authorization request URL.
+- **`state` parameter is CSRF defense.** Client generates random state, AS echoes it, client verifies match. Wrong-answer pattern: treating `state` as optional decoration — without it, authorization-response forgery is possible.
+- **PKCE is extension, not replacement.** PKCE adds code_challenge/verifier to Steps 1 and 4; the six-step flow is unchanged. Wrong-answer pattern: calling PKCE a separate grant type.
+- **OIDC adds id_token in Step 5.** When `scope=openid`, AS returns id_token alongside access_token. Wrong-answer pattern: claiming OIDC is a different flow — it's the same flow with one more artifact.
+
 ### Values without a direct public citation
 
 No cell in this table relies on inference beyond what RFC 6749 [s1] §4.1 specifies. Purpose-column values ("Initiate authorization," "Deliver one-time code," "Access protected resource") are one-line summaries of the RFC's step-by-step prose rather than direct quotations, but map cleanly to the §4.1 sub-sections.

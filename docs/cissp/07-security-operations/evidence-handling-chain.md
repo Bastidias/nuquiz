@@ -25,6 +25,15 @@ The five sequential steps for handling digital evidence so that it remains admis
 - **Presentation vs. reporting.** NIST SP 800-86 calls Step 5 *reporting*; ISO/IEC 27037 and CISSP courseware often call it *presentation* to emphasize the courtroom-exhibit dimension. Either term is acceptable on the exam; this Concept uses *Presentation* per the stub.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-86 or the ISO/IEC 27037 framing.
 
+### Tricky distractors
+
+- **Chain of custody is cross-cutting.** Every step must record handler and time. Wrong-answer pattern: claiming chain of custody is a step itself — it's documentation across all steps.
+- **Identification before Collection.** Find the evidence sources before acquiring. Wrong-answer pattern: starting with collection — without identification, you don't know what to collect.
+- **Preservation is integrity over time.** Hashing, tamper-evident storage. Wrong-answer pattern: collapsing preservation into collection — they're separate steps.
+- **Order of volatility applies during Collection.** RAM before disk. Wrong-answer pattern: applying volatility order to identification or analysis — it's a Step 2 constraint.
+- **NIST SP 800-86 has 4 phases; CISSP teaches 5.** Identification and Preservation are split out in CISSP framing. Wrong-answer pattern: insisting on the 4-phase NIST count when the question expects the 5-step CISSP framing.
+- **Presentation = courtroom report.** Written report + expert testimony. Wrong-answer pattern: claiming presentation is just internal documentation — it's externally facing.
+
 ## Engine demo opportunities
 
 - `? | Name → Preservation` → Step 3

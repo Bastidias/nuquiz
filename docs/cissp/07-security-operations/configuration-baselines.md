@@ -22,6 +22,15 @@ The four configuration baselines defined by EIA-649 (the consensus systems-engin
 - **Why not "developmental" or "release" baselines.** Some references include developmental, release, or maintenance baselines. These are subdivisions or alternative taxonomies; EIA-649's three plus the operational baseline cover the CISSP scope without proliferating rows.
 - **Gaps marked `[needs source]`:** none — all Facts trace to EIA-649 (via SEBoK summary), NIST SecCM framing, or CISSP study guidance.
 
+### Tricky distractors
+
+- **Approved baseline ≠ running state.** Drift accumulates between baseline and current. Wrong-answer pattern: claiming the baseline is whatever's currently running — it's the approved snapshot, not the live state.
+- **Lifecycle order.** Functional → Allocated → Product → Operational. Wrong-answer pattern: putting Operational before Product — Operational is post-deployment.
+- **Functional baseline = requirements.** Defines what the system must do. Wrong-answer pattern: claiming Functional baseline is the as-built — that's Product.
+- **Product baseline = as-built.** Approved technical documentation reflecting actual build. Wrong-answer pattern: claiming Product baseline is the design intent — that's Functional/Allocated.
+- **Operational baseline drives drift detection.** Compare current state to operational baseline. Wrong-answer pattern: comparing to Functional baseline for drift — Operational is the live reference.
+- **Change management governs baseline updates.** Drift is closed via change control. Wrong-answer pattern: updating baselines without going through change control — that's how drift becomes uncontrolled.
+
 ## Engine demo opportunities
 
 - `? | when established → After requirements approval` → Functional

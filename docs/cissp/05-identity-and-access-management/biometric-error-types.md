@@ -22,6 +22,15 @@ The three error metrics CISSP candidates are expected to discriminate for biomet
 - **ISO/IEC 19795 is the standard.** [s1] is the international standard for biometric performance testing and reporting. NIST SP 800-76 [s2] covers biometric data interchange formats used within PIV (Personal Identity Verification) cards but is less focused on error-rate definitions.
 - **Out of scope for this Concept:** specific biometric modalities and their typical CER values (separate Concept — `biometric-modalities`), presentation attack detection (PAD / liveness), template storage and protection, biometric fusion (multimodal biometrics), privacy implications of biometric data retention.
 
+### Tricky distractors
+
+- **FRR = Type 1; FAR = Type 2.** Most commonly confused mapping on the exam. Wrong-answer pattern: swapping them — FRR rejects legitimate users (Type 1), FAR accepts impostors (Type 2).
+- **FAR is worse than FRR.** Security loss > usability inconvenience. Wrong-answer pattern: claiming high FRR is more dangerous — high FAR breaks the security guarantee.
+- **CER = EER.** Crossover Error Rate and Equal Error Rate are synonyms. Wrong-answer pattern: treating them as different metrics — CISSP uses CER, engineering uses EER.
+- **Lower CER = better system.** It's a benchmark for comparing systems. Wrong-answer pattern: claiming higher CER is better — lower means lower errors at the balance point.
+- **Threshold tuning trades FAR for FRR.** Single curve; tuning moves along it. Wrong-answer pattern: claiming you can drive both FAR and FRR low with tuning alone — that requires a better algorithm/sensor.
+- **FTE and FTA are operational, not accuracy.** Failure to Enroll / Acquire are different from FRR/FAR. Wrong-answer pattern: confusing enrollment failures with rejection rates.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

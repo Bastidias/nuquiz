@@ -27,6 +27,15 @@ The six software license categories CISSP candidates should distinguish. The dis
 - **OSI vs FSF approval.** The Open Source Initiative (OSI) maintains the canonical list of OSI-approved open source licenses; the Free Software Foundation (FSF) maintains its own list with overlapping but not identical scope. Both lists [s1, s2] include GPL, LGPL, MIT, Apache 2.0, and BSD; only OSI explicitly approves; FSF adds free-software-philosophy framing.
 - **Out of scope for this Concept:** specific GPL versions (v2 vs v3 differences, including Tivoization clause), Affero GPL (AGPL — strong copyleft for SaaS), Mozilla Public License (MPL — file-level weak copyleft), Creative Commons (used for non-software content), dual licensing, license-compatibility matrices, FOSSology / FOSSA / Black Duck commercial license-compliance tooling.
 
+### Tricky distractors
+
+- **GPL is strong copyleft (viral).** Derivatives must be GPL. Wrong-answer pattern: claiming GPL is permissive — most commonly confused with MIT/BSD.
+- **LGPL allows linking from proprietary.** Designed for libraries. Wrong-answer pattern: claiming LGPL is the same as GPL — LGPL was specifically created to weaken copyleft.
+- **Apache 2.0 has explicit patent grant.** MIT/BSD don't. Wrong-answer pattern: equating Apache 2.0 with MIT — patent grant is the key practical difference.
+- **MIT and BSD are functionally near-identical.** Both permissive, attribution required. Wrong-answer pattern: claiming they have meaningfully different obligations — minor differences only.
+- **AGPL extends GPL to SaaS.** Closes the "internet loophole." Wrong-answer pattern: confusing AGPL with regular GPL — AGPL applies copyleft to network use.
+- **Permissive ≠ public domain.** Attribution still required for MIT/BSD/Apache. Wrong-answer pattern: claiming MIT is no-strings-attached — attribution is mandatory.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

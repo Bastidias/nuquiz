@@ -27,6 +27,15 @@ The seven network-layer attack classes CISSP candidates are expected to discrimi
 - **Session hijacking `OSI layer = Transport`.** The classical CISSP framing is TCP session hijacking — prediction or theft of sequence numbers to take over an established connection. Modern web-session hijacking (cookie theft, session fixation) operates at Layer 7 and is closer in character to an authentication-bypass attack. This Concept reflects the Transport framing; a distinct web-session-attack Concept would cover the Layer-7 variant.
 - **Out of scope for this Concept:** wireless attacks (Evil Twin, deauth, KRACK, WPS, Dragonblood), BGP route hijacking, email-layer attacks (phishing, BEC, SPF/DKIM bypass), TLS-specific attacks (downgrade, POODLE, BEAST, Heartbleed), application-layer attacks (XSS, SQLi, CSRF), VoIP-specific attacks (SIP register floods, toll fraud), IoT-specific attacks.
 
+### Tricky distractors
+
+- **SYN flood targets server connection state.** SYN cookies eliminate TCB allocation. Wrong-answer pattern: claiming SYN cookies block the flood — they preserve service capacity under flood.
+- **Smurf uses ICMP and directed broadcast.** Disabled by default on modern routers (RFC 2644). Wrong-answer pattern: claiming Smurf attack still works — directed broadcast forwarding is off.
+- **DNSSEC defeats DNS cache poisoning.** Source port randomization helps but doesn't authenticate responses. Wrong-answer pattern: claiming source port randomization fully solves cache poisoning — it raises difficulty, doesn't fix the auth gap.
+- **ARP poisoning is Layer 2.** Dynamic ARP Inspection mitigates. Wrong-answer pattern: classifying ARP poisoning as Layer 3 — it's Data Link.
+- **IP spoofing is the technique, not the attack.** It enables many attacks (SYN flood, Smurf, DNS poisoning). Wrong-answer pattern: treating IP spoofing as a complete attack class — usually it's an enabler.
+- **MITM is multi-layer.** Layer 2 (ARP), Layer 3 (BGP), Layer 7 (DNS, TLS strip). Wrong-answer pattern: pinning MITM to one OSI layer — it depends on intercept point.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

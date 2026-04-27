@@ -23,6 +23,15 @@ The four ways to push a patch across an enterprise fleet, ordered roughly by agg
 - **What is intentionally not on this table.** Blue/green deployment, ring deployment, and rolling deployment are alternative strategies that overlap with these four. They could be added as additional rows in a future revision; the four here cover the most-tested CISSP framings.
 - **Gaps marked `[needs source]`:** four Facts — pilot group rollback specifics, all three big-bang Facts. Big-bang strategy is rarely *advocated* by primary publications; it is acknowledged as an operational reality, which makes it harder to source than the conservative alternatives.
 
+### Tricky distractors
+
+- **Pilot vs Phased rollout.** Pilot is single early wave; phased is multi-wave. Wrong-answer pattern: collapsing them — pilots typically precede phased rollout.
+- **Canary is automated; pilot is manual.** Same concept, different cadence and automation level. Wrong-answer pattern: claiming they're identical — canary's automated rollback is its defining feature.
+- **Big bang is contested.** Acknowledged operational reality but rarely advocated. Wrong-answer pattern: recommending big bang as default — only justified for active zero-day exploitation.
+- **Rollback cost scales with deployment scope.** Phased gives scoped rollback; big bang is full-fleet. Wrong-answer pattern: ignoring rollback cost in strategy choice — structural trade-off.
+- **Conservative ≠ slow.** Phased rollouts can be fast with proper automation. Wrong-answer pattern: claiming phased deployment must take weeks — pace depends on validation gates.
+- **Strategy choice is risk-based.** No universal answer. Wrong-answer pattern: claiming one strategy fits all patches — choice depends on patch risk and vuln severity.
+
 ## Engine demo opportunities
 
 - `? | when used → Continuous-deployment environments` → Canary

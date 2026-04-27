@@ -24,6 +24,15 @@ The three metric groups in CVSS v3.1 [s1]. Base captures the intrinsic character
 - **Cross-Concept link.** Sibling Concept `vulnerability-severity-scoring` covers the score-to-severity-bin mapping. CVSS Base produces the score that bins into Critical / High / Medium / Low / None.
 - **Out of scope for this Concept:** specific Base metric definitions (Attack Vector values, Attack Complexity scoring), CVSS calculator usage, v4.0 metric details, EPSS supplementing CVSS, CVSS-vs-SSVC framework comparisons.
 
+### Tricky distractors
+
+- **Base is constant; Temporal changes; Environmental varies by deployment.** Wrong-answer pattern: claiming Base changes when patches release — patches affect Temporal (Remediation Level), not Base.
+- **Most published scores are Base only.** NVD doesn't know your environment. Wrong-answer pattern: relying on NVD Base score for prioritization without computing Environmental.
+- **CVSS v4.0 renamed Temporal to Threat.** And added Supplemental metrics. Wrong-answer pattern: applying v3.1 metric names to v4.0 questions.
+- **Environmental incorporates org-specific CIA requirements.** A CIA hit on a critical asset weights heavier than the same hit on a dev system. Wrong-answer pattern: claiming Environmental is one fixed score for the vuln — it varies per asset within the same org.
+- **Temporal scores generally decrease over time.** As patches become available, Remediation Level lowers the Temporal score. Wrong-answer pattern: claiming Temporal scores increase over time — they typically fall.
+- **Base captures intrinsic vuln properties.** Attack Vector, Privileges Required, etc. Wrong-answer pattern: putting environment-specific data into Base — those go in Environmental.
+
 ### Values without a direct public citation
 
 No cell relies on inference beyond what the FIRST CVSS specification [s1] specifies. The mutability framings are paraphrases of the spec rather than direct quotations.

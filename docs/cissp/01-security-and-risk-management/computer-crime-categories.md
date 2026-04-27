@@ -25,6 +25,15 @@ The six attacker categories the CISSP CBK identifies, distinguished by *motivati
 - **What is intentionally not on this table.** Insider-threat is not its own category here because insiders appear across the other categories (a financial insider, a grudge insider, etc.). State-sponsored hacktivism is folded into Military/intelligence. Cybercrime-as-a-service is the *delivery mechanism*, not a category.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the CISSP CBK enumeration.
 
+### Tricky distractors
+
+- **Motivation drives persistence.** Financial attackers move on; nation-state attackers don't. Wrong-answer pattern: treating all attacker categories as equally persistent — they aren't.
+- **Categories blur in practice.** Modern attacks combine motivations (nation-state using criminal tooling). Wrong-answer pattern: insisting on single-category attribution — the taxonomy is pedagogical.
+- **Insider threat spans categories.** Insiders can be financial, grudge, or accidental. Wrong-answer pattern: treating "insider" as its own attacker category — it cuts across the categories.
+- **Hacktivism is often Terrorist or Grudge in CISSP framing.** Or split into its own category in some texts. Wrong-answer pattern: assuming all texts use identical six-category lists.
+- **Fun/thrill is still real risk.** Script kiddies generate baseline noise and exploit unsophisticated targets. Wrong-answer pattern: dismissing thrill attackers as not requiring defensive investment — they consume resources.
+- **Terrorist targets infrastructure to harm; Financial targets data to monetize.** Wrong-answer pattern: confusing motive with target type — both can hit critical infrastructure but for different reasons.
+
 ## Engine demo opportunities
 
 - `? | motivation → Direct monetary gain` → Financial

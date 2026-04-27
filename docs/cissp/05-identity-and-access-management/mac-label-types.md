@@ -23,6 +23,15 @@ The four US government classification labels used as the canonical example of Ma
 - **Ordering as a canonical test.** Questions like "which is more sensitive, Secret or Confidential?" (answer: Secret) test raw ordering. Questions like "a user with Confidential clearance attempts to open a Secret document — what happens?" (answer: denied, no-read-up violation) test the dominance rule.
 - **Out of scope for this Concept:** Bell-LaPadula and Biba formal models (separate Concept), compartments and categories, need-to-know enforcement mechanisms, commercial classification taxonomies, declassification procedures, the Freedom of Information Act process.
 
+### Tricky distractors
+
+- **Dominance rule.** Subject clearance must dominate (≥) object classification to read. Wrong-answer pattern: claiming equality is required — higher clearances can read lower classifications.
+- **Need-to-know is separate from clearance.** Both required for access. Wrong-answer pattern: claiming Top Secret clearance grants access to all TS data — compartments still apply.
+- **Confidential is the lowest formal classification.** Unclassified is absence of classification, not a fourth level. Wrong-answer pattern: ranking Unclassified at the bottom of the formal ladder.
+- **Harm thresholds are exact.** Damage / Serious damage / Exceptionally grave damage. Wrong-answer pattern: substituting other adjectives — exam may quote EO 13526 wording.
+- **Bell-LaPadula no-read-up implements MAC dominance.** Wrong-answer pattern: claiming Biba enforces classification reads — Biba is integrity, not confidentiality.
+- **MAC labels are externally defined.** Per EO 13526; users cannot redefine. Wrong-answer pattern: claiming MAC labels are organization-set — that's DAC or RBAC.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

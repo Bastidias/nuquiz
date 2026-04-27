@@ -23,6 +23,15 @@ The five artifact categories a forensic investigator commonly collects, with the
 - **Browser history vs. application logs more broadly.** Browser history is called out as its own row because it is a uniquely high-signal artifact for user-attribution questions (URL visits, search terms, downloads). Other application artifacts (mail-client databases, registry keys, prefetch files) collapse into the broader "log files" or "disk image" buckets unless future authoring breaks them out.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-86 framing or RFC 3227 volatility ordering.
 
+### Tricky distractors
+
+- **RAM holds disk-encryption keys.** BitLocker, FileVault, LUKS keys vanish on power-off. Wrong-answer pattern: claiming you can image disk first and recover keys later — keys must be captured live.
+- **Memory dump before disk image.** Volatility order. Wrong-answer pattern: imaging disk first — volatile evidence lost.
+- **Network capture is in-flight only.** Once traffic ends, can't recapture. Wrong-answer pattern: deferring network capture — must be live during the activity of interest.
+- **Browser history establishes user activity.** URLs, search terms, downloads. Wrong-answer pattern: relying on browser history for forensic certainty — incognito/private mode and history clearing apply.
+- **Logs reconstruct timeline; not just point-in-time.** Sequence and correlation. Wrong-answer pattern: treating logs as unrelated event records — timeline is the analytical product.
+- **Disk image is bit-for-bit, not file-by-file.** Hash-verified copy. Wrong-answer pattern: claiming filesystem copy is forensic-grade — file-by-file misses unallocated space and slack.
+
 ## Engine demo opportunities
 
 - `? | volatility → Highly volatile` → Memory dump

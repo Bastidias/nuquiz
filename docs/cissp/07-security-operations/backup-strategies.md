@@ -25,6 +25,15 @@ Six backup approaches that differ in *what* they capture each cycle, *how long* 
 - **What is intentionally not on this table.** 3-2-1 backup rule, immutable/air-gapped backups for ransomware, backup encryption (CP-9(8) in NIST SP 800-53 [s2]), and offsite rotation policies are operational considerations layered *on top of* the type choice. They belong in their own Concepts.
 - **Gaps marked `[needs source]`.** One Fact: "Low-RPO transactional systems" as the typical use for CDP. Widely accepted but not yet sourced to a primary publication in this research pass.
 
+### Tricky distractors
+
+- **Incremental vs Differential restore.** Incremental restore = full + ALL incrementals since. Differential restore = full + LATEST differential only. Wrong-answer pattern: claiming Incremental restores are faster than Differential — they're slower because of the chain.
+- **Differential storage grows daily.** Each differential captures more data than the prior one (it's cumulative since last full). Wrong-answer pattern: claiming Differential is constant-size daily — only Incremental is.
+- **Snapshot is not a backup.** A snapshot is a pointer to data state on the same media. Wrong-answer pattern: relying on snapshots alone for media-failure protection — pair with replication.
+- **Mirroring does not protect against logical corruption.** Ransomware encrypting the source mirrors to the target instantly. Wrong-answer pattern: treating mirroring as ransomware-proof — it isn't.
+- **CDP vs near-CDP.** True CDP captures every write. Near-CDP uses frequent snapshots. Wrong-answer pattern: calling 5-minute snapshot intervals "CDP" — exam usually means true CDP.
+- **Full backup overwrites archive bit; Incremental clears it; Differential does not.** This is the operational mechanism that distinguishes them. Wrong-answer pattern: confusing which type clears archive bits — Full and Incremental do, Differential leaves them set.
+
 ## Engine demo opportunities
 
 - `? | data captured → All data regardless of change` → Full

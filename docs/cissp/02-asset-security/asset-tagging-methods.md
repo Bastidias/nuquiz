@@ -24,6 +24,15 @@ The four mechanisms used to associate identity metadata with physical or logical
 - **What is intentionally not on this table.** Bluetooth/BLE beacons (an emerging method overlapping with RFID), API-based cloud-asset discovery (specific to cloud environments — could be its own row), and serial-number harvesting from purchase records (capital-asset trail). The four here cover the most-tested CISSP scope.
 - **Gaps marked `[needs source]`:** none — all Facts trace to CIS Controls or asset-management framing.
 
+### Tricky distractors
+
+- **Software agent only covers managed devices.** Unmanaged invisible. Wrong-answer pattern: claiming software agents provide universal asset coverage — depends on agent deployment.
+- **Network discovery covers unmanaged devices.** Sees what's connected. Wrong-answer pattern: claiming network discovery alone is sufficient — non-networked assets are invisible.
+- **Active vs Passive network discovery.** Active probes (loud); passive watches (quiet). Wrong-answer pattern: collapsing them — different operational characteristics.
+- **Physical tags need scanning.** Manual cycle. Wrong-answer pattern: claiming physical tags auto-update inventory — they require periodic scan.
+- **RFID is bulk-scan optimized.** Cost-effective at scale. Wrong-answer pattern: applying RFID to small fleets — overkill for low-volume.
+- **Multiple methods cover gaps.** No single method is sufficient. Wrong-answer pattern: claiming one tagging method covers all asset types.
+
 ## Engine demo opportunities
 
 - `? | mechanism → Endpoint software reports asset metadata` → Software agent

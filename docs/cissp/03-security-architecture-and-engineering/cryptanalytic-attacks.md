@@ -32,6 +32,15 @@ The twelve cryptanalytic attack categories CISSP courseware tests by name. Each 
 - **What is intentionally not on this table.** Differential and linear cryptanalysis (block-cipher-specific academic attacks), padding-oracle attacks (a chosen-ciphertext variant for CBC mode), Bleichenbacher's attack (a chosen-ciphertext variant for RSA-PKCS#1 v1.5), and post-quantum threats to RSA/ECC could be added in future revisions. The twelve here cover the most-tested CISSP scope.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard cryptography references.
 
+### Tricky distractors
+
+- **Attacker-model hierarchy.** Ciphertext-only < Known plaintext < Chosen plaintext < Chosen ciphertext. Wrong-answer pattern: assuming all attack models are equivalent — chosen-ciphertext is the strongest.
+- **Birthday paradox is 2^(n/2), not 2^n.** N-bit hash needs ~2^(n/2) collisions. Wrong-answer pattern: claiming MD5 needs 2^128 to break collisions — only 2^64.
+- **Rainbow tables defeated by salt.** Per-user salt prevents precomputation. Wrong-answer pattern: claiming key stretching alone defeats rainbow tables — salt is the canonical defense.
+- **Dictionary vs Rainbow.** Dictionary tries wordlist entries against the target. Rainbow tables precompute hashes for lookup. Wrong-answer pattern: collapsing them — different mechanics, different defenses.
+- **MITM ≠ replay.** MITM actively modifies/relays in real time. Replay resends valid messages later. Wrong-answer pattern: confusing them — mutual auth defeats MITM; freshness defeats replay.
+- **Side-channel attacks target implementation, not algorithm.** Timing, power, EM emissions. Constant-time code defends. Wrong-answer pattern: claiming side-channel attacks break the algorithm itself — they extract keys via physical observation.
+
 ## Engine demo opportunities
 
 - `? | attack mechanism → Try every possible key` → Brute force

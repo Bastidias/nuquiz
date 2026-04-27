@@ -24,6 +24,15 @@ The five supply-chain control families CISSP candidates should distinguish. Pair
 - **EO 14028 drove SBOM mandate.** Executive Order 14028 (May 2021) required federal software vendors to provide SBOMs and accelerated SLSA / sigstore adoption. NIST SSDF [s1] was strengthened in response. Cited at the framework level rather than per-cell.
 - **Out of scope for this Concept:** specific NTIA SBOM Minimum Elements (could be its own sub-Concept), SLSA levels 1-4 detail (could be its own sub-Concept), in-toto attestation framework, package-manager-specific lock-file mechanics, vendor-onboarding workflows, contractual security requirements (DPAs, security addenda).
 
+### Tricky distractors
+
+- **SBOM is inventory; SCA is matching.** Different functions. Wrong-answer pattern: claiming SBOM detects vulnerabilities — SBOM lists components; SCA matches against CVEs.
+- **Pinning ≠ Signing.** Pinning fixes versions; signing proves identity. Wrong-answer pattern: collapsing them — they address different supply-chain risks.
+- **Signature proves origin, not trustworthiness.** Signed by attacker = signed code, not safe. Wrong-answer pattern: claiming signed artifacts are inherently safe — verification of signer identity is required.
+- **SBOM formats: SPDX, CycloneDX.** Both machine-readable. Wrong-answer pattern: confusing them with SCA tools (Snyk, Dependabot) — formats vs scanners.
+- **EO 14028 mandates SBOM for federal vendors.** Not voluntary. Wrong-answer pattern: claiming SBOM is best practice but unrequired — federal mandate exists.
+- **Vendor risk assessment is governance, not technical.** SIG, CAIQ, SOC 2 review. Wrong-answer pattern: classifying vendor risk assessment as a tool category — it's a process producing evidence.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

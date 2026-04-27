@@ -21,6 +21,15 @@ Threat modeling is the Design-phase security activity that identifies, enumerate
 - **Threat modeling vs risk assessment.** Threat modeling is system-specific and architecture-anchored; risk assessment is organization-wide and control-anchored. Both produce ranked risks; the difference is scope. NIST SP 800-30 [s3] covers risk assessment at the org level; `risk-treatment` in Domain 1 covers the risk-response menu.
 - **Out of scope for this Concept:** methodology-by-methodology comparison (see `threat-modeling-methodologies` in D1), STRIDE's six categories in detail (see `stride-categories` in D1), data flow diagram conventions, trust boundary notation, threat-modeling tools (Microsoft Threat Modeling Tool, IriusRisk, OWASP Threat Dragon), attack trees formally, DREAD scoring mechanics.
 
+### Tricky distractors
+
+- **Threat modeling is Design phase.** Architectural fix beats code-level patching. Wrong-answer pattern: scheduling threat modeling at Testing — catches only what survived Design.
+- **Threat modeling ≠ Risk assessment.** System-specific architecture-anchored vs organization-wide control-anchored. Wrong-answer pattern: collapsing them — different scope and inputs.
+- **STRIDE classifies; doesn't dictate process.** Six categories of threat. Wrong-answer pattern: claiming STRIDE prescribes the threat-modeling steps — Microsoft pairs it with a process; STRIDE itself is taxonomy.
+- **Threat modeling needs four inputs.** Architecture, DFD, asset inventory, security requirements. Wrong-answer pattern: running threat modeling without asset inventory — produces unranked threats.
+- **Outputs drive later phases.** Threat list → Implementation backlog; Mitigation plan → Testing requirements. Wrong-answer pattern: treating threat modeling as standalone — it integrates with downstream phases.
+- **Lightweight ongoing models for agile.** Per-sprint refinement, not just upfront. Wrong-answer pattern: claiming threat modeling is one-time at Design — modern practice is continuous.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

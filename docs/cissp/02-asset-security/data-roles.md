@@ -26,6 +26,15 @@ The six roles that participate in the lifecycle of data assets. Owner, Custodian
 - **Joint Controllers and sub-processors.** GDPR also recognizes joint controllers (two organizations jointly determining purposes/means) and sub-processors (a Processor's vendors). This Concept simplifies; an authoritative GDPR analysis would address all five.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST role framing or GDPR text.
 
+### Tricky distractors
+
+- **Controller vs Processor (GDPR).** Controller decides *what* and *why*. Processor executes on Controller's instructions. Wrong-answer pattern: claiming a cloud provider is the Controller of customer data — the provider is a Processor.
+- **Owner vs Custodian.** Owner classifies and decides; Custodian implements. Wrong-answer pattern: confusing accountability (Owner) with responsibility (Custodian) — same distinction as governance roles.
+- **Steward is about quality.** Fitness for purpose — accuracy, completeness, currency. Wrong-answer pattern: collapsing Steward into Owner or Custodian — Steward governs data meaning, not access or implementation.
+- **Processor processing outside instructions becomes Controller.** And assumes Controller accountability. Wrong-answer pattern: claiming Processors carry no liability for unauthorized processing.
+- **DPA is mandatory.** GDPR Article 28 requires Data Processing Agreement between Controller and Processor. Wrong-answer pattern: claiming verbal authorization satisfies GDPR — formal contract is required.
+- **Roles are dataset-specific.** One organization can be Owner of one dataset and Processor of another. Wrong-answer pattern: assigning a single role to an entire organization.
+
 ## Engine demo opportunities
 
 - `? | responsibilities → Determine purposes and means of processing personal data` → Controller

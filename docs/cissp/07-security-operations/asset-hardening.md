@@ -22,6 +22,15 @@ Five canonical hardening techniques applied during system provisioning and ongoi
 - **CIS Control 4 vs Control 5 for accounts.** Default-account management lives under Control 4 (secure configuration), not Control 5 (account management). Control 5 covers ongoing account lifecycle; removing defaults is a one-time configuration step, hence its placement.
 - **Gaps marked `[needs source]`.** Two cells have one Fact each awaiting citation: patch-window rationale and incident-investigation logging rationale. Both are widely accepted but not traced to a primary source in this research pass. NIST SP 800-92 *Guide to Computer Security Log Management* would source the second; SP 800-40 *Guide to Enterprise Patch Management Planning* would source the first.
 
+### Tricky distractors
+
+- **Default accounts have known credentials.** Vendor-installed creds are public knowledge. Wrong-answer pattern: claiming default accounts are safe if the password is changed — change-AND-rename or remove entirely.
+- **Disable unused services reduces attack surface.** Listening ports are exposure. Wrong-answer pattern: claiming firewalled services are equivalently safe — defense-in-depth says disable unused services even with firewalls.
+- **Vendor defaults favor usability.** Hardening must override. Wrong-answer pattern: trusting out-of-box defaults — they're tuned for installation success, not security.
+- **Patches close known vulns; not all vulns.** Zero-days unaffected. Wrong-answer pattern: claiming patching alone solves vulnerability management — covers known issues only.
+- **Hardening baselines must be enforced post-deployment.** Drift accumulates. Wrong-answer pattern: claiming one-time hardening at provisioning is sufficient — drift detection is required.
+- **CIS Controls vs CIS Benchmarks.** Controls = cross-platform; Benchmarks = OS-specific. Wrong-answer pattern: treating them as interchangeable — different artifacts.
+
 ## Engine demo opportunities
 
 - `? | CIS Controls v8 safeguard → 4.8 Uninstall or Disable Unnecessary Services on Enterprise Assets and Software` → Disable unused services

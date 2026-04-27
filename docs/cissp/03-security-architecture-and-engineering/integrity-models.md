@@ -21,6 +21,15 @@ The three formal integrity models CISSP candidates are expected to discriminate.
 - **Cross-Concept link.** Sibling Concept `biba-properties` covers Biba's three properties; sibling `confidentiality-models` covers Bell-LaPadula and the broader confidentiality model set. This Concept rolls up all three integrity models for cross-comparison.
 - **Out of scope for this Concept:** Goguen-Meseguer (noninterference, covered in `other-access-models`), Sutherland's information flow model, formal verification of Clark-Wilson certifications, real-world implementation patterns of integrity models.
 
+### Tricky distractors
+
+- **Biba vs Bell-LaPadula directionality.** BLP: no read up, no write down (confidentiality). Biba: no read down, no write up (integrity). Wrong-answer pattern: applying BLP rules to Biba — they're inverted.
+- **Clark-Wilson uses TPs, not direct access.** Subjects → TPs → CDIs. Wrong-answer pattern: claiming subjects directly read/write CDIs in CW — they invoke certified procedures.
+- **Clark-Wilson is commercial; Biba is classified.** CW models commercial integrity via transactions; Biba uses MAC labels like BLP. Wrong-answer pattern: confusing model lineage — Biba is military-style, CW is commercial-style.
+- **Lipner combines BLP + Biba.** Both label sets on every subject/object. Wrong-answer pattern: claiming Lipner is a third independent model — it composes the other two.
+- **Biba doesn't address confidentiality.** It's integrity-only. Wrong-answer pattern: claiming Biba protects secret data confidentiality — it protects against unauthorized modification, not unauthorized read.
+- **Separation of Duties is core to Clark-Wilson.** No single user can complete a sensitive transaction. Wrong-answer pattern: omitting SoD when listing CW properties.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

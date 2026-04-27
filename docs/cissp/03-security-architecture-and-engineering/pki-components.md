@@ -28,6 +28,15 @@ The six core components of a Public Key Infrastructure (PKI). The CA issues cert
 - **Cross-Concept link.** Sibling Concepts: `certificate-lifecycle` (the Ordered Concept covering certificate Request → Validate → Issue → Use → Revoke → Renew), `digital-signature-process` (the cryptographic mechanics of CA signing).
 - **Out of scope for this Concept:** specific X.509 v3 extensions, specific CA hierarchies (root CA, intermediate CA, cross-certification, bridge CA), Certificate Transparency, ACME protocol, CT logs, public-key-pinning (now deprecated), trust-store management.
 
+### Tricky distractors
+
+- **CA signs; RA verifies identity.** Wrong-answer pattern: claiming the RA can issue certificates — only the CA has signing authority.
+- **CRL vs OCSP.** CRL is a downloaded list (stale, scales); OCSP is real-time query (fresh, privacy leak). Wrong-answer pattern: claiming CRL is real-time — it's a periodic download.
+- **OCSP stapling fixes the privacy/availability problems.** Server queries OCSP and staples response into TLS handshake. Wrong-answer pattern: claiming OCSP stapling is a separate revocation mechanism — it's an OCSP optimization.
+- **Key escrow breaks non-repudiation for signing keys.** Multiple parties holding signing keys destroys signer's exclusive possession. Wrong-answer pattern: applying escrow to signing keys — escrow is for encryption keys.
+- **Certificate is X.509 data structure.** Not a service. Wrong-answer pattern: treating "Certificate" as a PKI service — it's the artifact CAs issue.
+- **CA is the trust anchor.** Trust derives from the CA's signature, validated up to a root in the trust store. Wrong-answer pattern: claiming users trust certificates directly — they trust the CA chain.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

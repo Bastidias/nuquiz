@@ -27,6 +27,15 @@ The five phases NIST SP 800-115 [s1] defines for a penetration test. Ordered bec
 - **PTES is the alternative model.** The Penetration Testing Execution Standard splits this into seven phases: Pre-engagement, Intelligence Gathering, Threat Modeling, Vulnerability Analysis, Exploitation, Post-Exploitation, Reporting. CISSP uses NIST 5-phase; SME pass should confirm against current exam outline if PTES becomes the dominant framing.
 - **Out of scope for this Concept:** pen test perspectives (sibling Concept `pen-test-perspectives` — black/grey/white box), specific tooling (Metasploit, Burp Suite, Cobalt Strike, Mimikatz), red-team-specific phases beyond pen test (C2 infrastructure setup, long-term persistence), purple-team exercises, breach-and-attack simulation (BAS) platforms.
 
+### Tricky distractors
+
+- **Authorization is non-negotiable.** Without RoE and written approval, pen test = unauthorized access. Wrong-answer pattern: starting Discovery before signed authorization — that's a legal problem.
+- **Pen test exploits; vuln scan doesn't.** The exploitation step (Phase 3) is the dividing line. Wrong-answer pattern: claiming vulnerability scans are pen tests — they stop after Discovery.
+- **Discovery includes both passive and active.** Reconnaissance is passive; vulnerability ID is active. Wrong-answer pattern: claiming Discovery is purely passive — active scanning is part of it.
+- **Privilege escalation is in Attack phase.** Not a separate phase. Wrong-answer pattern: classifying escalation/pivoting as Reporting — they're attack-phase activities.
+- **Reporting ranks findings by severity.** Often CVSS or custom risk score. Wrong-answer pattern: claiming reports just list findings — ranking and remediation guidance are required.
+- **Remediation testing verifies fixes.** Re-test after remediation. Wrong-answer pattern: claiming pen tests end at Reporting — Phase 5 closes the loop.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

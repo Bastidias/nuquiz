@@ -24,6 +24,15 @@ The principle that data is subject to the laws of the jurisdiction in which it p
 - **Data localization laws are an emerging sovereignty extension.** China, Russia, India, and several other jurisdictions have laws requiring certain data categories to be *stored* within the jurisdiction. This is sovereignty enforcement at the architecture level — the host country claims jurisdiction *and* requires that data not leave.
 - **Gaps marked `[needs source]`:** none — all Facts trace to GDPR, CLOUD Act, or published Schrems II analysis.
 
+### Tricky distractors
+
+- **Sovereignty follows location, not citizenship.** Spanish citizen's data in US is subject to US law. Wrong-answer pattern: claiming subject citizenship determines applicable law — physical location does.
+- **CLOUD Act vs GDPR is the canonical conflict.** US courts can compel US providers globally; GDPR restricts EU data export. Wrong-answer pattern: claiming SCCs alone resolve the conflict — Schrems II constrained their use.
+- **Data localization is sovereignty + storage mandate.** China, Russia, India require local storage. Wrong-answer pattern: equating sovereignty with localization — sovereignty is jurisdiction; localization is storage requirement.
+- **Customer-controlled keys mitigate.** Provider can't decrypt under court order. Wrong-answer pattern: claiming customer-key encryption fully solves cross-border issues — shifts burden but doesn't eliminate.
+- **SCCs are GDPR cross-border mechanism.** Template contracts. Wrong-answer pattern: claiming SCCs grant adequacy — they're a safeguard, not an adequacy decision.
+- **Sovereign cloud = data residency + jurisdiction.** Provider operates entirely within target jurisdiction. Wrong-answer pattern: equating sovereign cloud with regional data centers — sovereign cloud requires legal isolation too.
+
 ## Engine demo opportunities
 
 - `? | content → Data physically located in a jurisdiction is subject to that jurisdiction's laws` → what it means aspect

@@ -28,6 +28,15 @@ The six sequential phases a security patch passes through from discovery to veri
 - **Why six phases, not seven or five.** NIST SP 800-40 Rev. 4 frames patch management around four broad activities (preparation, planning, deployment, verification). Six-phase decomposition adds Identification and Evaluation as separate phases (since prioritization is a distinct deliverable from inventory) and separates Testing from Approval (since approval depends on test outcomes). This matches the most-tested CISSP framing.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-40 Rev. 4 framing.
 
+### Tricky distractors
+
+- **Don't skip testing.** Even emergency patches need risk-accepted skip documented. Wrong-answer pattern: deploying critical patches to production untested — most common CISSP wrong-answer scenario.
+- **Verification has two parts.** Install success + vuln remediation. Wrong-answer pattern: claiming install confirmation alone proves remediation — incomplete patches install but don't fix.
+- **Asset inventory accuracy gates patch program.** Can't patch what you don't know about. Wrong-answer pattern: claiming patch management is independent of CMDB — depends critically.
+- **Emergency patches use Emergency CAB.** Compressed but not skipped change management. Wrong-answer pattern: claiming emergency patches bypass change management entirely — they use the emergency path.
+- **Phase order.** Identification → Evaluation → Testing → Approval → Deployment → Verification. Wrong-answer pattern: putting Approval before Testing — approval depends on test outcomes.
+- **Patch ≠ Configuration change.** Different lifecycle for security patches vs general config changes. Wrong-answer pattern: treating all change requests identically — patch program has dedicated lifecycle.
+
 ## Engine demo opportunities
 
 - `? | Name → Testing` → Phase 3

@@ -23,6 +23,15 @@ The three states data exists in at any moment: at rest (stored), in transit (mov
 - **Mutual authentication.** TLS by default authenticates the server to the client (the client trusts the server's certificate). Mutual TLS (mTLS) authenticates both directions — the server also requires a client certificate. Used for service-to-service authentication and high-security client connections.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST cryptography or confidential-computing framing.
 
+### Tricky distractors
+
+- **Three states are exhaustive.** Every byte is at rest, in transit, or in use at any moment. Wrong-answer pattern: claiming a fourth state — there isn't one in the canonical model.
+- **In-use is historically unprotected.** TLS + disk encryption left memory exposed. Confidential computing and homomorphic encryption fix this. Wrong-answer pattern: claiming TLS protects in-use data — TLS protects in-transit only.
+- **TLS protects in transit; AES-on-disk protects at rest.** Wrong-answer pattern: applying TLS to at-rest protection — TLS is a transport-layer protocol.
+- **Homomorphic encryption processes ciphertext.** Computation produces correct result when decrypted. Wrong-answer pattern: claiming homomorphic encryption decrypts to process — it does the opposite.
+- **TEEs/enclaves protect from privileged OS.** Hardware-isolated execution prevents host inspection. Wrong-answer pattern: claiming standard memory protection prevents privileged process inspection — it doesn't, the OS can read all memory by default.
+- **Cold boot attacks target in-use.** DRAM data persists briefly after power-off. Wrong-answer pattern: classifying cold boot as an at-rest threat — the data was in use until power loss.
+
 ## Engine demo opportunities
 
 - `? | encryption methods → AES-256 disk and database encryption` → At rest

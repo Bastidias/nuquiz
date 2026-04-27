@@ -22,6 +22,15 @@ Three containment-phase activities from NIST SP 800-61 incident response. Short-
 - **Evidence preservation links to chain of custody.** The three Facts in the evidence-preservation column are the *inputs* to the chain-of-custody process documented in `evidence-handling-chain.md`. NIST SP 800-86 is the primary forensic-handling reference [s2].
 - **Gaps marked `[needs source]`:** one Fact — "Adds time to recovery" as a tradeoff for system backup. Widely accepted but not yet sourced to a primary publication in this research pass.
 
+### Tricky distractors
+
+- **Speed vs evidence trade-off.** Faster containment = less evidence preserved. Wrong-answer pattern: claiming containment is purely about speed — evidence preservation is a competing requirement.
+- **Destructive payloads can trigger on containment.** Some malware self-destructs when isolated. Wrong-answer pattern: claiming short-term containment is always safe — risk of destructive trigger.
+- **Backup before eradication.** Forensic snapshot first, then destroy. Wrong-answer pattern: eradicating before imaging — destroys evidence and analysis surface.
+- **Long-term ≠ delayed containment.** Long-term is structured holding while clean rebuild proceeds. Delayed containment lets attacker continue under monitoring. Wrong-answer pattern: collapsing them — different intents.
+- **NIST SP 800-61 has criteria for choosing strategy.** Six factors weighed per incident. Wrong-answer pattern: claiming one containment strategy is universally best — choice depends on incident properties.
+- **Containment is between Detection and Eradication.** Specific phase in IR. Wrong-answer pattern: confusing containment with eradication — containment limits damage; eradication removes the threat.
+
 ## Engine demo opportunities
 
 - `? | when used → Immediately upon incident detection` → Short-term containment

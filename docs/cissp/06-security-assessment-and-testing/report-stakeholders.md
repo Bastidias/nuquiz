@@ -23,6 +23,15 @@ The four primary stakeholder audiences for security assessment reports. Each aud
 - **Cross-Concept link.** Sibling Concept `assessment-types` covers what kinds of assessments produce these reports. Sibling `soc-report-types` covers the specific SOC 1/2/3 report distinctions cited in the customer row.
 - **Out of scope for this Concept:** specific report-template structures, dashboard tooling, executive-briefing best practices, audit-evidence-collection workflows, vendor risk questionnaires (SIG, CAIQ), bug bounty hall-of-fame disclosure formats.
 
+### Tricky distractors
+
+- **One report doesn't serve all audiences.** Role-tailored views needed. Wrong-answer pattern: producing single comprehensive report for all stakeholders — gets ignored.
+- **Executives want decisions, not data.** Trend lines and risk areas. Wrong-answer pattern: presenting CVE counts to executives — they need business impact framing.
+- **Technical reports must enable fix.** Reproduction steps. Wrong-answer pattern: claiming vague descriptions are sufficient for technical audience — they need actionable detail.
+- **Customer reports are sanitized.** SOC 3 publicly, SOC 2 under NDA. Wrong-answer pattern: sharing detailed findings with customers — they get attestations.
+- **Auditor reports map to controls.** Framework-aligned. Wrong-answer pattern: presenting auditor reports as narrative — they're structured per-control evidence.
+- **Frequency varies by audience.** Per-assessment, quarterly, annual, attestation-cycle. Wrong-answer pattern: applying one cadence to all audiences.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -25,6 +25,15 @@ The five physical access control mechanisms CISSP courseware tests. Each pairs a
 - **What is intentionally not on this table.** Security guards (a personnel control), CCTV (detection rather than access control), motion sensors, and access control vestibules are adjacent physical-security controls that could be added in future revisions. The five here cover the most-tested CISSP physical-access-control scope.
 - **Gaps marked `[needs source]`:** one Fact — turnstile peak-time weakness. Practitioner consensus.
 
+### Tricky distractors
+
+- **Tailgating is the canonical bypass.** Authorized person enters; unauthorized follows. Wrong-answer pattern: claiming badges alone prevent tailgating — turnstiles, mantraps, or guards do.
+- **FAR vs FRR.** FAR (Type 2) = wrong person accepted. FRR (Type 1) = right person rejected. Wrong-answer pattern: confusing the two — high security tunes for low FAR; usability tunes for low FRR.
+- **CER is the balance point.** Crossover Error Rate is where FAR = FRR; lower CER = better biometric. Wrong-answer pattern: claiming low CER means low FAR specifically — it means both rates balance low.
+- **Smart cards are inherently multi-factor.** Card (have) + PIN (know). Wrong-answer pattern: classifying smart cards as single-factor — the PIN requirement makes them multi-factor.
+- **Defense in depth.** No single physical control is sufficient. Wrong-answer pattern: claiming a single mechanism (lock, badge) is enough — high-security needs layers.
+- **Mantrap = double-door vestibule.** First door closes before second opens; one person at a time. Wrong-answer pattern: confusing mantrap with turnstile — turnstile blocks one-at-a-time but doesn't physically isolate.
+
 ## Engine demo opportunities
 
 - `? | mechanism → Card with embedded cryptographic chip` → Smart cards

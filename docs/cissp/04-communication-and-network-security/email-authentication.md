@@ -23,6 +23,15 @@ The three DNS-published email-authentication standards. They are complementary, 
 - **DMARC reporting.** DMARC defines two report URIs: `rua=` for aggregate XML reports and `ruf=` for forensic / failure reports. Out of scope here but potentially a separate Concept if reporting details become a testing focus.
 - **Out of scope for this Concept:** BIMI (Brand Indicators for Message Identification), ARC (Authenticated Received Chain), MTA-STS, TLS-RPT, DANE for SMTP, S/MIME, PGP. These are adjacent but distinct standards — each would warrant its own Concept.
 
+### Tricky distractors
+
+- **DKIM is the only cryptographic standard.** SPF and DMARC use no crypto. Wrong-answer pattern: claiming SPF or DMARC sign messages — only DKIM does.
+- **SPF validates envelope, not From header.** This gap is what DMARC fills. Wrong-answer pattern: claiming SPF protects the visible From: header — it doesn't.
+- **DMARC enforces alignment.** It checks that authenticated SPF/DKIM domains align with the From header. Wrong-answer pattern: claiming DMARC is independent of SPF/DKIM — it consumes their results.
+- **DMARC actions are p=none/quarantine/reject.** Policy mode determines disposition. Wrong-answer pattern: claiming DMARC always rejects failures — `p=none` is monitoring-only.
+- **DNS TXT locations.** SPF at apex; DKIM at `<selector>._domainkey.<domain>`; DMARC at `_dmarc.<domain>`. Wrong-answer pattern: confusing the locations — single most reliable exam discriminator.
+- **Three layers needed for full protection.** NIST SP 800-177 recommends all three. Wrong-answer pattern: claiming SPF alone is sufficient — display-name spoofing bypasses SPF.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

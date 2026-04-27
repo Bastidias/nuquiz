@@ -26,6 +26,15 @@ The six quantities CISSP candidates compute when putting a dollar figure on a ri
 - **NIST SP 800-30.** NIST SP 800-30 Rev 1 (2012) describes risk assessment broadly and includes both qualitative and semi-quantitative approaches. The strict ALE = SLE × ARO arithmetic predates SP 800-30 Rev 1 and is more closely associated with industry/CISSP teaching than with current NIST text. Citing Wikipedia and DestCert for the formulas honestly tracks where the explicit arithmetic appears in publicly accessible material.
 - **Out of scope:** qualitative risk analysis (Likelihood × Impact matrices), Monte Carlo and FAIR-style probabilistic models, risk treatment options (accept/transfer/mitigate/avoid). Those belong in `qual-vs-quant-analysis`, `risk-frameworks`, and `risk-treatment`.
 
+### Tricky distractors
+
+- **SLE = AV × EF, not AV − EF.** EF is a percentage. Wrong-answer pattern: subtracting EF from AV — multiply, don't subtract.
+- **ALE = SLE × ARO.** Annualized loss combines per-incident loss with annual frequency. Wrong-answer pattern: equating ALE with SLE — they differ by the ARO factor.
+- **ARO can be fractional.** `ARO = 0.5` means once every two years. Wrong-answer pattern: assuming ARO must be a whole number ≥ 1.
+- **Safeguard formula subtracts ACS.** Net benefit = (ALE before − ALE after) − Annual Cost of Safeguard. Wrong-answer pattern: forgetting to subtract control cost — gross savings ≠ net benefit.
+- **EF is bounded 0-100%.** It's the percentage of asset lost per incident. Wrong-answer pattern: using EF > 100% — physically impossible.
+- **Quantitative ≠ better than qualitative.** Quantitative gives dollar precision but depends on input quality. Wrong-answer pattern: claiming quantitative analysis always produces better decisions — garbage-in-garbage-out applies.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

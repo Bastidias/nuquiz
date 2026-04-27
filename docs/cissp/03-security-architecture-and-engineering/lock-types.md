@@ -26,6 +26,15 @@ The five lock categories CISSP courseware tests. Each pairs a *mechanism* with *
 - **Bumping and picking attacks.** Lock bumping (using a specially-cut "bump key" to defeat pin tumblers in seconds) became widely publicized circa 2005. High-security pin tumbler locks add anti-bumping pins, telescoping pins, sidebar mechanisms, etc., to resist. Lock picking is older and slower but works on most cheap pin tumbler locks.
 - **Gaps marked `[needs source]`:** none — all Facts trace to ASIS physical-security and lock-industry standards.
 
+### Tricky distractors
+
+- **Smart locks add electronic; mechanical still present.** Bolt is mechanical. Wrong-answer pattern: claiming smart locks have no physical mechanism — they layer electronic auth on mechanical actuation.
+- **Bumping defeats most pin tumblers.** Specialty bump key. Wrong-answer pattern: claiming pin tumbler is high-security — only high-security variants resist bumping.
+- **Master keys create concentrated risk.** Single point of compromise. Wrong-answer pattern: claiming master keying improves security — convenience trade-off.
+- **Biometric quality determines strength.** FAR/FRR. Wrong-answer pattern: claiming all biometric locks are equally strong — varies by biometric tech.
+- **Warded locks are antique.** Skeleton keys defeat them. Wrong-answer pattern: deploying warded locks for security — they're decorative.
+- **Combination locks span quality extremes.** Cheap padlocks vs S&G safes. Wrong-answer pattern: assuming combination locks are uniformly weak or strong — quality varies enormously.
+
 ## Engine demo opportunities
 
 - `? | mechanism → Pins of varying lengths align with cuts on key` → Pin tumbler

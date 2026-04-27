@@ -19,3 +19,12 @@ The four canonical responses to an identified risk. Knowing when to choose each 
 - Some CISSP sources list a fifth option: **Reject/Ignore** — explicitly do nothing without analysis. This is *not* the same as Accept (which is a deliberate, documented decision). Excluded here as bad practice; mention in study notes if desired.
 - Watch for trap questions distinguishing Accept (deliberate) from Reject (negligent).
 - Transfer is often misunderstood — *operational* risk does not transfer, only *financial* exposure. Reinforced in the residual-risk column with two split facts.
+
+### Tricky distractors
+
+- **Accept vs Reject/Ignore.** Accept is *deliberate and documented* — risk reviewed, documented as accepted, decision recorded. Reject/Ignore is *negligent* — no analysis, no documentation. Wrong-answer pattern: treating them as synonymous. The exam often presents a scenario testing whether the response is principled (Accept) or careless (Reject).
+- **Transfer transfers financial risk only.** Insurance and outsourcing don't transfer *operational* risk — if your data is breached, the impact still happens to you. Wrong-answer pattern: claiming "Transfer eliminates the risk." It only shifts the financial burden.
+- **Avoid eliminates the activity.** Avoid means *not doing the thing*. Stop accepting credit cards = avoid PCI risk by not having cardholder data. Wrong-answer pattern: confusing Avoid with Mitigate — Mitigate keeps the activity but adds controls; Avoid stops the activity.
+- **Mitigate vs Accept residual risk.** All Mitigate strategies leave *residual* risk (controls reduce, not eliminate). Wrong-answer pattern: claiming Mitigate "eliminates" risk — that's only Avoid.
+- **Transfer ≠ Avoid.** Outsourcing payment processing to a PCI-compliant provider *transfers* the PCI compliance burden but you still have data risk. Wrong-answer pattern: equating outsourcing with avoidance.
+- **"Reduce" is Mitigate.** Some (ISC)² materials use "Reduce" instead of "Mitigate." Wrong-answer pattern: treating them as different options. They're synonyms.

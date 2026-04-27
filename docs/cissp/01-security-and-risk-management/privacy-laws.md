@@ -25,6 +25,15 @@ Five privacy regulations the CISSP exam most often tests by name. GDPR is the EU
 - **What is intentionally not on this table.** State data-breach notification laws (all 50 U.S. states have some form), CPRA-derived state laws (Virginia, Colorado, Connecticut, Utah, Delaware, etc.), China's PIPL, and India's DPDP Act are equally important but not on the test as named regulations as frequently as the five here. Could be added in future revisions.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the published regulatory text or supervisory-authority guidance.
 
+### Tricky distractors
+
+- **GDPR penalty is 4% of global turnover.** Not 4% of EU revenue. Wrong-answer pattern: capping GDPR at EU-only revenue — global turnover is the base.
+- **HIPAA is sectoral.** Only covered entities and business associates handling PHI. Wrong-answer pattern: applying HIPAA to all health data — fitness tracker data is generally outside HIPAA.
+- **CCPA covers California residents, not California businesses.** A New York company processing California residents' data is in scope. Wrong-answer pattern: scoping by company location instead of subject location.
+- **CPRA extends CCPA.** New California Privacy Protection Agency, additional rights, expanded definitions. Wrong-answer pattern: treating CCPA and CPRA as separate competing laws — CPRA amended CCPA.
+- **Right to erasure ≠ right to deletion in all contexts.** GDPR uses "erasure"; CCPA uses "deletion"; functionally similar. Wrong-answer pattern: claiming all privacy laws use identical terminology.
+- **LGPD ≠ GDPR.** LGPD is GDPR-aligned but has different penalty caps (2% Brazil revenue) and authority (ANPD). Wrong-answer pattern: applying GDPR penalty math to LGPD.
+
 ## Engine demo opportunities
 
 - `? | jurisdiction → European Union` → GDPR

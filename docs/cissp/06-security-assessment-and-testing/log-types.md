@@ -27,6 +27,15 @@ The six categories of log most often relevant to security assessment and operati
 - **Cross-Concept link.** `audit-log-requirements` in D8 covers application-log content per event class (authentication events, authorization changes, data access, configuration changes, errors). This Concept covers the broader log-type taxonomy across system + application + infrastructure.
 - **Out of scope for this Concept:** specific log formats (syslog, CEF, LEEF, JSON), log shipping protocols (rsyslog, syslog-ng, OpenTelemetry), log retention durations per regulation in detail, log storage technology, log analysis methods (covered in `log-analysis-methods` in D7).
 
+### Tricky distractors
+
+- **Authentication logs include success AND failure.** Both matter forensically. Wrong-answer pattern: claiming only failed logins are useful — successful logins anchor the timeline.
+- **System logs vs Application logs.** OS events vs application-defined events. Wrong-answer pattern: collapsing them — different ownership and retention.
+- **Network logs are voluminous.** NetFlow at scale requires sampling. Wrong-answer pattern: claiming network logs are easily retained at full fidelity — most orgs sample or summarize.
+- **Compliance drives retention floors.** PCI 1 year, SOX 7 years, HIPAA 6 years. Wrong-answer pattern: applying one universal retention period across all log types.
+- **Logs themselves can be evidence.** Chain of custody applies. Wrong-answer pattern: treating logs as inadmissible — business records exception (FRE 803(6)) makes them admissible.
+- **Security event logs feed the SIEM.** IDS alerts, EDR detections. Wrong-answer pattern: treating SIEM as a log type — SIEM consumes logs; security event logs are its input.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

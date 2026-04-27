@@ -25,6 +25,15 @@ The five supply-chain risk categories the CISSP exam tests by name. Each pairs a
 - **What is intentionally not on this table.** Geographic/geopolitical risks (e.g., source-country bans), single-source dependencies (broader than vendor lock-in), and end-of-life/end-of-support risks are SCRM-adjacent topics. They could be added as additional rows in a future revision.
 - **Gaps marked `[needs source]`:** two Facts — specific real-world examples for tampering and subcontractor breach. The categories are well-sourced; the specific high-profile examples are sometimes contested in attribution.
 
+### Tricky distractors
+
+- **Counterfeit is hardware; Insertion is mostly software.** Different attack surfaces. Wrong-answer pattern: collapsing them — counterfeit substitutes; insertion modifies legitimate.
+- **Vendor lock-in is structural risk, not malice.** Business continuity issue. Wrong-answer pattern: classifying lock-in as adversarial — it's a contractual exposure.
+- **Subcontractor = fourth-party.** Your vendor's vendor. Wrong-answer pattern: claiming third-party assessment covers fourth-party — flow-down requirements are needed.
+- **EO 14028 mandates SBOM for federal.** Not voluntary. Wrong-answer pattern: claiming SBOM is best practice but unrequired in federal contexts.
+- **NIST SP 800-161 is SCRM reference.** Companion to SP 800-53. Wrong-answer pattern: citing SP 800-53 alone for supply chain — SP 800-161 has the SCRM-specific guidance.
+- **Tampering happens in transit.** Distinct from insertion at vendor. Wrong-answer pattern: collapsing tampering and insertion — different points in supply chain.
+
 ## Engine demo opportunities
 
 - `? | description → Malicious code or component inserted at vendor` → Insertion

@@ -23,6 +23,15 @@ The three foundational data structures for representing subject-to-object permis
 - **OAuth scopes vs RBAC roles vs ACLs.** Modern systems mix all three. RBAC roles are coarse-grained authorization at the role level; OAuth scopes are capability-style tokens granting specific actions; ACLs are object-level enforcement when granular control is needed. CISSP framing uses the matrix/ACL/capability distinction at the conceptual level; production systems blend them.
 - **Out of scope for this Concept:** specific ACL formats (POSIX, NTFS, S3 IAM policies), capability-based OS specifics, OAuth scope design, RBAC role hierarchies (covered in D5 `access-control-models`), Bell-LaPadula matrix interpretation, take-grant model.
 
+### Tricky distractors
+
+- **ACL = column-indexed; Capability = row-indexed.** ACL stored with object; capability stored with subject. Wrong-answer pattern: confusing the projection direction.
+- **Revocation asymmetry.** ACL: easy to revoke per-object; hard to revoke across all objects. Capability: easy to revoke subject entirely; hard to revoke a specific object across all subjects. Wrong-answer pattern: claiming both have the same revocation properties.
+- **OAuth tokens are capabilities.** Token-bearer can act per scopes; no per-request lookup. Wrong-answer pattern: claiming OAuth tokens are ACLs — they're capability-style.
+- **Unix permissions are ACL-like.** `rwx` triples per file. Wrong-answer pattern: classifying Unix permissions as a capability list — they're stored with the object (file).
+- **Matrix is reference model, not storage.** Most cells empty; impractical to store directly. Wrong-answer pattern: claiming production systems literally store the matrix — they store its projections.
+- **Network firewall rules are ACL-style.** Per-destination subject-allow lists. Wrong-answer pattern: classifying firewall rules as capabilities — they're object-indexed.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

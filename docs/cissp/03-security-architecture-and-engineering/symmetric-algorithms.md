@@ -48,3 +48,12 @@ The major symmetric block and stream ciphers tested on CISSP. AES is the only cu
 - `? | block size → 64-bit` → DES, 3DES, Blowfish (three-way shared-Value cluster — the trap is that students often think 64-bit = DES only).
 - `? | status → Deprecated` → DES, 3DES, RC4 (now visible after the parenthetical fix).
 - Excluded for now: ChaCha20 (modern stream cipher gaining adoption — add when (ISC)² adds it), Camellia (international standard, less commonly tested), Serpent (AES finalist, niche).
+
+### Tricky distractors
+
+- **AES is current; DES/3DES/RC4 are deprecated.** AES is the only standard for new use. Wrong-answer pattern: recommending 3DES for new deployments — it was deprecated by NIST in 2023.
+- **AES uses 128-bit blocks; DES family uses 64-bit.** Wrong-answer pattern: claiming AES uses 256-bit blocks — 256 is a key size, not a block size.
+- **3DES effective strength is 112 bits, not 168.** Meet-in-the-middle attack reduces effective security. Wrong-answer pattern: claiming 3DES gives 168-bit security — the key length is 168, but effective strength is lower.
+- **RC4 is a stream cipher.** No block size. Wrong-answer pattern: assigning RC4 a block size — stream ciphers operate on bytes/bits.
+- **Blowfish vs Twofish.** Blowfish is older (1993), 64-bit block; Twofish is AES finalist, 128-bit block. Wrong-answer pattern: confusing the two.
+- **Sweet32 affects 64-bit-block ciphers.** Birthday attack against repeated blocks. Hits DES, 3DES, Blowfish — not AES (128-bit blocks). Wrong-answer pattern: claiming Sweet32 affects AES.

@@ -24,6 +24,15 @@ The four commercial-sector classification levels CISSP courseware uses, from lea
 - **Aggregation effect raises classification.** Many Sensitive items combined can become Private or Confidential — the principle from `asset-classification-criteria.md`. A list of all employees + their salaries + their performance ratings is collectively Confidential even if each component item is only Sensitive or Private.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard CISSP commercial-classification framing.
 
+### Tricky distractors
+
+- **Public still requires integrity protection.** "No restrictions" applies to confidentiality only. Wrong-answer pattern: claiming Public data needs no controls — defacement attacks target Public data integrity.
+- **Sensitive vs Private.** Sensitive = internal-use; Private = personal/legally-protected (PII, PHI). Wrong-answer pattern: collapsing them — Private has stronger legal/regulatory backing.
+- **Labels are organization-defined.** Four-level model is CISSP-canonical but not universal. Wrong-answer pattern: claiming all organizations must use exactly Public/Sensitive/Private/Confidential — labels vary.
+- **Marking is operational.** Without marking, handlers treat unmarked data as Public. Wrong-answer pattern: assuming classification without marking is enforceable — handlers can't enforce labels they can't see.
+- **Aggregation can elevate classification.** Many Sensitive items combined become Private or Confidential. Wrong-answer pattern: classifying aggregated assets at the lowest component level.
+- **Confidential ≠ Top Secret.** Commercial Confidential is the highest commercial label; government Confidential is the lowest classification. Wrong-answer pattern: equating commercial Confidential with government Top Secret.
+
 ## Engine demo opportunities
 
 - `? | example data → Trade secrets` → Confidential

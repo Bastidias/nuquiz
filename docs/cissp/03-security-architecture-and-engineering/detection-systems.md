@@ -24,6 +24,15 @@ The four physical detection systems CISSP courseware tests. Each pairs a *mechan
 - **False positive management.** All four systems generate false positives — wildlife triggering motion sensors, cleaning crews triggering door alarms, HVAC triggering microwave detectors. Mature programs tune sensitivity, deploy dual-technology sensors, and apply human review before triggering response actions. The cost of unmanaged false positives is operator desensitization (alarm fatigue).
 - **Gaps marked `[needs source]`:** none — all Facts trace to ASIS physical-security framing.
 
+### Tricky distractors
+
+- **Detective, not preventive.** All four detect; pair with response. Wrong-answer pattern: classifying CCTV or tamper sensors as preventive — they detect.
+- **PIR vs Microwave motion sensing.** Passive Infrared (heat) vs Microwave (radar). Wrong-answer pattern: collapsing motion sensor types — different technologies, different false-positive profiles.
+- **Physical IDS ≠ Network IDS.** Different domains, same acronym. Wrong-answer pattern: applying network IDS framing to physical perimeter detection.
+- **CCTV is detective; not deterrent alone.** Visible CCTV deters but doesn't prevent. Wrong-answer pattern: claiming CCTV alone is preventive — it records.
+- **Tamper sensors zeroize keys in some HSMs.** Detection plus response. Wrong-answer pattern: treating all tamper sensors as alarm-only — high-assurance devices destroy keys.
+- **Alarm fatigue is real.** False-positive management critical. Wrong-answer pattern: claiming more alarms = more security — unmanaged FPs desensitize operators.
+
 ## Engine demo opportunities
 
 - `? | mechanism → Detect physical interference with protected device` → Tamper sensor

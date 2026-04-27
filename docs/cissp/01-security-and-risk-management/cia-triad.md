@@ -19,3 +19,11 @@ The three foundational properties information security protects. Every CISSP-rel
 - The opposite framing is **DAD**: Disclosure (vs. Confidentiality), Alteration (vs. Integrity), Destruction (vs. Availability). Often tested as a paired Concept.
 - Some sources expand to **Parkerian Hexad** (adds Authenticity, Utility, Possession). Captured separately in `security-concept-frameworks.md`.
 - Many controls cross multiple properties (e.g., backups protect Availability but verifying backup integrity protects Integrity). List under the *primary* property; tag for cross-reference during SME review.
+
+### Tricky distractors
+
+- **CIA vs DAD.** CIA names the *properties to protect*; DAD names the *threats* (Disclosure violates C; Alteration violates I; Destruction violates A). Wrong-answer pattern: confusing these on a "which framework" question. CIA is positive (what we protect); DAD is negative (what attackers do).
+- **Hashing protects integrity, not confidentiality.** Wrong-answer pattern: claiming hashing makes data confidential. A hash proves data hasn't changed but doesn't hide it. Encryption protects confidentiality; hashing protects integrity.
+- **Authenticity vs Integrity.** Integrity = data hasn't been modified. Authenticity = data is genuinely from the claimed source. Digital signatures provide both; HMAC provides authenticity (with a shared key). Wrong-answer pattern: treating these as identical.
+- **Availability vs Reliability.** Availability is about access *when needed*; reliability is about consistent functioning over time. A system with high reliability can still fail an availability requirement if its uptime windows don't match user demand.
+- **Parkerian Hexad.** Adds Authenticity, Utility, Possession to CIA — six properties total, not three. Wrong-answer pattern: claiming Parkerian Hexad adds Non-repudiation (it doesn't; that's part of Authenticity).

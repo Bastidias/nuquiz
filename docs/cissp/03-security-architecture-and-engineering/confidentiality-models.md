@@ -22,6 +22,14 @@ The three formal confidentiality models CISSP candidates are expected to discrim
 - **What this Concept does *not* cover.** Sibling Concept `integrity-models` covers Biba, Clark-Wilson, and Lipner. Concept `brewer-nash` covers the Chinese Wall model. Concept `other-access-models` covers Graham-Denning, HRU, Noninterference. The three confidentiality models here are CISSP-canonical; the broader set lives in sibling Concepts.
 - **Out of scope for this Concept:** Bell-LaPadula state-machine formal definition, the BLP system model (subjects, objects, levels, categories), categorization vs hierarchical classification, multi-level security (MLS) implementations, real-world MLS systems (Trusted Solaris, SELinux MLS).
 
+### Tricky distractors
+
+- **BLP no-read-up vs Biba no-read-down.** BLP (confidentiality): no read up, no write down. Biba (integrity): no read down, no write up. The polarity inverts because confidentiality protects against information *flowing down* (high-class data leaking to low-class subjects), while integrity protects against *data flowing up* (low-integrity data corrupting high-integrity processing). Wrong-answer pattern: claiming both have the same direction.
+- **BLP doesn't address integrity.** The single biggest CISSP nuance. BLP is *confidentiality-only* — it allows higher-cleared subjects to *write down* in some interpretations and certainly does nothing to prevent low-classification data from *contaminating* higher-classification work. Use Biba (or Lipner) when integrity matters. Wrong-answer pattern: claiming BLP protects all CIA properties.
+- **Lattice ≠ a separate model.** Lattice-based access control is the *generalization* of BLP/Biba to arbitrary partial orders. BLP is a special case (totally-ordered hierarchical labels). Wrong-answer pattern: treating "lattice" and "BLP" as competing models.
+- **Take-Grant is propagation analysis, not access enforcement.** Take-Grant is used to *prove* whether rights can propagate to unauthorized subjects, not to enforce access. Wrong-answer pattern: claiming OSes "implement Take-Grant" — they don't; they implement DAC/MAC/RBAC and use Take-Grant for safety analysis.
+- **Star property direction.** The * (star) property in BLP is *no write down*. Wrong-answer pattern: claiming the star property is "no read up" — that's the simple security property, not the star.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

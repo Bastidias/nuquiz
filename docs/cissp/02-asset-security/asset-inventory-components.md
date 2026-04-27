@@ -23,6 +23,15 @@ The four data structures that together constitute an organization's asset invent
 - **What the audit role column captures.** Auditors test these inventories against the actual environment. Hardware inventory failure: a physical asset exists in the data center that is not in the inventory. Software inventory failure: a known-vulnerable library version is running but not in the inventory (and therefore not on the patch list). CI/CMDB failures: configuration changed but the CMDB was not updated.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST or CIS Controls framing.
 
+### Tricky distractors
+
+- **Hardware/software inventories are sources; CMDB is the database.** Layered, not parallel. Wrong-answer pattern: treating them as parallel — they're complementary at different abstraction levels.
+- **CIS Control 1 = hardware; Control 2 = software.** Foundational pair. Wrong-answer pattern: confusing the control numbers.
+- **Software inventory must include dependencies.** Log4j taught this. Wrong-answer pattern: claiming installed-application lists are sufficient — must include transitive dependencies via SBOM.
+- **CMDB drift is operational reality.** Perfect CMDB is goal, not state. Wrong-answer pattern: claiming CMDB always matches reality — drift is constant, reconciliation is ongoing.
+- **Cannot defend what you don't know exists.** Asset inventory is foundational. Wrong-answer pattern: prioritizing other controls over asset inventory — without it, downstream controls have gaps.
+- **CI is the unit configuration management tracks.** Not the same as physical hardware. Wrong-answer pattern: equating CI with single hardware asset — CI is logical aggregation.
+
 ## Engine demo opportunities
 
 - `? | what it tracks → Operating systems` → Software inventory

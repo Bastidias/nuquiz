@@ -22,6 +22,15 @@ The four data streams an Information Security Continuous Monitoring (ISCM) progr
 - **Configuration drift is the test-favorite.** Drift detection — comparing current state against the approved baseline (`configuration-baselines.md`) — is the most-cited operational use of continuous monitoring on the CISSP exam. Tie this row mentally to the operational baseline row in the baselines Concept.
 - **Gaps marked `[needs source]`:** one Fact — "Threat indicator matches observed activity" as the alerting trigger for threat monitoring. Standard SIEM/threat-intel practice but not yet sourced to a primary publication in this research pass.
 
+### Tricky distractors
+
+- **ISCM is continuous, not periodic.** NIST SP 800-137 framing. Wrong-answer pattern: claiming continuous monitoring means "more frequent assessments" — it's continuous data collection.
+- **Drift detection compares against baseline.** Operational baseline is the reference. Wrong-answer pattern: claiming drift detection compares to current state of peer systems — it's against approved baseline.
+- **Asset monitoring catches unauthorized devices.** New unknown asset = alert. Wrong-answer pattern: claiming asset monitoring is just inventory — the monitoring is for change, not just enumeration.
+- **Vulnerability monitoring matches CVEs to assets.** Continuous match. Wrong-answer pattern: claiming vulnerability monitoring is just running scans periodically — continuous correlation against feed updates.
+- **Threat monitoring uses threat intel feeds.** External + internal correlation. Wrong-answer pattern: claiming threat monitoring is purely reactive — it's intel-driven and proactive.
+- **Four streams are independent but related.** Each has its own alert trigger. Wrong-answer pattern: collapsing all monitoring into one stream — different data sources, different triggers.
+
 ## Engine demo opportunities
 
 - `? | alerting trigger → Configuration drift from baseline` → Configuration monitoring

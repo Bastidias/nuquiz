@@ -23,6 +23,15 @@ The five access-control primitives — Identification, Authentication, Authoriza
 - **AAA at the network layer.** RADIUS (RFC 2865) and DIAMETER (RFC 6733) implement AAA for network access — when a user dials in, connects to a VPN, or joins a Wi-Fi network. The "Accounting" component in those protocols is what feeds telecom billing systems and forensic timelines. RADIUS accounting records [s4] are the canonical example.
 - **Gaps marked `[needs source]`:** one Fact — "SOC 2 audit" as the canonical Auditing example. SOC 2 is widely understood but the example tying it to the auditing primitive is not yet sourced to a primary publication.
 
+### Tricky distractors
+
+- **Identification ≠ Authentication.** Claim vs proof. Wrong-answer pattern: collapsing them — single most-tested AAA distinction.
+- **Accounting records; Auditing reviews.** Sequential. Wrong-answer pattern: claiming audit prevents fraud — it detects after the fact.
+- **AAA = Authentication/Authorization/Accounting (RFC).** CISSP extends to IAAAA. Wrong-answer pattern: insisting on three-letter AAA when CISSP framing uses five.
+- **Authorization happens after authentication.** Order matters. Wrong-answer pattern: granting authorization without authentication — undefined behavior.
+- **Auditing requires Accounting data.** Without records, no audit. Wrong-answer pattern: claiming you can audit without accounting logs — there's nothing to review.
+- **Non-repudiation is sometimes added as 6th.** Some references include it. Wrong-answer pattern: claiming non-repudiation is universally part of AAA — varies by source.
+
 ## Engine demo opportunities
 
 - `? | definition → Claim of identity by a subject` → Identification

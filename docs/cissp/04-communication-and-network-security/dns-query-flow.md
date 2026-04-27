@@ -29,6 +29,15 @@ The eight-step flow a DNS recursive resolver walks when answering a name that is
 - **Transport.** DNS queries default to UDP port 53; responses larger than 512 bytes (or 1232 with EDNS(0)) fall back to TCP port 53. Zone transfers (AXFR/IXFR) use TCP exclusively. Not represented as a Column here because transport is constant across the 8 steps; it belongs in a DNS-transport Concept or a Notes line.
 - **Out of scope for this Concept:** DNSSEC validation (RRSIG / DNSKEY / DS chain), DoT / DoH / DoQ (encrypted DNS transport), DNS cache poisoning (Kaminsky 2008), split-horizon DNS, private DNS, Conditional Forwarders, stub resolver internals, EDNS(0) extensions. Each warrants a separate Concept.
 
+### Tricky distractors
+
+- **Root nameservers return referrals, not answers.** They don't hold A records for arbitrary names. Wrong-answer pattern: claiming the root answers the query — only authoritative servers do.
+- **The query repeats verbatim at each tier.** Recursive resolver asks the same question at root, TLD, authoritative. Wrong-answer pattern: claiming the resolver reformulates the question — referrals advance the chain; the question doesn't change.
+- **Recursive caches; stub doesn't (much).** The recursive resolver is the canonical cache tier. Wrong-answer pattern: claiming the stub resolver is the primary cache.
+- **Recursive vs Iterative.** Stub→Recursive is recursive ("do the work for me"). Recursive→Authoritative is iterative ("answer or refer"). Wrong-answer pattern: confusing the query types.
+- **TTL governs cache lifetime.** Resource record-level setting. Wrong-answer pattern: claiming the recursive resolver decides cache TTL — it follows the record's TTL.
+- **DNS uses UDP/53, falls back to TCP/53.** Zone transfers always TCP. Wrong-answer pattern: claiming DNS is TCP-first — UDP is default.
+
 ### Values without a direct public citation
 
 No cell in this table relies on inference beyond what RFC 1034 [s1] and RFC 1035 [s2] specify. The `example.com A` content tag is a canonical example — not a quoted Fact from the RFCs — but is universally used in DNS pedagogy for this flow.

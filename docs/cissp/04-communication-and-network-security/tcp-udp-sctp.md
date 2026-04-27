@@ -29,6 +29,15 @@ The three Layer-4 transport protocols. TCP and UDP are heavily tested; SCTP appe
 - **SCTP is intentionally included** even though less tested — it gives the engine a third Row to source distractors from, and (now that parentheticals are out of the cells) demonstrates shared-Value detection cleanly.
 - QUIC is intentionally excluded for now — relatively new, layered on UDP, not heavily tested on CISSP yet. Add as a Row if (ISC)² adds it to the outline.
 
+### Tricky distractors
+
+- **TCP handshake count.** TCP uses *3-way*; SCTP uses *4-way*. Wrong-answer pattern: claiming TCP is 4-way (it's not — SYN, SYN-ACK, ACK is three messages).
+- **DNS transport.** DNS uses BOTH UDP and TCP — UDP/53 for queries, TCP/53 for zone transfers and large responses. Wrong-answer pattern: "DNS is UDP-only." Strict UDP is incorrect.
+- **UDP "unreliable" framing.** UDP doesn't *intend* to be unreliable; it doesn't provide reliability. Applications that use UDP must implement their own reliability if needed (DNS retries on timeout, VoIP tolerates loss, QUIC builds reliability on top). Wrong-answer pattern: claiming "UDP is broken" — it's deliberately minimal.
+- **TCP header size.** TCP header is 20-60 bytes (variable due to options). Wrong-answer pattern: claiming "TCP header is fixed 20 bytes" — that's the *minimum*; with options it grows.
+- **Connection-oriented protocols.** TCP and SCTP are connection-oriented; UDP is connectionless. Wrong-answer pattern: thinking SCTP is connectionless because it's newer. SCTP establishes association before data transfer.
+- **Reliable + Connection-oriented are different properties.** TCP is both. UDP is neither. SCTP is both. They co-occur but are independent dimensions in principle.
+
 ### Engine demo opportunities
 
 - Hide the Row identifier: `? | connection type → Connectionless` → UDP

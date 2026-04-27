@@ -24,6 +24,15 @@ The classification process by which an organization assigns a sensitivity label 
 - **Re-classification triggers.** Classifications expire when the underlying value drivers change — financial information becomes public after earnings release; trade secrets enter public domain through patent filings; product-launch information becomes public on launch day. Classification programs need re-classification triggers, not just initial classification.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-60 or ISO 27001 classification framing.
 
+### Tricky distractors
+
+- **Aggregation raises classification.** Individually low-sensitivity items (name, address, phone) become high-sensitivity when combined. Wrong-answer pattern: classifying based on individual fields — the aggregated asset is what matters.
+- **Regulatory categories enforce a floor.** PII, PHI, PCI categories inherit obligations regardless of business value. Wrong-answer pattern: claiming low business value can override regulatory category — it can't.
+- **Classification binds the organization to controls.** Once assigned, the label commits handling, encryption, retention. Wrong-answer pattern: treating classification as advisory — it triggers required controls.
+- **Re-classification triggers exist.** Earnings release makes financials public; patent filings disclose secrets. Wrong-answer pattern: assuming classification is permanent — value drivers change and labels must follow.
+- **Owner classifies, not custodian.** Data Owner has accountability for the label. Wrong-answer pattern: claiming IT or security teams classify — they advise; the data owner decides.
+- **CIA triad all factor in.** Availability and integrity matter alongside confidentiality. Wrong-answer pattern: classifying solely on confidentiality — operational dependency drives availability classification.
+
 ## Engine demo opportunities
 
 - `? | content → Classification label assigned to asset` → output aspect

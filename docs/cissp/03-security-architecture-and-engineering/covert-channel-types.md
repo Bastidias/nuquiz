@@ -22,6 +22,15 @@ The two covert channel categories defined in TCSEC and reused in modern multi-le
 - **MLS and cloud relevance.** Covert channels were originally a concern in multi-level-security systems (where Top Secret subjects must not signal Confidential subjects). They are now relevant in cloud computing — co-tenant covert channels (CPU contention, cache timing) can leak information across VM boundaries. Confidential computing (TEEs) addresses some of these.
 - **Gaps marked `[needs source]`:** none — all Facts trace to TCSEC documentation.
 
+### Tricky distractors
+
+- **Storage vs Timing covert channel.** Storage modulates shared resources; Timing modulates temporal patterns. Wrong-answer pattern: collapsing them — TCSEC distinguishes them as the canonical taxonomy.
+- **Timing channels are harder to detect.** Natural variability obscures modulation. Wrong-answer pattern: claiming storage is harder to detect — storage has observable state changes.
+- **Covert channels are intentional.** Malicious sender. Side channels are unintentional. Wrong-answer pattern: collapsing covert and side channels — different threat models.
+- **Bandwidth is typically low.** Bits per second to bits per minute. Wrong-answer pattern: claiming covert channels are high-bandwidth exfiltration vectors — they're slow but persistent.
+- **MLS context originated covert-channel research.** TCSEC. Wrong-answer pattern: claiming covert channels only matter in modern cloud — MLS systems were the original concern.
+- **Cloud co-tenancy revives covert channel concerns.** Cache, CPU contention. Wrong-answer pattern: claiming covert channels are obsolete — cloud co-tenancy renewed them.
+
 ## Engine demo opportunities
 
 - `? | mechanism → Modulate timing of operations observable to receiver` → Timing covert channel

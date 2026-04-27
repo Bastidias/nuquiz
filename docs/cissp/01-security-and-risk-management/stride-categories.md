@@ -25,6 +25,15 @@ The six threat categories Microsoft's STRIDE model uses to enumerate what can go
 - **EoP row asymmetry.** OWASP's only listed mitigation for Elevation of privilege is "Run with least privilege." That is genuinely the one canonical mitigation family: least privilege limits the blast radius when EoP succeeds. Prevention would require eliminating all defects in every underlying defense, which is not a mitigation but a wish.
 - **Out of scope:** DREAD (risk-scoring variant), STRIDE-LM (lateral-movement extension), PASTA, VAST, OCTAVE, and other non-STRIDE threat-modeling methodologies — those belong in a `threat-modeling-methodologies` Concept.
 
+### Tricky distractors
+
+- **STRIDE letter-to-property mapping.** S=Authenticity, T=Integrity, R=Non-repudiability, I=Confidentiality, D=Availability, E=Authorization. Wrong-answer pattern: matching S (Spoofing) to Integrity — Spoofing violates Authenticity, Tampering violates Integrity.
+- **Repudiation ≠ Information disclosure.** Repudiation is denying a prior action; Information disclosure is exposing data. Wrong-answer pattern: collapsing the two.
+- **Elevation of Privilege mitigation is least privilege.** It limits blast radius after EoP succeeds. Wrong-answer pattern: claiming patching prevents EoP — patching helps but least privilege is the canonical defense.
+- **Digital signatures mitigate two threats.** Both Tampering (integrity) and Repudiation (non-repudiability). Wrong-answer pattern: claiming signatures only address tampering — they bind principal to content for non-repudiation too.
+- **STRIDE is identification, not scoring.** STRIDE enumerates threats. DREAD scores them (deprecated). Wrong-answer pattern: assuming STRIDE produces risk scores — that's DREAD's role.
+- **STRIDE-LM is the extended version.** Adds Lateral Movement. Wrong-answer pattern: confusing STRIDE-LM with the standard six-letter STRIDE on the exam.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

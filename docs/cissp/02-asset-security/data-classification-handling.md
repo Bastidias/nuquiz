@@ -23,6 +23,15 @@ The handling-requirements matrix that maps each commercial classification level 
 - **Why this Concept exists separately from `commercial-classification-levels.md`.** Two Concepts let the engine ask different question types. `commercial-classification-levels.md` asks *what data goes in this label*; this Concept asks *what handling does this label require*. Same labels, different lookup direction.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-88 / ISO 27001 handling framing.
 
+### Tricky distractors
+
+- **Encryption at rest AND in transit.** Both for Private/Confidential. Wrong-answer pattern: claiming one is sufficient — exposes data during the other state.
+- **Disposal is part of handling.** Confidential data on decommissioned drive is still Confidential. Wrong-answer pattern: skipping disposal in handling discussion — most-tested CISSP wrong-answer scenario.
+- **Confidential requires sender verification.** Beyond encryption alone. Wrong-answer pattern: claiming encrypted channel alone protects Confidential — recipient must authenticate sender.
+- **Handling escalates with classification.** Monotonically. Wrong-answer pattern: claiming handling rules can be flat — escalation is intentional.
+- **Public still needs integrity.** No confidentiality controls but integrity matters. Wrong-answer pattern: claiming Public data has zero requirements — defacement matters.
+- **Sanitization ≠ deletion.** NIST 800-88 sanitization for Private+. Wrong-answer pattern: claiming `delete` satisfies disposal — must sanitize per classification.
+
 ## Engine demo opportunities
 
 - `? | encryption required → Required at rest and in transit` → Private or Confidential (cross-Row select)

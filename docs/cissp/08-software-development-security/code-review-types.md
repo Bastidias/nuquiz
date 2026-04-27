@@ -23,6 +23,15 @@ The four code-review approaches CISSP candidates are expected to discriminate. T
 - **Defect-finding rate is comparative, not quantitative.** No public source publishes a single normative defect-finding rate per review type. Industry studies (notably Capers Jones and the SEI) consistently rank Formal inspection highest, Pair programming high, Peer review moderate. The cell values reflect this rank ordering rather than absolute percentages.
 - **Out of scope for this Concept:** specific Fagan inspection roles and procedure (worth its own Concept if testing depth grows), modern variations (Modern Code Review per Bacchelli & Bird 2013), AI-assisted code review tools (GitHub Copilot for PRs, Cursor), threat-model-driven code review, security-specific code review checklists.
 
+### Tricky distractors
+
+- **Formal inspection has highest defect-finding rate.** Most rigorous = most expensive. Wrong-answer pattern: claiming pair programming finds more — formal inspection edges it out for documented defects.
+- **Formal inspection = Fagan inspection.** Synonyms in CISSP framing. Wrong-answer pattern: treating them as different — Michael Fagan's 1976 process is the canonical formal inspection.
+- **Tool-assisted is high for known, low for novel.** Pattern-bound. Wrong-answer pattern: claiming tools replace formal inspection — they can't catch novel issues.
+- **Pair programming review is concurrent, not after.** Real-time review while coding. Wrong-answer pattern: collapsing pair programming with peer review — they happen at different times.
+- **Peer review effectiveness varies by culture.** Rubber-stamp PRs are nearly useless. Wrong-answer pattern: claiming peer review uniformly catches defects — depends on team rigor.
+- **Code review ≠ SAST.** Code review is people; SAST is automated. Wrong-answer pattern: lumping them — different tools, different scope.
+
 ### Values without a direct public citation
 
 Most cells in this table reflect industry / CISSP pedagogical consensus rather than primary citation. Fagan's 1976 paper [s1] provides the authoritative description of formal inspection; the comparative rankings against other review types are pedagogical synthesis from sources including Capers Jones's defect-removal effectiveness studies and SEI publications, not directly fetched primary-source in this research pass.

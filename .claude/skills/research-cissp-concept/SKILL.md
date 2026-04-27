@@ -152,9 +152,10 @@ On approval:
 
 1. Write the file to `docs/cissp/<domain-folder>/<concept-name-kebab>.md`.
 2. Include the citation registry at the bottom (Sources section, format below).
-3. Include a Notes section if any context was stripped from cells (mechanism details, abbreviations) per the parens rules.
-4. **Do NOT** stage or commit. The user owns git operations — they may want to bundle multiple Concepts into one commit.
-5. Surface a one-line summary: "Wrote `docs/cissp/01-…/bcp-phases.md` (7 rows × 4 columns, 8 sources cited, 2 cells marked `[needs source]`)."
+3. Include a Notes section if any context was stripped from cells (mechanism details, abbreviations) per the parens rules. Lead with a `**Cell convention:**` bullet (this is the convention across the existing Concept set).
+4. If any cells carry `[needs source]` markers OR rely on pedagogical-consensus framing with no traced primary citation, convert those inline gaps into a `### Values without a direct public citation` table inside Notes (columns: Cell | Value | Why unsourced). This is the canonical SME-review punch list — it must be present whenever the draft has unsourced cells, even if only one. If every cell is fully cited, include the table with a `(none)` row so the all-cited status is visible.
+5. **Do NOT** stage or commit. The user owns git operations — they may want to bundle multiple Concepts into one commit.
+6. Surface a one-line summary: "Wrote `docs/cissp/01-…/bcp-phases.md` (7 rows × 4 columns, 8 sources cited, 2 cells in the unsourced-values table)."
 
 ## Reference: Concept file format
 
@@ -176,9 +177,23 @@ Match the format of existing Concepts in `docs/cissp/04-communication-and-networ
 
 ## Notes
 
-- <Cell convention: each `<br>`-separated item is one atomic Fact. No parentheticals in cells.>
+- **Cell convention:** each `<br>`-separated item is one atomic Fact. No parentheticals in cells.
 - <Any context stripped from cells per the parens rules (mechanism details, abbreviations, editorial notes).>
-- <Common exam confusions, cross-Concept relationships, etc.>
+- <Common exam confusions; cross-Concept link bullets to siblings ("Sibling Concept X covers Y; this one focuses on Z"); out-of-scope bullet listing items deliberately excluded.>
+
+### Tricky distractors
+
+(Optional H3 subsection. Use when the Concept has well-known confusion pairings the engine can probe via composite-row swaps. Skip if there are none.)
+
+- **<Confusion A> vs <Confusion B>.** <How they're commonly confused and what disambiguates them.>
+
+### Values without a direct public citation
+
+(Required whenever any cell carries `[needs source]` in the draft, OR any cell value reflects pedagogical-consensus framing without a traced primary source. If every cell is fully cited, include the table with a single `(none)` row so the all-cited status is visible.)
+
+| Cell | Value | Why unsourced |
+|---|---|---|
+| <Row × Column> | <cell value> | <reason — e.g., "widely-documented industry pattern, no canonical RFC/NIST reference"> |
 
 ## Engine demo opportunities
 

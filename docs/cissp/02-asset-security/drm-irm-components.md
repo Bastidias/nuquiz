@@ -24,6 +24,15 @@ The four components that together comprise a Digital Rights Management (DRM) or 
 - **Adjacent technologies (intentionally not on this table).** Data Loss Prevention (DLP) is preventive at egress points; Cloud Access Security Brokers (CASB) extend DLP to cloud SaaS; secure file-share platforms (Box, Dropbox enterprise) provide a hosted alternative to file-embedded IRM. Each has different trade-offs.
 - **Gaps marked `[needs source]`:** one Fact — auditing's log-volume weakness. Practitioner consensus but not yet sourced to a primary publication.
 
+### Tricky distractors
+
+- **DRM/IRM "follows the data."** Persistent protection is the core property. Wrong-answer pattern: claiming standard access control provides this — it doesn't follow the file outside the controlled environment.
+- **Screen-capture loophole is unfixable.** Analog gap. Wrong-answer pattern: claiming IRM eliminates leak risk — raises cost, doesn't eliminate.
+- **License server is single point of failure.** Offline-grace caches help but ultimately must refresh. Wrong-answer pattern: claiming IRM operates fully offline — eventually licenses expire.
+- **DRM vs IRM.** DRM consumer-focused (media); IRM enterprise-focused (documents). Wrong-answer pattern: treating them as different technologies — same technology family, different markets.
+- **IRM ≠ DLP.** IRM embeds protection in files; DLP intercepts at egress. Wrong-answer pattern: collapsing them — complementary, not interchangeable.
+- **Watermarking enables leak attribution.** Per-recipient steganographic ID. Wrong-answer pattern: claiming watermarks prevent leaks — they enable forensic attribution after.
+
 ## Engine demo opportunities
 
 - `? | typical use case → Document remains protected when shared externally` → Persistent protection

@@ -25,6 +25,15 @@ The five employee-departure scenarios CISSP courseware distinguishes by *securit
 - **Why "exit interview optional and controlled" for hostile.** Hostile-termination exit interviews carry liability risk (the person may say things that get used in lawsuits) and security risk (the person may try to extract information about the investigation). Some organizations skip them; those that do them have HR + legal present and follow a strict script.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard CISSP personnel-security framing.
 
+### Tricky distractors
+
+- **Hostile termination: revoke before conversation.** The most-tested CISSP nuance. Wrong-answer pattern: claiming notification should come first as professional courtesy — retaliation window opens.
+- **Voluntary departure has risk too.** Two-week notice = window for data theft. Wrong-answer pattern: claiming voluntary departures need no security controls — sensitive roles often see escort-out.
+- **Layoffs are hybrid risk.** Individual + surviving workforce morale risk. Wrong-answer pattern: treating layoffs like routine voluntary departures — broader morale impact matters.
+- **Retirement is friendly but knowledge-heavy.** Knowledge transfer is critical risk. Wrong-answer pattern: claiming retirements need no special handling — institutional knowledge walks out.
+- **Hostile exit interview is optional.** Liability and security risk. Wrong-answer pattern: requiring hostile exit interviews — most organizations skip with legal present if conducted.
+- **Friendly involuntary still requires controlled timing.** Revoke at notification. Wrong-answer pattern: collapsing all involuntary into "hostile" — performance terminations with severance are friendly involuntary.
+
 ## Engine demo opportunities
 
 - `? | access revocation timing → Revoke before notification conversation` → Involuntary hostile

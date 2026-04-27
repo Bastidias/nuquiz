@@ -25,6 +25,15 @@ The five third-party security assessment artifacts CISSP courseware tests by nam
 - **What is intentionally not on this table.** SOC 2+, FedRAMP authorization, HITRUST CSF certification, PCI DSS Attestation of Compliance (AOC), and StateRAMP are additional attestation artifacts that overlap with SOC 2 / ISO 27001 in some sectors. The five here cover the most-tested CISSP scope.
 - **Gaps marked `[needs source]`:** none — all Facts trace to AICPA SOC framework or ISO 27001 standard documentation.
 
+### Tricky distractors
+
+- **SOC report ≠ ISO certificate.** Different attestation models. Wrong-answer pattern: equating them — SOC produces detailed report; ISO produces conformance certificate.
+- **SOC 1 is financial reporting; SOC 2 is security.** Different scope. Wrong-answer pattern: using SOC 1 for security assessment — wrong report type.
+- **Type I = point in time; Type II = over period.** Different assurance levels. Wrong-answer pattern: claiming Type I is sufficient for ongoing assurance — Type II required.
+- **SOC 3 is for marketing.** Public-distributable summary. Wrong-answer pattern: relying on SOC 3 for procurement decisions — needs SOC 2.
+- **ISO 27001 needs periodic re-cert.** Surveillance audits between, full re-cert every 3 years. Wrong-answer pattern: claiming ISO certification is permanent — has expiry.
+- **SOC 2 covers selected TSCs.** Security always; others optional. Wrong-answer pattern: assuming all SOC 2 reports cover all 5 TSCs — scope is per engagement.
+
 ## Engine demo opportunities
 
 - `? | audience → General public` → SOC 3

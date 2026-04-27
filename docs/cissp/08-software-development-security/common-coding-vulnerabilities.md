@@ -25,6 +25,15 @@ The six low-level coding-error classes that appear repeatedly on the CWE Top 25 
 - **Stack canaries are a buffer-overflow mitigation, not a fix.** A canary is a known value placed between the stack frame and the return address; the function-epilogue check detects if a buffer overflow has overwritten the return address. Canaries don't prevent overflows — they detect them and abort. ASLR, DEP/NX, and CFI provide complementary mitigations.
 - **Out of scope for this Concept:** specific CVE examples, exploit techniques (ROP, JOP, heap spraying), CFI (Control Flow Integrity), shadow stacks, sandboxing technologies (seccomp, gVisor), language-level safe-by-default features beyond the mitigation column, fuzz testing tools, AddressSanitizer / UndefinedBehaviorSanitizer.
 
+### Tricky distractors
+
+- **Memory-safe languages eliminate buffer overflow, UAF, format string, NULL deref.** Wrong-answer pattern: claiming Java is immune to all six — race conditions and integer overflow still apply.
+- **Integer overflow in Java wraps silently.** Java is memory-safe but not arithmetic-safe. Wrong-answer pattern: claiming Java is immune to integer overflow — wraparound happens silently.
+- **Race condition is language-agnostic.** Concurrency bug, not a memory bug. Wrong-answer pattern: claiming race conditions only affect C/C++ — they affect any concurrent code.
+- **Stack canaries detect, don't prevent.** Detection + abort, not prevention. Wrong-answer pattern: claiming canaries prevent buffer overflows — they detect overwrites and crash.
+- **Format string = printf(user_input).** Specifically the format specifier position. Wrong-answer pattern: claiming any printf usage is vulnerable — only when user input is the format string.
+- **Use-after-free can be exploited for code execution.** Not just a stability bug. Wrong-answer pattern: classifying UAF as low-severity — it's frequently RCE-grade.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

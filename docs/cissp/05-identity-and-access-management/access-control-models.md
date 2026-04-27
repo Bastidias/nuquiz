@@ -25,6 +25,15 @@ The five canonical access control models CISSP candidates are expected to discri
 - **"Who decides access."** This column captures the locus of the access decision — the actor who sets the policy that a given request is evaluated against. It is not "who enforces access" (the reference monitor is always the enforcement point in every model).
 - **Out of scope for this Concept:** Bell-LaPadula and Biba specifics (deserves its own Concept — `bell-lapadula-biba.md`), Clark-Wilson and Brewer-Nash, reference monitor internals, TCB and security kernel, TCSEC / Common Criteria assurance levels, XACML and OAuth scopes as policy-expression languages.
 
+### Tricky distractors
+
+- **DAC vs MAC.** DAC = *owner* decides (discretion). MAC = *system policy* decides; owner cannot override. Wrong-answer pattern: claiming MAC is "more flexible" — it's the opposite, MAC enforces consistency by removing owner discretion.
+- **RBAC vs ABAC.** RBAC keys decisions on the *role*. ABAC keys decisions on arbitrary *attributes* (subject, object, action, environment). Role is just one attribute in ABAC's vocabulary. Wrong-answer pattern: treating RBAC as a subset of ABAC syntactically — they're distinct authorization paradigms even if NIST 800-162 unifies them theoretically.
+- **RuBAC vs ABAC.** RuBAC = rules independent of identity (firewall ACLs). ABAC = attribute-driven, typically including identity attributes. Wrong-answer pattern: equating them. Network firewalls are the canonical RuBAC example; ABAC is broader.
+- **MAC implementation in commercial OSes.** Linux offers SELinux and AppArmor (MAC-style). Windows historically uses DAC; mandatory integrity controls (UAC, MIC) approach but don't fully implement MAC. Wrong-answer pattern: claiming Windows is a MAC system — it's primarily DAC with some MAC-flavored layers.
+- **"Need-to-know" vs least privilege.** Need-to-know restricts *information access* (do you have a legitimate reason to see this?). Least privilege restricts *system permissions* (do you have minimum rights for your job?). Wrong-answer pattern: treating them as identical. Both can apply simultaneously.
+- **DAC weakness.** DAC's defining weakness is that an owner with malicious intent or compromised credentials can re-share any object arbitrarily. Wrong-answer pattern: claiming DAC is "weak because it doesn't use clearances" — that's MAC's distinguishing feature, not DAC's weakness.
+
 ### Values without a direct public citation
 
 Most cells in this table are drawn from standard CISSP pedagogical framing rather than a traced public citation. NIST SP 800-162 [s1] directly sources the ABAC cells and the identity/role attribute-basis cells for DAC and RBAC, but the remaining cells — who-decides, typical-use, key-weakness — reflect widely-accepted CISSP teaching without a single authoritative quote located in this research pass. These should be validated by an SME or backed with primary references (TCSEC "Orange Book" for MAC/DAC, INCITS 359 for RBAC) before the Concept is treated as reference-grade.

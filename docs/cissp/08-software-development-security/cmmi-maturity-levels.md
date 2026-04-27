@@ -26,6 +26,15 @@ The five staged maturity levels of CMMI [s1]. Ordered because the levels are a s
 - **CMMI v3.0 (2023) restructuring.** CMMI v3.0 reorganized Practice Areas (the lower-level groupings within each level) but kept the five maturity levels intact. Level numbers and names in this Concept hold across CMMI v1.3, v2.0, and v3.0.
 - **Out of scope for this Concept:** CMMI Practice Areas (Engineering, Project Management, etc.), CMMI v3.0 vs v2.0 vs v1.3 specific changes, the continuous representation, CMMI for Services (CMMI-SVC) and CMMI for Acquisition (CMMI-ACQ), ISO/IEC 33000 (the ISO equivalent), individual appraisal methods (SCAMPI, SCAMPI Lite).
 
+### Tricky distractors
+
+- **Level names.** 1=Initial, 2=Managed, 3=Defined, 4=Quantitatively Managed, 5=Optimizing. Wrong-answer pattern: swapping names with levels — exact pairing is testable.
+- **Level 2 = project-level; Level 3 = organization-level.** Discipline scope. Wrong-answer pattern: collapsing them — boundary between project-only and organization-wide is the L2/L3 distinction.
+- **Level 4 introduces statistics.** Quantitative measurement. Wrong-answer pattern: claiming Level 3 includes statistical management — that's Level 4's defining feature.
+- **Level 5 requires Level 4.** Optimizing builds on quantitative data. Wrong-answer pattern: claiming you can leap to Level 5 without Level 4 — strict progression.
+- **Level 1 is "ad hoc," not "no process."** Every org has process. Wrong-answer pattern: claiming Level 1 means no process exists — it means inconsistent.
+- **Staged vs Continuous representation.** Staged = one overall level. Continuous = per-area scoring. Wrong-answer pattern: assuming all CMMI use Staged — both representations exist; CISSP focuses on Staged.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

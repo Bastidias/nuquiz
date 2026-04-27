@@ -23,6 +23,15 @@ The four risk categories that travel-security programs address when staff travel
 - **Why "geopolitical instability" rather than specific scenarios.** This row aggregates riots, coups, war, terrorist incidents, and severe civil unrest into one category because the *control set* (registration, communication plan, advisory monitoring) is largely the same across them. Specific scenario types could be broken into sub-rows in a future revision if the question bank requires finer-grained distractors.
 - **Gaps marked `[needs source]`:** four Facts — the entire Theft row except the briefing topic. Travel theft controls are widely practiced but live in corporate-security and travel-industry guidance rather than NIST-style primary publications.
 
+### Tricky distractors
+
+- **Burner devices for espionage destinations.** Take device with nothing sensitive. Wrong-answer pattern: encrypting regular laptop and traveling with it — better to bring nothing.
+- **Hotel safes are not secure.** Hotel staff can open. Wrong-answer pattern: claiming hotel safes adequately protect sensitive materials — they don't.
+- **STEP is the US embassy registration program.** Smart Traveler Enrollment Program. Wrong-answer pattern: skipping registration — STEP enables embassy contact during emergencies.
+- **Domestic health insurance often doesn't cover international.** Travel medical insurance + evacuation coverage. Wrong-answer pattern: relying on domestic coverage abroad.
+- **Hotel rooms can be assumed monitored in some jurisdictions.** Don't discuss sensitive in-room. Wrong-answer pattern: treating hotel rooms as private spaces.
+- **Border-crossing device inspection is real.** Many jurisdictions seize/copy devices at border. Wrong-answer pattern: claiming encryption protects border-crossing scenarios — encryption can be required to be unlocked.
+
 ## Engine demo opportunities
 
 - `? | typical control → Burner devices for sensitive destinations` → Espionage

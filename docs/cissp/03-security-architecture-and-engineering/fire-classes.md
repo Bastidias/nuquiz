@@ -26,6 +26,15 @@ The five U.S. fire classification categories per NFPA 10. Each pairs a *fuel typ
 - **Dry chemical works on multiple classes.** ABC-rated dry chemical extinguishers (the most common multi-purpose extinguisher) work on Class A, B, and C fires. They leave residue that may damage electronic equipment (corrosion). For data centers, clean-agent systems (FM-200, Novec 1230, inert gases) are preferred to avoid residue.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NFPA 10.
 
+### Tricky distractors
+
+- **Don't use water on Class C electrical fires.** Conducts electricity, electrocution risk. Wrong-answer pattern: claiming water suffices for any fire — Class C is dangerous.
+- **Don't use water on Class K grease fires.** Steam ejects burning oil. Wrong-answer pattern: applying water to grease — wet chemical (saponification) is required.
+- **Don't use water on Class D metal fires.** Reacts exothermically. Wrong-answer pattern: applying water to magnesium/sodium — accelerates the fire.
+- **U.S. vs European classifications differ.** Class C in US (electrical) = Class E in EU. Wrong-answer pattern: applying European letters to US-context exam questions.
+- **Class C de-energized becomes Class A or D.** Material-driven. Wrong-answer pattern: claiming once-Class-C-always-Class-C — current state matters.
+- **Clean-agent systems for data centers.** FM-200, Novec, inert gas. Wrong-answer pattern: using ABC dry chemical in data centers — residue damages electronics.
+
 ## Engine demo opportunities
 
 - `? | fuel type → Combustible metals` → Class D

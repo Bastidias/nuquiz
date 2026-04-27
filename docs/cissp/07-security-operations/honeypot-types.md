@@ -23,6 +23,15 @@ The four canonical deception-technology variants, ranging from a single decoy fi
 - **Legal considerations (intentionally not a row).** Entrapment and wiretap-law concerns surround honeypot deployment, particularly in jurisdictions where logging interaction may require notice. Out of scope for this Concept's risk column; would belong in a separate Concept on legal aspects of deception technology.
 - **Gaps marked `[needs source]`:** none — all Facts trace to Spitzner / Honeynet Project framing or practitioner summaries.
 
+### Tricky distractors
+
+- **Honeytoken is data, not a host.** A fake credential or marked DB row. Wrong-answer pattern: classifying honeytokens alongside honeypot hosts — they're a different category.
+- **High-interaction is a pivot risk.** Real OS, real services = real foothold if compromised. Wrong-answer pattern: claiming high-interaction has lower risk because it's better-monitored — opposite.
+- **Honeywall contains the honeynet.** Without it, a honeynet endangers production. Wrong-answer pattern: deploying a honeynet without containment infrastructure.
+- **Low-interaction emulates services.** Limited engagement; lower deception depth. Wrong-answer pattern: claiming low-interaction provides full attacker behavior intel — high-interaction does that.
+- **Legal concerns include entrapment and wiretap law.** Out of scope here, but real. Wrong-answer pattern: deploying honeypots without legal review — jurisdictions vary.
+- **Honeypot detection by attackers.** Sophisticated attackers fingerprint honeypots and avoid them. Wrong-answer pattern: claiming honeypots always engage attackers — they engage less-skilled attackers more reliably.
+
 ## Engine demo opportunities
 
 - `? | depth of deception → Single decoy data artifact` → Honeytoken

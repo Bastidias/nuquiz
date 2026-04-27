@@ -25,6 +25,15 @@ The five database-security concepts most often tested on CISSP. Two are confiden
 - **ACID belongs in this Concept because integrity is a security property.** ACID is more familiar from database-engineering literature than from security literature, but the integrity-related properties (Atomicity, Consistency, Durability) directly map to CISSP integrity concerns. CISSP exams use ACID primarily as a recognition test of the acronym and its four parts.
 - **Out of scope for this Concept:** specific MLS database products (Oracle Label Security, Trusted Solaris), database encryption (TDE — Transparent Data Encryption), database firewalls, query throttling for DoS protection, BASE (the NoSQL-tradeoff acronym opposing ACID), CAP theorem (distributed-systems tradeoff), specific SQL injection mitigations (covered in `common-injection-types`).
 
+### Tricky distractors
+
+- **Inference uses logic; Aggregation uses volume.** Most-tested DB security distinction. Wrong-answer pattern: collapsing them — different mechanisms, different defenses.
+- **ACID = Atomicity, Consistency, Isolation, Durability.** Wrong-answer pattern: substituting "Authentication" for one of the letters — these are transaction properties.
+- **Polyinstantiation is for MLS databases.** Same primary key, different values per clearance level. Wrong-answer pattern: applying polyinstantiation to commercial databases — it's an MLS-specific mechanism.
+- **View-based access is row/column restriction.** SQL views become security boundaries. Wrong-answer pattern: claiming views provide no security — they're a valid access-control layer.
+- **Cell suppression mitigates inference.** Refuse to answer queries that enable inference. Wrong-answer pattern: claiming aggregation defenses (result-size limits) defeat inference — they don't, suppression does.
+- **ACID is integrity, not confidentiality.** Database engineering term applied to CISSP integrity concerns. Wrong-answer pattern: claiming ACID prevents unauthorized access — it ensures transaction reliability.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

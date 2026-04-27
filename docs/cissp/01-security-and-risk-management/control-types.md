@@ -22,6 +22,15 @@ The three control types CISSP courseware uses to classify security controls by *
 - **Why typical owner matters.** The owner column is not just trivia — it determines who must be involved in implementing or auditing the control. A security audit failure for an administrative control likely needs HR or compliance to remediate; a technical control failure goes to the IT team; a physical control failure goes to facilities. Ownership ambiguity is a common audit finding.
 - **Gaps marked `[needs source]`:** three Facts — typical owner for each row. Practitioner consensus but not yet sourced to a primary publication.
 
+### Tricky distractors
+
+- **Type vs Category orthogonality.** Type = administrative/technical/physical (HOW). Category = preventive/detective/corrective/etc. (WHEN/WHY). Wrong-answer pattern: claiming a control fits only one axis — every control has both.
+- **Technical and Logical are synonymous in CISSP.** Wrong-answer pattern: treating Technical and Logical as separate types — they're the same.
+- **Administrative is human-mediated.** Policies, training, hiring practices. Wrong-answer pattern: classifying an automated tool as administrative because policy mandates it — the control mechanism is the automation (technical), not the policy.
+- **Physical isn't only barriers.** Site selection, CPTED, HVAC, fire suppression, lighting all count. Wrong-answer pattern: limiting Physical to fences and locks.
+- **Security awareness training is administrative.** Even though delivered via a tech platform, the control mechanism is human behavior. Wrong-answer pattern: classing training as technical because it's delivered through software.
+- **A guard is physical AND administrative AND deterrent.** Multi-classification is the norm. Wrong-answer pattern: forcing single-classification when a control spans types.
+
 ## Engine demo opportunities
 
 - `? | example → Door lock` → Physical

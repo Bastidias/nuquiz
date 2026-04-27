@@ -21,6 +21,15 @@ The two terms CISSP courseware distinguishes for indicating an asset's classific
 - **Watermarking is a marking variant.** Visible watermarks (a "DRAFT" or "CONFIDENTIAL — DO NOT DISTRIBUTE" stamp across the document body) are a form of marking. Invisible watermarks (steganographic per-recipient identifiers) are a *traceability* control rather than a classification marking, but the distinction blurs in practice.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard CISSP labeling/marking framing.
 
+### Tricky distractors
+
+- **Labels are for systems; markings are for people.** Single most-tested distinction. Wrong-answer pattern: collapsing them — they're complementary, both required.
+- **Marking flows through transformations.** Print, copy-paste, screenshot. Wrong-answer pattern: claiming marking only applies at creation — must persist through transformations.
+- **Both required for complete program.** Label without marking fails when human handles; marking without label fails systems. Wrong-answer pattern: choosing one — both are required.
+- **Watermark is a marking variant.** Visible "DRAFT" or "CONFIDENTIAL." Wrong-answer pattern: classifying watermarks as labels — they're human-visible markings.
+- **Automated labeling is modern goal.** DLP / AI content-based. Wrong-answer pattern: claiming user-applied labels are sufficient at scale — error-prone.
+- **Steganographic watermarks ≠ classification marking.** Traceability control. Wrong-answer pattern: collapsing steganographic identifiers with classification markings.
+
 ## Engine demo opportunities
 
 - `? | definition → Human-visible classification designation` → Marking

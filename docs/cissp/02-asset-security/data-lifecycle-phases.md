@@ -28,6 +28,15 @@ The six sequential phases data passes through across its lifecycle, from creatio
 - **Lifecycle controls compound, not replace.** A piece of data in the Use phase still needs the Storage controls — encryption at rest does not turn off because the data is in active use. The phases describe the *primary* activity; controls from earlier phases continue to apply.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-88 or standard data-lifecycle framing.
 
+### Tricky distractors
+
+- **Six-phase order.** Create → Store → Use → Share → Archive → Destroy. Wrong-answer pattern: putting Share before Use, or placing Archive after Destroy.
+- **Archive ≠ Backup.** Archive is for retention; Backup is for recovery. Wrong-answer pattern: collapsing the two — backup data is rotated and overwritten; archive data is preserved long-term.
+- **Destroy is a positive action.** Deletion ≠ destruction. NIST 800-88 sanitization is required. Wrong-answer pattern: claiming file-system delete satisfies destroy phase — undelete tools recover it.
+- **Retention drives Archive→Destroy.** Expired data must be destroyed; failing to destroy is a privacy/legal risk. Wrong-answer pattern: claiming organizations should keep data forever for safety — GDPR storage-limitation principle requires destruction.
+- **Controls compound across phases.** Encryption at rest persists during Use. Wrong-answer pattern: claiming controls from earlier phases turn off as data moves to later phases.
+- **Share is distinct from Use.** Internal access (Use) vs external transmission (Share). Wrong-answer pattern: collapsing them — the controls differ (recipient verification for Share).
+
 ## Engine demo opportunities
 
 - `? | Name → Archive` → Phase 5

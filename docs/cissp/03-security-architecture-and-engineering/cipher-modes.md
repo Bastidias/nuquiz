@@ -28,6 +28,15 @@ The seven block-cipher modes of operation defined in NIST SP 800-38 series. Each
 - **What is intentionally not on this table.** XTS (used for disk encryption), CMAC (a MAC mode), KW/KWP (key-wrapping modes), and the newer SIV (Synthetic IV — nonce-misuse-resistant AEAD) are additional modes that could be added in future revisions.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-38 series.
 
+### Tricky distractors
+
+- **ECB preserves plaintext patterns.** Identical plaintext blocks → identical ciphertext blocks. Wrong-answer pattern: choosing ECB for any non-trivial workload — the ECB penguin image is the canonical illustration of why this fails.
+- **GCM and CCM are AEAD; CBC and CTR alone are not.** Wrong-answer pattern: claiming CBC provides authentication — it provides confidentiality only and requires a separate MAC.
+- **IV reuse breaks GCM catastrophically.** Reusing a GCM nonce with the same key reveals the authentication subkey, allowing ciphertext forgery — far worse than the confidentiality break in CTR. Wrong-answer pattern: treating IV reuse as merely a confidentiality issue in GCM.
+- **CTR is parallelizable; CBC is not.** CTR encrypts independent counter values; CBC chains each block to the previous ciphertext. Wrong-answer pattern: claiming CBC parallelizes encryption — only its decryption parallelizes.
+- **Padding oracle attacks affect CBC.** POODLE, Lucky-13, BEAST all exploit padding-validation leaks in CBC. Wrong-answer pattern: claiming GCM is vulnerable to padding oracles — GCM uses no padding (it's a stream-style mode).
+- **Stream-mode vs block-mode terminology.** ECB and CBC are block-modes (encrypt full blocks). CTR, OFB, CFB, GCM behave like stream ciphers (XOR keystream with plaintext). Wrong-answer pattern: claiming all block-cipher modes process plaintext in fixed blocks — stream-style modes don't.
+
 ## Engine demo opportunities
 
 - `? | weakness → Identical plaintext blocks produce identical ciphertext` → ECB

@@ -25,6 +25,15 @@ The four HVAC design considerations for data centers, examined from multiple ang
 - **Power and HVAC are coupled.** A 1MW data center generates ~1MW of heat that must be removed. Cooling capacity must scale with IT power load. Capacity planning treats them together; outages of cooling cause rapid temperature rise that may force emergency shutdown.
 - **Gaps marked `[needs source]`:** none — all Facts trace to ASHRAE TC 9.9 publications.
 
+### Tricky distractors
+
+- **Humidity matters in both directions.** Low = ESD; high = condensation/corrosion. Wrong-answer pattern: claiming only one direction matters — both bound the safe range.
+- **Positive pressure keeps contaminants out.** Air flows out through openings. Wrong-answer pattern: claiming negative pressure is preferred — opposite, contaminants would flow in.
+- **N+1 vs 2N redundancy.** N+1 single-failure tolerant; 2N full-redundant pair. Wrong-answer pattern: equating them — different cost and tolerance levels.
+- **Hot aisle / cold aisle separates airflow.** Prevents hot-exhaust re-ingest. Wrong-answer pattern: claiming all racks face the same direction — alternation is the design.
+- **Cooling scales with power.** 1MW IT = 1MW heat. Wrong-answer pattern: planning HVAC independent of IT load.
+- **ASHRAE has raised temperature targets.** Equipment tolerates higher temps now. Wrong-answer pattern: applying older 21°C guidance — current is 18-27°C recommended.
+
 ## Engine demo opportunities
 
 - `? | content → 18-27°C per ASHRAE TC 9.9 recommended envelope` → temperature target

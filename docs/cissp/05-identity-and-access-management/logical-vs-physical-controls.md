@@ -21,6 +21,15 @@ The three control-implementation categories CISSP candidates are expected to dis
 - **Owner column is typical-case.** Real organizations may centralize all controls under a single CISO function or distribute them across IT, Facilities, HR, and Compliance. The cell values reflect the modal assignment in mid-to-large enterprises.
 - **Out of scope for this Concept:** control-function classification (covered in D1 `control-categories`), specific compensating-control framings (often used by PCI DSS), CIA-aligned classification (controls aimed at confidentiality vs integrity vs availability), NIST control families (AC, AU, IA, etc. — covered indirectly throughout the IAM domain).
 
+### Tricky distractors
+
+- **Logical = Technical.** Same category, different names. Wrong-answer pattern: treating them as different — they refer to software-enforced controls.
+- **Type and Function are orthogonal.** Mechanism (logical/physical/admin) ≠ Function (preventive/detective/etc.). Wrong-answer pattern: forcing single-axis classification — every control has both.
+- **Biometric door reader is Physical.** Despite using logical components, the purpose is physical access control. Wrong-answer pattern: classifying biometric readers as Logical because they have software — purpose drives classification.
+- **Administrative controls are policy.** Training, background checks, SoD enforcement. Wrong-answer pattern: classifying training as Logical because delivered through software — control mechanism is human behavior.
+- **A guard is admin AND physical.** Multi-classification possible. Wrong-answer pattern: forcing single-classification when a control spans types.
+- **Encryption is Logical.** Software-enforced. Wrong-answer pattern: classifying encryption as Physical because it operates on data — Logical category.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

@@ -26,6 +26,15 @@ The seven security-relevant software testing methods CISSP candidates are expect
 - **SDLC placement matters.** SAST and SCA run during Implementation (continuous integration). DAST, IAST, Fuzz, and Mutation run during Testing. RASP runs in Production. The cell values use this canonical placement; shift-left programs may run several earlier (DAST in CI, fuzz on every commit).
 - **Out of scope for this Concept:** specific tooling per type, fuzz-corpus design, mutation-test scoring (mutation score, killed mutants), property-based testing (closer to fuzz than mutation), symbolic execution, formal-methods verification.
 
+### Tricky distractors
+
+- **Mutation testing tests the tests.** Not the application. Wrong-answer pattern: claiming mutation testing finds application bugs — it measures test-suite effectiveness.
+- **Fuzz finds parser/crash bugs.** Malformed input. Wrong-answer pattern: claiming fuzz testing replaces functional testing — it specifically targets edge-case crashes.
+- **SAST static; DAST dynamic.** Different observation points. Wrong-answer pattern: confusing them — SAST examines code without running; DAST runs the app.
+- **RASP is production runtime defense.** Not testing. Wrong-answer pattern: classifying RASP alongside SAST/DAST as discovery tool — RASP defends.
+- **IAST runs during testing.** Combines SAST + DAST. Wrong-answer pattern: claiming IAST runs in production — that's RASP.
+- **SCA finds vulnerable dependencies.** Not first-party code issues. Wrong-answer pattern: claiming SCA detects coding errors — different scope.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -24,6 +24,15 @@ The five categories of application audit log most directly tied to the AU (Audit
 - **What NOT to log.** Passwords, full primary account numbers (PCI DSS prohibits beyond the first 6 / last 4 digits), unmasked PII, encryption keys, session tokens. The capture fields in this Concept assume secrets are filtered before write. OWASP Logging Cheat Sheet [s2] is the authoritative guidance.
 - **Out of scope for this Concept:** specific log format standards (CEF, LEEF, JSON syslog), SIEM integration patterns (covered in `siem-soar-xdr` in D7), log analysis methods (separate D7 Concept — `log-analysis-methods`), forensic-evidence handling (`evidence-handling-chain` in D7), CIA-controls review activities (`account-review-activities` in D5).
 
+### Tricky distractors
+
+- **Don't log secrets.** Passwords, full PAN, encryption keys, session tokens forbidden. Wrong-answer pattern: claiming all auth event fields including password should be logged — never log the password.
+- **Stack traces are sensitive.** Leak paths, versions, sometimes secrets. Wrong-answer pattern: classifying error logs as low-sensitivity — they're High.
+- **Retention is regulation-driven.** SOX 7y, HIPAA 6-7y, PCI 1y minimum. Wrong-answer pattern: applying one universal retention period across all event classes and regulations.
+- **5W + How template.** Who/What/When/Where/Why/How per event. Wrong-answer pattern: skipping fields like Source IP — minimal logs lose forensic value.
+- **PCI permits PAN truncation.** First 6 / last 4 digits. Wrong-answer pattern: claiming PCI forbids any storage of PAN — truncated form is permitted.
+- **Configuration change logs need indefinite retention for security-critical.** Firewall, IAM, encryption settings. Wrong-answer pattern: applying 1-year retention to all config changes — security-critical needs longer.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

@@ -25,6 +25,15 @@ The three authorization-decision models CISSP candidates are expected to discrim
 - **Cross-Concept link.** This Concept's three axes underpin the named models in `access-control-models`: DAC and RBAC are subject-based; MAC is subject-and-object combined; RuBAC is rule/context-based; ABAC is the explicit synthesis of all three. ABAC's defining property is that it makes the three axes simultaneously available to policy authors without needing a per-axis named model.
 - **Out of scope for this Concept:** specific named access-control models (sibling Concept `access-control-models`), policy languages (XACML, OPA, Cedar), RBAC role-engineering practices, MAC label hierarchies, conditional-access UX patterns, Zero Trust architecture (which heavily uses context-based authorization).
 
+### Tricky distractors
+
+- **Three axes combine in real systems.** Subject + Object + Context attributes evaluated per decision. Wrong-answer pattern: claiming a system uses only one axis — most production systems compose all three.
+- **RBAC is subject-based.** Clearance-based MAC is also subject-based. Wrong-answer pattern: claiming RBAC is the only subject-based model.
+- **Context-based is the Zero Trust enabler.** Time of day, location, device posture. Wrong-answer pattern: claiming Zero Trust uses only subject-based decisions — context (especially device posture) is core.
+- **ABAC synthesizes all three axes.** Subject + Object + Action + Environment per NIST 800-162. Wrong-answer pattern: classifying ABAC as only context-based.
+- **Role explosion breaks subject-based scaling.** "One role per project per env" destroys RBAC. Wrong-answer pattern: claiming RBAC is infinitely scalable — it scales only with disciplined role design.
+- **Classification inconsistency breaks object-based.** Same data labeled differently in different systems = inconsistent enforcement. Wrong-answer pattern: assuming classification scales itself.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

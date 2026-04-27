@@ -21,6 +21,15 @@ The five facets that drive site-selection decisions for facilities housing infor
 - **CPTED principles apply at the site level.** Sibling Concept `cpted-principles` covers the four CPTED axes (natural surveillance, natural access control, territorial reinforcement, maintenance). Site selection decisions about visibility, fencing, lighting, and approach paths all derive from CPTED analysis.
 - **Out of scope for this Concept:** specific risk-quantification methodologies, cost-benefit analysis frameworks for site selection, real-estate market analysis, ESG factors, climate-change projection for long-term site planning, sovereign-cloud-driven international site selection.
 
+### Tricky distractors
+
+- **Site selection is early; hard to reverse.** Better to evaluate before construction. Wrong-answer pattern: claiming site choice can be remediated cheaply post-construction.
+- **Alternate sites must be in different disaster zones.** Co-located alternates fail together. Wrong-answer pattern: placing primary and DR sites in same flood plain or earthquake zone.
+- **Reliable utilities = diverse, redundant.** Multiple feeders from different substations. Wrong-answer pattern: claiming a single high-quality utility is sufficient — diversity matters more than quality.
+- **Physical access is both directions.** Authorized must be efficient; unauthorized must be controlled. Wrong-answer pattern: optimizing only one direction.
+- **Political stability matters for international sites.** Sovereign concerns. Wrong-answer pattern: ignoring political risk for international expansion.
+- **Crime rate drives ongoing security cost.** Cheap land in high-crime area = expensive long-term. Wrong-answer pattern: optimizing for land cost alone.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

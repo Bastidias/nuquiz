@@ -23,6 +23,15 @@ The four Message Authentication Code (MAC) constructions CISSP candidates are ex
 - **MAC-then-encrypt vs encrypt-then-MAC vs encrypt-and-MAC.** Order matters for non-AEAD systems. Encrypt-then-MAC (the modern recommendation) MACs the ciphertext, allowing rejection of tampered messages before decryption. MAC-then-encrypt (older TLS) MACs the plaintext, requiring decryption before MAC verification — this is what makes padding-oracle attacks possible. AEAD modes (GCM, CCM, ChaCha20-Poly1305) avoid the question entirely by combining encryption and authentication into a single construction.
 - **Out of scope for this Concept:** specific NIST cipher suites for HMAC + cipher pairing, KMAC (the SHA-3 KECCAK-based MAC), Poly1305-AES (older variant before ChaCha20-Poly1305), HMAC-vs-keyed-hash distinctions, side-channel attacks on MAC implementations.
 
+### Tricky distractors
+
+- **MAC = symmetric; Digital signature = asymmetric.** MAC requires shared key. Wrong-answer pattern: claiming MAC provides non-repudiation — both parties have the key, so neither can repudiate uniquely.
+- **HMAC vs naive H(key || message).** HMAC defends against length-extension. Wrong-answer pattern: claiming `H(key || message)` is sufficient for keyed hashing — vulnerable to extension attacks.
+- **Encrypt-then-MAC is the modern recommendation.** MAC the ciphertext. Wrong-answer pattern: claiming MAC-then-encrypt is fine — leads to padding-oracle attacks.
+- **AEAD avoids the order question.** GCM, CCM, ChaCha20-Poly1305. Wrong-answer pattern: claiming AEAD requires separate MAC management — combined construction.
+- **GMAC requires unique IV per message.** Same as GCM. Wrong-answer pattern: treating GMAC like HMAC — IV/nonce reuse breaks GMAC.
+- **HMAC works with any hash.** HMAC-SHA-256, HMAC-SHA-512. Wrong-answer pattern: claiming HMAC requires a specific hash — generic construction.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

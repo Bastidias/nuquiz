@@ -24,6 +24,15 @@ The two-phase Internet Key Exchange that sets up IPsec SAs. Phase 1 establishes 
 - **PFS (Perfect Forward Secrecy) is a Phase 2 option.** PFS in IKE means running a fresh Diffie-Hellman exchange during Phase 2, so compromise of the Phase 1 DH secret does not compromise past Phase 2 session keys. Not represented in the table because it is an *option* within Phase 2, not a defining attribute of the phase.
 - **Out of scope for this Concept:** IKE message formats and payload types, IPsec SA lifetimes and rekey triggers, DPD (Dead Peer Detection), MOBIKE (IKEv2 mobility extension), EAP authentication within IKEv2, NAT-T within IKE, individual Phase 1 authentication methods (PSK / certificate / EAP).
 
+### Tricky distractors
+
+- **Phase 1 establishes ISAKMP/IKE SA; Phase 2 establishes IPsec SA.** Wrong-answer pattern: swapping which SA each phase creates.
+- **Quick Mode is Phase 2 only.** Main/Aggressive are Phase 1 only. Wrong-answer pattern: applying Quick Mode to Phase 1 — RFC 2409 explicitly forbids it.
+- **Aggressive Mode exposes identities.** Three messages but identity in cleartext = PSK dictionary risk. Wrong-answer pattern: claiming Aggressive Mode is more secure because it's faster.
+- **IKEv2 simplifies IKEv1.** Two canonical exchanges (IKE_SA_INIT, IKE_AUTH, CREATE_CHILD_SA). Wrong-answer pattern: applying IKEv1 mode names to IKEv2 — IKEv2 uses different exchange names.
+- **Phase 2 runs multiple times per Phase 1.** One IKE SA supports many child SAs. Wrong-answer pattern: claiming Phase 1 and Phase 2 are 1:1 — Phase 2 negotiates per flow/direction.
+- **PFS is a Phase 2 option.** Fresh DH per Phase 2 negotiation. Wrong-answer pattern: claiming PFS is automatic — it requires explicit Phase 2 configuration.
+
 ### Values without a direct public citation
 
 No cell in this table relies on inference beyond what RFC 2409 [s1] and RFC 7296 [s2] specify. The purpose-column values ("Establish authenticated channel," "Negotiate data SAs") are one-line summaries of the RFC language rather than direct quotations, but map cleanly to RFC 2409 §5's description of Phase 1 and Phase 2 goals.

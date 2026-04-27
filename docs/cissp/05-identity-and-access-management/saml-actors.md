@@ -22,6 +22,15 @@ The four SAML roles CISSP expects candidates to name and distinguish. Three are 
 - **Assertion structure.** A SAML Assertion contains: a Subject element (who), AuthnStatement (how / when authenticated), optional AttributeStatement (user attributes), optional AuthzDecisionStatement (rarely used — most SAML deployments make authorization decisions at the SP after receiving attributes, not via AuthzDecisionStatement). Covered here at category level; the XML schema specifics are out of scope.
 - **Out of scope for this Concept:** the SAML SSO flow step-by-step (separate Concept — `saml-sso-flow`), assertion signing/encryption mechanics, SAML metadata format, name identifier formats (transient, persistent, emailAddress, X.509), session index and logout, IdP-discovery (where-are-you-from) protocols.
 
+### Tricky distractors
+
+- **IdP issues; SP consumes.** The Assertion flows from IdP to SP. Wrong-answer pattern: claiming the SP issues assertions — only the IdP does.
+- **SP issues the AuthnRequest.** Authentication request direction is opposite of assertion direction. Wrong-answer pattern: claiming the IdP initiates the request — in SP-initiated SSO, the SP does.
+- **Relying Party = SP.** OIDC and WS-Fed call it Relying Party; SAML calls it Service Provider. Wrong-answer pattern: treating Relying Party and Service Provider as different roles.
+- **Subject is the user (typically).** The Subject is the authenticated entity in the assertion. Wrong-answer pattern: confusing Subject with Service Provider — Subject is who, SP is where they're going.
+- **Assertion is an artifact, not an actor.** The Assertion is the signed XML token, not a participant. Wrong-answer pattern: listing Assertion alongside IdP/SP/Subject as a fourth actor.
+- **Trust comes from IdP signing key.** SP validates the assertion via the IdP's signing certificate exchanged during federation setup. Wrong-answer pattern: claiming SAML trust derives from TLS — TLS protects transport; assertion signature is the cryptographic root of trust.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

@@ -24,6 +24,15 @@ The five evidence categories U.S. legal practice (and CISSP courseware) recogniz
 - **Best evidence rule.** When the contents of a document are at issue, the *original* document must be produced if available. Copies are admissible only if the original is unavailable for justifiable reason. This is why forensic disk imaging produces bit-for-bit copies *and* preserves the original drive — both serve different evidentiary needs.
 - **Gaps marked `[needs source]`:** none — all Facts trace to U.S. Federal Rules of Evidence framing as documented in CISSP courseware.
 
+### Tricky distractors
+
+- **Server logs and the business records exception.** Logs are technically hearsay but admissible under FRE 803(6) if kept in regular course of business. Wrong-answer pattern: claiming server logs are inadmissible — the business-records exception is the routine path.
+- **Best evidence rule.** Originals required if available; copies only if unavailable with justification. Wrong-answer pattern: claiming photocopies are always admissible — the original is preferred when content is at issue.
+- **Real vs Documentary.** Real = the physical object itself (drive, device). Documentary = the written/recorded content. Wrong-answer pattern: classifying a server log as Real evidence — the log is documentary content; the drive containing it is real.
+- **Demonstrative is not standalone proof.** It clarifies other evidence; it doesn't prove on its own. Wrong-answer pattern: relying on a network diagram alone to prove activity.
+- **Testimonial is what was seen/done, not what was concluded.** Lay witnesses describe; expert witnesses opine. Wrong-answer pattern: claiming any witness can offer professional opinions — only experts qualified by the court can.
+- **Chain of custody preserves real evidence admissibility.** Breaks render evidence inadmissible regardless of probative value. Wrong-answer pattern: claiming chain of custody is a procedural nicety — it's the gating admissibility requirement.
+
 ## Engine demo opportunities
 
 - `? | definition → Tangible physical object directly involved in incident` → Real

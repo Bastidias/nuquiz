@@ -24,6 +24,15 @@ The four sanitization methods NIST SP 800-88 Rev. 1 defines for media disposal. 
 - **Documentation matters.** Sanitization is not just an action — it produces a *certificate of destruction* documenting what was sanitized, by whom, when, by what method. This is the audit artifact that proves compliance with retention/disposal policies.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-88 Rev. 1.
 
+### Tricky distractors
+
+- **Clear vs Purge.** Clear defeats keyboard recovery (file-undelete tools). Purge defeats laboratory recovery (forensic equipment). Wrong-answer pattern: claiming Clear is sufficient for media leaving the organization — Purge or Destroy is required.
+- **Cryptographic erasure relies on key destruction.** If the key was ever copied/escrowed/exposed, CE doesn't protect. Wrong-answer pattern: claiming CE is always equivalent to physical destruction.
+- **Degaussing doesn't work on SSDs.** Magnetic methods don't affect flash memory. Wrong-answer pattern: applying degauss to all media types — magnetic-only.
+- **Destroying a working drive is wasteful but always safe.** Destruction is the safe-default when classification is high. Wrong-answer pattern: claiming destruction is always overkill — for top-secret data it's required.
+- **Reuse intent drives method.** Inside organization → Clear. Outside org → Purge. End-of-life → Destroy. Wrong-answer pattern: defaulting to Destroy for routine reuse — wasteful.
+- **Certificate of destruction is the audit artifact.** Sanitization without documentation can't prove compliance. Wrong-answer pattern: claiming the action alone satisfies retention policy — paperwork is part of the control.
+
 ## Engine demo opportunities
 
 - `? | when used → Encrypted media disposal` → Cryptographic erasure

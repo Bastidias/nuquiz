@@ -25,6 +25,15 @@ The six alternate-site options NIST SP 800-34 and standard CISSP teaching cover 
 - **Reciprocal agreement is also called Mutual Aid Agreement.** Two organizations agree to host each other in a disaster. Cheapest option but rarely tested in production — capacity planning at the partner site, security/compliance overlap, and divergent infrastructure all reduce reliability.
 - **Out of scope:** Mirrored / Redundant site (an exact production duplicate; sometimes treated as a hot-site variant, sometimes as its own category). The stub declares 6 rows; adding a 7th row for Mirrored is an SME decision.
 
+### Tricky distractors
+
+- **Cold site has no equipment.** Just space, power, HVAC, connectivity. Wrong-answer pattern: claiming cold sites have hardware ready — that's warm.
+- **Warm site has hardware but stale data.** Hardware and software ready, but data must be loaded. Wrong-answer pattern: claiming warm sites are real-time replicated — that's hot.
+- **Hot site costs the most, recovers fastest.** Cost-RTO is inversely related across the ladder. Wrong-answer pattern: thinking you can have fast recovery cheaply.
+- **Reciprocal agreement is cheap but unreliable.** Partner capacity, compliance overlap, and infrastructure mismatch make it weak in practice. Wrong-answer pattern: recommending reciprocal for high-availability needs.
+- **Setup time ≠ RTO.** Setup is "site operational"; RTO includes setup + data restore + cutover. Wrong-answer pattern: equating the two — hot site setup is minutes but RTO is under 1 hour.
+- **Mobile site is a physical trailer.** Towable, hardware-equipped. Wrong-answer pattern: confusing mobile with cloud — mobile is hardware-on-wheels.
+
 ### Source provenance caveat
 
 Direct read of the NIST SP 800-34 Rev 1 PDF was not performed. Cell values cited as `[s1]` were drawn from a ScienceDirect topic page that summarizes NIST SP 800-34 with quoted phrasing; the URL is recorded in the registry but the source document was not independently parsed. This matches the provenance limitation noted in `docs/cissp/knowledge-map.md` § Source Provenance for D4 and D5 Concepts. SME pass should fetch and verify against the NIST PDF directly.

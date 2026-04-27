@@ -26,6 +26,15 @@ The six side-channel attack categories CISSP candidates are expected to discrimi
 - **Cache side channels — Spectre / Meltdown / Foreshadow lineage.** Modern cache-based attacks (Flush+Reload, Prime+Probe, Spectre v1/v2, Meltdown, Foreshadow, MDS) exploit microarchitectural state in CPU caches that persists between processes or VMs. Even with no shared memory, two processes on the same CPU can communicate or leak data via cache-state observation. The most operationally impactful side-channel class because it affects every modern CPU.
 - **Out of scope for this Concept:** specific Spectre / Meltdown variants (worth their own Concept), Rowhammer (DRAM-based, related but distinct), photonic side channels, ML-based side-channel analysis, side-channel attacks on post-quantum algorithms.
 
+### Tricky distractors
+
+- **Side-channel attacks target implementation, not algorithm.** Perfect crypto + leaky implementation = vulnerable. Wrong-answer pattern: claiming algorithm strength alone defeats side channels.
+- **Side vs Covert channel.** Side = unintentional implementation leakage. Covert = intentional sender modulation. Wrong-answer pattern: collapsing them — different attacker models.
+- **Cache side channels affect every modern CPU.** Spectre/Meltdown/Foreshadow class. Wrong-answer pattern: claiming cache attacks are theoretical — they're operationally impactful.
+- **Constant-time code defeats timing.** Same cycles regardless of secret. Wrong-answer pattern: claiming faster code defeats timing attacks — it's about uniformity, not speed.
+- **TEMPEST is EM emanation control.** US program for shielding. Wrong-answer pattern: confusing TEMPEST (EM) with other side-channel categories.
+- **Power analysis = SPA + DPA.** Simple visual inspection vs differential statistical analysis. Wrong-answer pattern: treating power analysis as one technique — they're two distinct.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

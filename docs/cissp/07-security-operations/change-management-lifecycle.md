@@ -27,6 +27,15 @@ The seven sequential phases a change passes through from request to closure. The
 - **Why "Verify" is its own phase rather than folded into Implement.** Verification confirms the change achieved its intended outcome and produced no unintended side effects. Treating it as a separate phase forces an explicit go/no-go gate before closure and matches NIST CM-3's separation of "implement approved changes" (step 4) from "monitor and review activities" (step 6).
 - **Gaps marked `[needs source]`:** none — every Fact traces to NIST CM-3, NIST SP 800-128, or ITIL practice summaries.
 
+### Tricky distractors
+
+- **CCB = CAB.** Configuration Control Board (NIST) and Change Advisory Board (ITIL) are synonyms. Wrong-answer pattern: treating them as different bodies — same role, different terminology.
+- **Approval before implementation.** CCB decision precedes the change. Wrong-answer pattern: implementing first and seeking approval after — that's an emergency-change shortcut, not the standard lifecycle.
+- **Verify is its own phase.** Confirms outcome and absence of side effects. Wrong-answer pattern: collapsing Verify into Implement — they're separate gates.
+- **Emergency changes still pass through review.** Just expedited, not skipped. Wrong-answer pattern: claiming emergency changes bypass change management — they bypass scheduling, not approval.
+- **Rollback is part of Implement, not a separate phase.** Pre-defined rollback procedure is part of approval. Wrong-answer pattern: adding rollback as an 8th lifecycle phase.
+- **Closure preserves audit trail.** Records retained. Wrong-answer pattern: claiming closure deletes change records — it documents and archives them.
+
 ## Engine demo opportunities
 
 - `? | Name → Approval` → Phase 3

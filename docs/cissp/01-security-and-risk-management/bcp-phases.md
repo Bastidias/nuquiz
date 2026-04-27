@@ -29,3 +29,12 @@ The seven-phase Business Continuity Planning process from NIST SP 800-34. Each p
   - `? | Typical Output → BIA report` → Phase 2.
   - `Phase 5 | Key Activity → ?` → Document procedures / Document roles / Document responsibilities (multi-Fact cell).
   - Sequence (adjacency): `Phase (n+1 where Phase n | Name → Conduct BIA) | Name → ?` → Identify preventive controls.
+
+### Tricky distractors
+
+- **BCP vs BIA vs DRP.** BCP = full planning process. BIA = one phase within BCP (Phase 2). DRP = IT-centric subset focused on recovering technology. Wrong-answer pattern: equating BCP with DRP — DRP is technology-focused; BCP is enterprise-wide.
+- **Policy comes before BIA.** Phase 1 (policy) precedes Phase 2 (BIA). Wrong-answer pattern: starting BCP with the BIA — without policy and scope, the BIA has no boundary.
+- **Preventive controls phase comes before strategies.** Phase 3 reduces disruption likelihood; Phase 4 plans recovery. Wrong-answer pattern: collapsing prevention and recovery — they're separate planning activities.
+- **ISCP is the written plan.** Information System Contingency Plan is the deliverable of Phase 5, not the process itself. Wrong-answer pattern: confusing ISCP (artifact) with BCP (process).
+- **Testing happens after the plan exists.** Phase 6 (test/train/exercise) follows Phase 5 (write the plan). Wrong-answer pattern: testing before the plan is documented — exercises validate documented procedures.
+- **Maintenance is ongoing.** Phase 7 is recurring, not a one-time activity. Wrong-answer pattern: treating BCP as a project that ends after Phase 7 — it loops.

@@ -29,6 +29,15 @@ The seven Evaluation Assurance Levels (EALs) defined in ISO/IEC 15408 (Common Cr
 - **Common Criteria has known limitations.** Critics note that CC evaluation evaluates *a specific configuration of a product against a specific Protection Profile* — a product certified at EAL4 in one configuration may not be at EAL4 in a different one. Evaluation is also point-in-time; subsequent product changes invalidate the certification. Despite these limits, CC remains the international standard.
 - **Gaps marked `[needs source]`:** none — all Facts trace to ISO/IEC 15408 or CCRA documentation.
 
+### Tricky distractors
+
+- **EAL evaluates rigor, not security.** EAL4 product is not "more secure" than EAL2 — it was evaluated more thoroughly. Wrong-answer pattern: equating EAL with product security.
+- **EAL4 is commercial ceiling.** Higher EALs need formal verification. Wrong-answer pattern: assuming all enterprise products target EAL7 — most stop at EAL4.
+- **EAL7 requires formal mathematical proof.** Reserved for high-assurance kernels, crypto modules. Wrong-answer pattern: claiming EAL7 just means "more testing" — formal verification is mathematically distinct.
+- **CCRA recognition cap is EAL2 since 2014.** Higher levels may require re-evaluation per country. Wrong-answer pattern: claiming all EALs are mutually recognized.
+- **Protection Profile defines what's evaluated.** Same product against different PPs gets different ratings. Wrong-answer pattern: claiming EAL is product-wide — it's tied to a specific configuration and PP.
+- **Certification is point-in-time.** Product changes invalidate. Wrong-answer pattern: treating CC certification as permanent — patches and updates require re-evaluation.
+
 ## Engine demo opportunities
 
 - `? | Name → Methodically designed, tested, and reviewed` → EAL 4

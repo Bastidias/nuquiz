@@ -26,3 +26,12 @@ The three-step handshake that establishes a TCP connection. Tested for sequence 
   - `Step 1 | Purpose → ?` → Request connection / Propose initial sequence number (multi-Fact cell).
   - Sequence (adjacency): `Step (n+1 where Step n | Name → SYN-ACK) | Name → ?` → ACK. (Or simply hide Step 3's Name.)
 - Some textbooks describe the handshake as SYN / SYN+ACK / ACK rather than SYN-ACK. Both are equivalent.
+
+### Tricky distractors
+
+- **Three-way, not four-way.** Connection setup is 3 messages; teardown is 4 (FIN/ACK/FIN/ACK). Wrong-answer pattern: claiming setup uses 4 messages — only teardown does.
+- **SYN flood targets Step 2.** Attacker sends many SYNs without completing Step 3, leaving the server's SYN queue full of half-open connections. Wrong-answer pattern: claiming SYN flood exhausts client resources — it exhausts server connection-table state.
+- **SYN cookies defend against SYN flood.** Server encodes connection state into the ISN_s itself, so no half-open state is held until ACK arrives. Wrong-answer pattern: claiming SYN cookies prevent all SYN floods — they preserve service under flood, they don't block the flood.
+- **ACK acknowledges the OTHER party's ISN+1.** Step 2 acknowledges ISN_c+1; Step 3 acknowledges ISN_s+1. Wrong-answer pattern: confusing whose sequence number is being acknowledged at each step.
+- **TCP is connection-oriented.** UDP is connectionless and has no handshake. Wrong-answer pattern: applying handshake mechanics to UDP — UDP packets are independent.
+- **ISN was historically predictable.** Pre-RFC 1948, ISN prediction enabled blind spoofing. Modern TCP uses randomized ISN per RFC 6528. Wrong-answer pattern: claiming sequence prediction is still a primary attack on modern stacks.

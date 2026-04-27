@@ -25,6 +25,15 @@ The six classic architectural vulnerability classes CISSP courseware tests. Each
 - **Why these and not others.** This Concept covers *architectural* vulnerabilities — bugs that arise from how components interact, not from individual coding errors. Specific code-level vulnerabilities (SQL injection, XSS, command injection) live in Domain 8 Concepts. The line is fuzzy; some authorities classify SQL injection as architectural (untrusted-data injection across a trust boundary).
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard secure-architecture references.
 
+### Tricky distractors
+
+- **Covert vs Side channel.** Covert is intentional (malicious sender). Side is unintentional (accidental disclosure). Wrong-answer pattern: collapsing them — they have different threat models.
+- **TOCTOU is a specific race condition.** All TOCTOU is race condition; not all races are TOCTOU. Wrong-answer pattern: treating them as identical — TOCTOU specifically exploits the check-then-use gap.
+- **Buffer overflow mitigations stack.** ASLR + DEP + canaries + bounds checking. Wrong-answer pattern: claiming any single mitigation eliminates buffer overflows — they raise the bar, not eliminate the class.
+- **Confused deputy ≠ privilege escalation.** Confused deputy uses someone else's authority on attacker's behalf. Wrong-answer pattern: claiming confused deputy is just privilege escalation — it's about authority delegation confusion specifically.
+- **Side-channel countermeasures are non-functional.** Constant-time code, power-line filtering. Wrong-answer pattern: claiming patches eliminate side channels — they require implementation discipline.
+- **CSRF is a confused deputy.** Browser is the deputy; user's session is the authority. Wrong-answer pattern: confusing CSRF (uses authenticated session) with XSS (injects scripts).
+
 ## Engine demo opportunities
 
 - `? | mechanism → Time-of-check vs time-of-use gap` → TOCTOU

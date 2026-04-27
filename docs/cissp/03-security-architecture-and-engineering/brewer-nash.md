@@ -24,6 +24,15 @@ The Brewer-Nash model (also called Chinese Wall) addresses *conflict-of-interest
 - **Renaming controversy.** The original "Chinese Wall" name has been criticized as culturally insensitive. The model is increasingly called "Brewer-Nash" or "ethical wall" in current literature. CISSP exam materials use both terms.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the original Brewer-Nash paper.
 
+### Tricky distractors
+
+- **Brewer-Nash is history-based.** Dynamic policy. Wrong-answer pattern: claiming Brewer-Nash applies static labels — it adapts based on prior access.
+- **Conflict-of-interest, not classification.** Different model goal. Wrong-answer pattern: confusing Brewer-Nash with Bell-LaPadula — BLP enforces classification; BN prevents conflict.
+- **Chinese Wall = Brewer-Nash.** Same model, different names. Wrong-answer pattern: treating them as different — current literature increasingly favors Brewer-Nash.
+- **Applies within CoI classes.** Once you read Bank A, Banks B/C/D in same class are blocked. Wrong-answer pattern: claiming Brewer-Nash blocks all data access after first read — only conflict-class siblings.
+- **Financial services and consulting are canonical domains.** Investment banks, audit firms. Wrong-answer pattern: applying Brewer-Nash to military classified systems — that's BLP territory.
+- **Often administrative, not technical.** Implementation in policy more than software. Wrong-answer pattern: assuming all Brewer-Nash deployments are software-enforced — many are policy-and-training.
+
 ## Engine demo opportunities
 
 - `? | content → Prevent conflict-of-interest data access` → purpose

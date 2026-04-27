@@ -29,6 +29,15 @@ The eight Saltzer-Schroeder secure design principles [s1] CISSP candidates are e
 - **Economy of mechanism = small TCB.** The Trusted Computing Base should be as small and as simple as possible because complexity hides defects. Microkernels embody this principle (small kernel + isolated services); monolithic kernels do not. Sibling Concept `reference-monitor` covers TCB minimality requirements.
 - **Out of scope for this Concept:** specific architecture patterns (Zero Trust, microservices), historical antecedents to Saltzer-Schroeder (Department of Defense Orange Book), modern reformulations (Zero Trust principles, cloud-native security tenets), the eighth principle "Least common mechanism" (sometimes counted as a ninth — covered in some sources, omitted here for stub fidelity).
 
+### Tricky distractors
+
+- **Open design ≠ open source.** The principle is that security should not depend on design secrecy. Wrong-answer pattern: equating open design with open-source code — the principle predates open-source by decades.
+- **Fail-safe defaults = default deny.** When uncertain, deny. Wrong-answer pattern: claiming fail-safe means continued operation despite faults — that's fault tolerance, a different concept.
+- **Complete mediation = check every access.** No cached authorization. Wrong-answer pattern: claiming "checked once at login" satisfies complete mediation — it doesn't.
+- **Economy of mechanism = simplicity.** Small TCB, minimal code. Wrong-answer pattern: confusing economy of mechanism with cost minimization — it's about complexity, not budget.
+- **Psychological acceptability addresses humans.** Make secure path the easy path. Wrong-answer pattern: claiming this principle is about user training — it's about design that doesn't fight users.
+- **Saltzer-Schroeder principles are 1975-vintage.** They predate modern computing. Wrong-answer pattern: attributing them to recent NIST or Zero Trust framings — they're foundational and old.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

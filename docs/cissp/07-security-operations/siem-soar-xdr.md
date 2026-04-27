@@ -22,6 +22,15 @@ The three security-operations platforms organizations layer to move from raw log
 - **Automation level is a spectrum, not a binary.** All three platforms automate something — what differs is *what* and *how much*. SIEM automates alerting; SOAR automates response; XDR automates the pipeline between them. The "Detection automated; response manual" Fact for SIEM captures the common production reality, not a hard limit (modern SIEMs do orchestrate basic responses; SOAR does it better).
 - **Gaps marked `[needs source]`:** none — all Facts trace to Gartner definitions via published practitioner summaries.
 
+### Tricky distractors
+
+- **SIEM detects; SOAR responds.** Pipeline: SIEM → alert → SOAR → action. Wrong-answer pattern: claiming SIEM auto-responds to incidents — modern SIEMs do basic orchestration but SOAR is the canonical response platform.
+- **XDR collapses both into one vendor stack.** Tight integration, vendor lock-in. Wrong-answer pattern: claiming XDR replaces SIEM entirely — XDR can't ingest arbitrary log sources.
+- **EDR ≠ XDR.** EDR is endpoint-only; XDR is cross-domain. Wrong-answer pattern: equating them — XDR includes EDR plus network and cloud.
+- **SOAR uses playbooks.** Pre-defined response automation. Wrong-answer pattern: claiming SOAR makes ad-hoc decisions — it executes scripted playbooks.
+- **SIEM is data-source agnostic.** Strength and weakness — universal but operationally heavy. Wrong-answer pattern: claiming SIEM only ingests one vendor's telemetry — SIEM's premise is heterogeneous ingestion.
+- **Most enterprises run all three.** XDR for integrated stack + SIEM for catch-all + SOAR for response. Wrong-answer pattern: claiming organizations should pick one — they layer all three.
+
 ## Engine demo opportunities
 
 - `? | core function → Orchestrate automated incident response` → SOAR

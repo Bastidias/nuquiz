@@ -25,6 +25,15 @@ Maps security activities to the six canonical SDLC phases (Requirements → Desi
 - **Security acceptance testing at Deployment.** Distinct from functional acceptance testing (Verification in Waterfall). Security acceptance tests verify that security controls are correctly configured in the target environment — things like TLS cipher enforcement, logging integration with SIEM, IAM role assignment. Often bundled into a Go/No-Go deployment gate.
 - **Out of scope for this Concept:** specific secure coding standards (CERT, MISRA, OWASP Secure Coding Practices), DevSecOps pipeline integration detail (separate Concept — `ci-cd-pipeline-stages`), SOC operational workflows (separate D7 Concepts — `siem-soar-xdr`, `incident-response-phases`), specific patch-management workflow (separate D7 Concept — `patch-management-lifecycle`).
 
+### Tricky distractors
+
+- **Threat modeling is Design phase.** Not Testing or Requirements. Wrong-answer pattern: pushing threat modeling to Testing — by then design decisions are baked in.
+- **SAST is Implementation; DAST is Testing.** Different phases. Wrong-answer pattern: equating them — SAST runs on source pre-build; DAST runs on a deployed app.
+- **PIA is Requirements phase.** Privacy Impact Assessment informs what data the system collects. Wrong-answer pattern: scheduling PIA at Deployment — too late.
+- **Shift-left moves activities earlier.** DevSecOps compresses Testing-phase tools into Implementation. Wrong-answer pattern: claiming shift-left changes which activities exist — it changes when they run.
+- **Patch management dominates Operations.** Not Implementation. Wrong-answer pattern: classifying patching as a one-time deployment activity — it's continuous.
+- **Security acceptance testing at Deployment.** Distinct from functional UAT. Wrong-answer pattern: collapsing security acceptance into general acceptance testing — different criteria.
+
 ### Values without a direct public citation
 
 The per-phase activity lists are drawn from OWASP SAMM [s3] practice areas and NIST SSDF [s1] practice groupings but are not direct quotations from either source — both organize activities somewhat differently from the phase-anchored view used in CISSP pedagogy. Owner and output columns reflect modal industry practice; no single primary citation traced per cell.

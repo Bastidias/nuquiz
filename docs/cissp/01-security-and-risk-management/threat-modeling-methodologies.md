@@ -27,6 +27,15 @@ Six threat-modeling methodologies CISSP courseware tests by name. STRIDE is the 
 - **What is intentionally not on this table.** OCTAVE (more risk framework than threat modeling — see `risk-frameworks.md`), CVSS (vulnerability scoring, not threat modeling), and LINDDUN (privacy threat modeling, the parallel to STRIDE) could be added in future revisions.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the published methodology documentation.
 
+### Tricky distractors
+
+- **STRIDE letters.** Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege. Wrong-answer pattern: substituting "Disclosure" alone or omitting Repudiation — six specific categories.
+- **DREAD is deprecated.** Microsoft no longer recommends it; subjective scoring is unreliable. Wrong-answer pattern: recommending DREAD for new threat models — recognize it but don't reach for it.
+- **PASTA is risk-driven, not category-driven.** Seven stages, attacker simulation. Wrong-answer pattern: confusing PASTA with STRIDE — STRIDE classifies, PASTA simulates.
+- **VAST is for scale.** Built for agile/DevOps integration. Wrong-answer pattern: choosing VAST for one-off application reviews — VAST shines when threat models must update with code.
+- **Attack Trees are a representation, not a full methodology.** They visualize attack paths; they don't tell you what threats to put in. Wrong-answer pattern: treating Attack Trees as an alternative to STRIDE — they pair with STRIDE.
+- **TRIKE is defensive/stakeholder-focused.** Asks what risks stakeholders accept. Wrong-answer pattern: treating TRIKE as offensive attacker simulation — that's PASTA.
+
 ## Engine demo opportunities
 
 - `? | focus → Six categories of software threats` → STRIDE

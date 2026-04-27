@@ -24,6 +24,15 @@ The four generations of IEEE 802.11 link-layer security. CISSP testing walks thr
 - **WPA3 key sizes.** `128-bit` applies to WPA3-Personal; `192-bit` applies to WPA3-Enterprise. If future questions need to distinguish Personal vs Enterprise, split into two Rows.
 - **Out of scope for this Concept:** KRACK attack (Vanhoef 2017, exploits the 4-way handshake on WPA2), Dragonblood (Vanhoef-Ronen 2019, exploits SAE in early WPA3 implementations), Evil Twin / Deauth / WPS attacks, 802.1X framework details, EAP method variants (EAP-TLS, PEAP, EAP-TTLS, EAP-FAST). Each warrants its own Concept — see the wireless-attacks proposal in the Domain 4 README.
 
+### Tricky distractors
+
+- **WEP is broken.** RC4 with 24-bit IV is mathematically broken. Wrong-answer pattern: recommending 128-bit WEP as "stronger" — it's still broken.
+- **WPA vs WPA2 cipher.** WPA = TKIP (RC4-based retrofit). WPA2 = CCMP (AES-based). Wrong-answer pattern: claiming WPA uses AES — that's WPA2's defining upgrade.
+- **WPA3 handshake.** SAE replaces the WPA2 4-way PSK handshake. Provides forward secrecy and dictionary-attack resistance. Wrong-answer pattern: claiming WPA3 uses the same handshake as WPA2.
+- **Authentication framework.** Enterprise mode (WPA/WPA2/WPA3-Enterprise) uses 802.1X with EAP. Personal mode uses PSK or SAE — no 802.1X. Wrong-answer pattern: claiming 802.1X applies to all wireless modes — only Enterprise uses it.
+- **Integrity per generation.** WEP = CRC-32 (forgeable). WPA = Michael MIC. WPA2 = CBC-MAC. WPA3 = GMAC. Wrong-answer pattern: assuming all use the same MAC.
+- **WPA3-Personal still uses a password.** SAE is password-authenticated but is *not* a Pre-Shared Key in the WPA2 sense — SAE provides forward secrecy and resists offline dictionary attacks. Wrong-answer pattern: claiming WPA3-Personal eliminates password authentication.
+
 ### Values without a direct public citation
 
 These cell values are drawn from standard CISSP study material or inference rather than a traced public source. They reflect widely-accepted taxonomy but should be validated by an SME or replaced with a sourced value before the Concept is treated as reference-grade.

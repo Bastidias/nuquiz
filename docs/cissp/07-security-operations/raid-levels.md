@@ -27,6 +27,15 @@ The seven RAID configurations the CISSP exam covers, comparing the structural tr
 - **Why RAID 50 and RAID 60 even exist.** Pure RAID 5 with very large disks now takes long enough to rebuild that a second disk failure during rebuild is a realistic risk; RAID 6 mitigates this with dual parity. RAID 50 and 60 add striping across multiple parity sub-arrays for very large arrays where rebuild time on a single sub-array is bounded.
 - **Gaps marked `[needs source]`:** none — all Facts are RAID-specification mechanics.
 
+### Tricky distractors
+
+- **RAID is not backup.** RAID protects against *disk hardware failure*. It does NOT protect against accidental deletion, ransomware encryption, controller failure, or site loss. Wrong-answer pattern: choosing RAID as a backup substitute. You need both: RAID for hardware-failure resilience AND backups for everything else.
+- **RAID 0 has no redundancy.** Highest performance, zero fault tolerance. Wrong-answer pattern: assuming "RAID = redundant" — RAID 0 is striping only, "redundancy" doesn't apply.
+- **RAID 5 vs RAID 6.** RAID 5 tolerates *one* disk failure; RAID 6 tolerates *two*. Modern large-disk arrays often use RAID 6 because RAID 5 rebuild time creates a realistic window for a second failure. Wrong-answer pattern: claiming RAID 5 tolerates 2 disks (it doesn't — that's RAID 6).
+- **RAID 10 minimum disks.** Four (two mirror pairs striped). Wrong-answer pattern: claiming RAID 10 needs 6 or 8 disks — those are RAID 50 and 60 minimums.
+- **Parity write penalty.** RAID 5 has one parity write per data write; RAID 6 has two. RAID 10 has zero (it mirrors instead of computing parity). Wrong-answer pattern: claiming RAID 10 has high write penalty — its write performance is high precisely because no parity is computed.
+- **RAID 10 vs RAID 0+1 vs RAID 1+0.** RAID 10 = RAID 1+0 (mirror first, then stripe). RAID 0+1 = stripe first, then mirror. They sound similar but fault tolerance differs. CISSP usually asks RAID 10 / 1+0 — not 0+1.
+
 ## Engine demo opportunities
 
 - `? | minimum disks → 2` → RAID 0 or RAID 1 (cross-Row select)

@@ -23,6 +23,15 @@ The four life-safety controls that operations teams maintain to protect personne
 - **What is intentionally not on this table.** Workplace violence prevention (broader than active shooter), executive protection, and pandemic / health-emergency response are adjacent personnel-safety concerns that could be added as additional rows in a future revision. The four here cover the most-tested CISSP scope.
 - **Gaps marked `[needs source]`:** four Facts — the entire travel-security row's contents. Travel security is widely practiced but its specifics live in vendor and government internal guidance rather than NIST-style primary publications, so authoritative sourcing is harder.
 
+### Tricky distractors
+
+- **Duress is silent; panic is audible.** Different signaling modes. Wrong-answer pattern: collapsing them — bank robbery uses duress (silent); fire alarm uses panic (audible).
+- **Run-Hide-Fight is hierarchical.** Run preferred; Hide if Run impossible; Fight only as last resort. Wrong-answer pattern: presenting them as parallel options — they're ordered.
+- **OSHA 29 CFR 1910.165 mandates alarm systems.** Annual drill required. Wrong-answer pattern: claiming emergency notification is voluntary — it's regulatory.
+- **Travel security includes pre-trip and during-trip controls.** Encrypted devices, burner phones, briefings. Wrong-answer pattern: claiming travel security is just briefings — it's a broader control category.
+- **Personnel safety > information security in life-threat scenarios.** Always. Wrong-answer pattern: prioritizing data preservation over personnel evacuation — life safety is paramount.
+- **Active shooter training is DHS-published.** Run-Hide-Fight from DHS/CISA. Wrong-answer pattern: claiming organizations should design custom active-shooter response — DHS framework is authoritative reference.
+
 ## Engine demo opportunities
 
 - `? | trigger → Active shooter on premises` → Active shooter response

@@ -26,6 +26,15 @@ The six outputs and metrics CISSP candidates are expected to discriminate when a
 - **BIA is not the BCP.** The BIA is one input to the Business Continuity Plan. It identifies critical functions and quantifies their recovery requirements; the BCP then specifies how those requirements are met (recovery sites, runbooks, communications, training). This Concept covers BIA outputs only; recovery-site selection lives in `recovery-site-types`.
 - **Out of scope:** MTTR, MTTF (non-repairable systems), SDO (Service Delivery Objective), MAD (Maximum Acceptable Data loss — a synonym for RPO in some texts), availability percentages (`five 9s`), and the BCP itself.
 
+### Tricky distractors
+
+- **MTD = RTO + WRT.** Total tolerable downtime = technical recovery + business resumption. Wrong-answer pattern: claiming MTD = RTO alone — WRT is the verification/business-restart phase that follows technical restore.
+- **RPO is data-loss; RTO is time-to-restore.** Wrong-answer pattern: confusing the two — RPO drives backup frequency, RTO drives recovery infrastructure investment.
+- **RPO of 0 means continuous replication.** A 1-hour RPO means at least hourly backups. Wrong-answer pattern: equating RPO with RTO when the question asks about backup frequency.
+- **MTBF is reliability, not recovery.** MTBF predicts time between failures; it's not a BIA recovery objective. Wrong-answer pattern: applying MTBF in BIA recovery planning — use MTD/RTO/RPO/WRT.
+- **Availability = MTBF / (MTBF + MTTR).** Both reliability metrics matter. Wrong-answer pattern: claiming MTBF alone determines availability — repair time matters too.
+- **BIA ≠ BCP.** BIA is one phase of BCP. Wrong-answer pattern: collapsing them — BIA identifies what to recover; BCP specifies how.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

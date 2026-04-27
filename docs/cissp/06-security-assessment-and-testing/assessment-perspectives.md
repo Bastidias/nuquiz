@@ -23,6 +23,15 @@ The three perspectives from which a security assessment can be conducted. The di
 - **Regulatory drivers for Third-party.** PCI DSS Level 1 merchants must engage a QSA annually; ISO 27001 certification requires accredited third-party auditors; SOC 2 reports must be issued by a licensed CPA firm; FedRAMP requires 3PAOs (Third-Party Assessment Organizations).
 - **Out of scope for this Concept:** specific certification bodies (PCI Security Standards Council QSA program, ISO 27001 accredited certification bodies, AICPA SOC auditor licensing), cost ranges per engagement, time-to-engagement for external assessors, MSSP retainer models, bug-bounty programs (a hybrid model not classically captured here).
 
+### Tricky distractors
+
+- **External hired by org; Third-party hired by regulator.** Different loyalties. Wrong-answer pattern: equating them — same firm can be External or Third-party depending on engagement.
+- **Internal has lowest independence.** Career incentives bias reporting. Wrong-answer pattern: claiming internal is most accurate because they know the system best — system knowledge ≠ independence.
+- **Third-party required for regulatory attestation.** PCI QSA, SOC 2, ISO 27001. Wrong-answer pattern: claiming external assessments satisfy regulatory mandate — only third-party does.
+- **All three perspectives coexist in mature programs.** Internal continuous + External periodic + Third-party regulatory. Wrong-answer pattern: claiming organizations should pick one.
+- **Internal assessments are workhorse.** Vuln scans, config review run internally. Wrong-answer pattern: claiming internal assessments are insufficient — they're valid for many purposes, just not for compliance.
+- **Bug bounty is hybrid.** External assessors that aren't formally engaged. Wrong-answer pattern: classifying bug bounty as standard external assessment — it's a different model.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

@@ -24,6 +24,15 @@ The four categories of retention requirement that govern how long an organizatio
 - **The retention-and-destruction policy is the artifact.** Mature programs document a policy mapping each data category to its retention period, the driver(s) requiring that period, the destruction method when expired, and the legal-hold suspension procedure. Without this, retention decisions get made ad hoc and the legal/regulatory exposure is uncontrolled.
 - **Gaps marked `[needs source]`:** none — all Facts trace to U.S. statute or PCI DSS framing.
 
+### Tricky distractors
+
+- **Legal hold trumps everything.** Suspends normal retention/destruction. Wrong-answer pattern: claiming retention policy applies during legal hold — counsel suspends it.
+- **Spoliation = destruction of held data.** Adverse-inference instructions or sanctions. Wrong-answer pattern: treating legal hold as advisory — destroying held data is sanctionable.
+- **Longest retention wins; shortest destruction wins.** When drivers conflict. Wrong-answer pattern: averaging retention periods across drivers — most-restrictive applies.
+- **Regulatory ≠ Operational.** Statutory vs business need. Wrong-answer pattern: collapsing them — regulators have penalties, operations have business cost.
+- **GDPR pulls retention down.** Storage-limitation principle. Wrong-answer pattern: claiming organizations should retain everything for safety — GDPR conflicts with that.
+- **PCI DSS requires minimization.** Requirement 3.1. Wrong-answer pattern: claiming PCI mandates long retention of cardholder data — opposite, minimize and dispose.
+
 ## Engine demo opportunities
 
 - `? | typical retention period → Until lifted by counsel` → Legal hold

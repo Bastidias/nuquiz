@@ -26,6 +26,15 @@ The seven control categories CISSP courseware uses to classify security controls
 - **A single mechanism can play multiple categories.** A camera is deterrent (visible) AND detective (records evidence) AND corrective evidence (supports prosecution). The category depends on *which role you are asking about*, not on the mechanism itself.
 - **Gaps marked `[needs source]`:** none — all Facts are CISSP-canonical control-category framings.
 
+### Tricky distractors
+
+- **Deterrent vs Preventive.** Deterrent *discourages* (attacker chooses a different target). Preventive *blocks* (attempt is technically stopped). Visible camera = deterrent. Locked door = preventive. Wrong-answer pattern: treating them as identical — both are "before incident" but with different mechanisms.
+- **Corrective vs Recovery.** The test favorite. Corrective fixes the *cause* (patches the exploited vulnerability so it can't be reused). Recovery restores the *systems* (brings services online via backup or failover). Both happen after an incident. Wrong-answer pattern: choosing one when both are required for complete IR.
+- **Compensating is a role, not a category.** A control acts as compensating *when it substitutes for* a missing or impractical primary control. The same mechanism could be preventive in one context and compensating in another. Wrong-answer pattern: treating compensating as a fixed category like the others.
+- **Single control plays multiple roles.** A security camera is deterrent (visible), detective (records), and corrective evidence (supports prosecution). Wrong-answer pattern: forcing one mechanism into one category. The category depends on *which role you're asking about*.
+- **Detective vs Preventive.** Detective fires *during or after* the incident; preventive blocks *before*. IDS = detective; IPS = preventive (acts on detection). Wrong-answer pattern: classifying IDS as preventive — it only detects.
+- **Directive controls produce no enforcement.** Policies and standards are *directive* — they tell people what to do. They rely on other controls (technical or administrative) for enforcement. Wrong-answer pattern: claiming a policy *prevents* an action — only enforcement controls do.
+
 ## Engine demo opportunities
 
 - `? | timing → Before incident` → Directive, Deterrent, or Preventive (cross-Row select-all)

@@ -26,6 +26,15 @@ The four sequential phases of a security awareness and training program lifecycl
 - **Phishing simulations are part of evaluate, not implement.** Running a phishing simulation is *measurement* (how many click?) — Phase 4 territory. The followup education when someone clicks is delivery — Phase 3. Don't confuse the simulation itself with the training.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-50 framing.
 
+### Tricky distractors
+
+- **Design before Develop.** Plan first, then content. Wrong-answer pattern: building content first — produces unfocused training.
+- **Develop is per-audience.** Different content for users, devs, executives. Wrong-answer pattern: claiming one training body fits all audiences — fails Phase 2.
+- **Evaluate has four levels (Kirkpatrick).** Completion, learning, behavior, outcomes. Wrong-answer pattern: claiming completion alone measures effectiveness — surface metric only.
+- **Phishing simulation is Evaluate, not Implement.** It measures behavior. Wrong-answer pattern: classifying simulations as training delivery — they're measurement.
+- **Cycle restarts with evaluate output.** Continuous improvement. Wrong-answer pattern: treating training as one-time program — annual cycle is the norm.
+- **Awareness vs Training vs Education.** Different depths. Wrong-answer pattern: collapsing them — see `training-audiences` for the depth-by-audience mapping.
+
 ## Engine demo opportunities
 
 - `? | Name → Develop` → Phase 2

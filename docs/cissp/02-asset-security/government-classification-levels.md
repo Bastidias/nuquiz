@@ -25,6 +25,15 @@ The five U.S. government classification levels CISSP candidates are expected to 
 - **Sibling Concept `mac-label-types` in D5** covers the four-row Unclassified/Confidential/Secret/Top Secret hierarchy from the access-control angle. This Concept adds CUI as a fifth row and includes the example-data and handling-detail columns for the asset-security framing.
 - **Out of scope for this Concept:** Bell-LaPadula and Biba formal models, SCI / SAP compartments, codeword programs, FRD (Formerly Restricted Data) and RD (Restricted Data) under the Atomic Energy Act, NATO classification levels, foreign-government classification mappings, declassification procedures, FOIA process.
 
+### Tricky distractors
+
+- **Harm threshold escalation.** Confidential = damage, Secret = serious damage, Top Secret = exceptionally grave damage. Wrong-answer pattern: switching the descriptors — exact wording is testable.
+- **Clearance ≠ access.** TS clearance + need-to-know required to read a TS document. Wrong-answer pattern: claiming clearance alone grants access — compartmentalization (SCI, SAP) layers on top.
+- **Clearance dominance.** Higher clearance can read lower-classified data, not vice versa. Wrong-answer pattern: applying inverse — Confidential clearance cannot read Secret.
+- **CUI is not a classification level.** It's a sensitive-but-unclassified handling category. Wrong-answer pattern: ranking CUI on the classification hierarchy — it's a parallel category for unclassified-but-controlled.
+- **CUI replaced FOUO/SBU/LES.** Per EO 13556 (2010). Wrong-answer pattern: still using legacy labels post-2010 — agencies migrated to CUI.
+- **Unclassified ≠ public.** Unclassified can still have access controls (e.g., FOUO predecessor); CUI is even more restrictive. Wrong-answer pattern: equating Unclassified with public-release data.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

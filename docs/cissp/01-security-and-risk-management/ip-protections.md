@@ -24,6 +24,15 @@ The four primary intellectual-property protection regimes the CISSP exam covers.
 - **What is intentionally not on this table.** Industrial design rights, geographical indications (GIs), publicity rights, and moral rights are additional IP regimes that exist in some jurisdictions. The four here cover the most-tested CISSP scope. International treaties (Berne Convention, Madrid Protocol, PCT) governing cross-border IP are separate.
 - **Gaps marked `[needs source]`:** none — all Facts trace to U.S. IP statute and USPTO/Copyright Office guidance.
 
+### Tricky distractors
+
+- **Patent = 20 years from filing.** Not from grant. Wrong-answer pattern: counting 20 years from grant date — prosecution time eats into the term.
+- **Copyright = life + 70 (individual).** Works for hire are 95 from publication / 120 from creation, whichever is shorter. Wrong-answer pattern: applying life+70 to corporate-authored works.
+- **Trade secret protection ends with disclosure.** Once public, gone. Wrong-answer pattern: claiming trade secret survives accidental disclosure — legal theft remedies survive but the secrecy basis is lost.
+- **Reverse engineering is generally legal.** It does not violate trade-secret law unless paired with NDA breach or theft. Wrong-answer pattern: claiming reverse engineering is trade-secret theft.
+- **Trademark protects brand identity, not products.** "Apple" name, not MacBook design. Wrong-answer pattern: confusing trademark with industrial design or trade dress.
+- **Software can use multiple IP regimes simultaneously.** Copyright (expression) + patent (invention) + trade secret (internals). Wrong-answer pattern: claiming software must pick one regime — most commercial stacks layer all three.
+
 ## Engine demo opportunities
 
 - `? | duration → 20 years from filing for utility patents` → Patent

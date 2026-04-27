@@ -1,6 +1,6 @@
 # Sample Quiz — Demo Walkthrough
 
-> A 12-screen walk-through to show the team what comes out of the engine. Every prompt is a deterministic coordinate (`Row | Column → ?`); every option is literal cell text from `docs/cissp/`. No LLM in the loop. Worked content sources cited per question.
+> A 12-screen walk-through to show the team what comes out of the engine. Every prompt is a deterministic coordinate (`Row | Column → ?`, shorthand for `RowHeader | ColumnHeader → ?`); every option is literal cell text from `docs/cissp/`. No LLM in the loop. Worked content sources cited per question. Engine vocabulary defined in `docs/glossary.md`.
 
 The sequence is deliberately varied so the team sees the range. Watch for the **Diagnostic Moment** screens between questions — those are the differentiator.
 
@@ -49,7 +49,7 @@ The sequence is deliberately varied so the team sees the range. Watch for the **
 
 ---
 
-## Q4 — Cell Recall (Select All, one Fact per option)
+## Q4 — Cell Recall (Select All, one CellFact per option)
 
 **Source:** `bcp-phases.md`, Phase 5
 
@@ -60,7 +60,7 @@ The sequence is deliberately varied so the team sees the range. Watch for the **
 > - ☐ Define planning scope *(Phase 1, distractor)*
 > - ☐ Determine controls that reduce disruption *(Phase 3, distractor)*
 
-**What's shown:** Multi-Fact cell, atomized. Missing one of the three correct items reveals a *specific* gap (e.g., "knows two activities of Phase 5, missed Document responsibilities"). Compound storage would lose this signal.
+**What's shown:** Multi-CellFact cell, atomized. Missing one of the three correct items reveals a *specific* gap (e.g., "knows two activities of Phase 5, missed Document responsibilities"). Compound storage would lose this signal.
 
 ---
 
@@ -74,7 +74,7 @@ The sequence is deliberately varied so the team sees the range. Watch for the **
 > - c) Document procedures, Document roles, Schedule plan reviews ✗
 > - d) Identify critical systems, Define roles, Document responsibilities ✗
 
-**What's shown:** Same Facts as Q4, packed into bundled MC options. Each distractor swaps exactly one Fact with a Fact from elsewhere in the table. Hard because the student must verify *every* item in the option.
+**What's shown:** Same CellFacts as Q4, packed into bundled MC options. Each distractor swaps exactly one CellFact with a CellFact from elsewhere in the table. Hard because the student must verify *every* item in the option.
 
 *Q4 and Q5 are the same data — different chunking. The engine picks the chunk size based on the student's mastery of the cell.*
 
@@ -130,9 +130,9 @@ The sequence is deliberately varied so the team sees the range. Watch for the **
 **Source:** `osi-layers.md`
 
 > `Transport | key devices → Routers` — True or False?
-> *Correct: False. Real Fact: `Network | key devices → Routers`.*
+> *Correct: False. Real CellFact: `Network | key devices → Routers`.*
 
-**What's shown:** Engine constructs the false statement by taking a real Fact (`Network | key devices → Routers`) and pinning it to the wrong Row. No fabrication; just data displaced.
+**What's shown:** Engine constructs the false statement by taking a real CellFact (`Network | key devices → Routers`) and pinning it to the wrong Row. No fabrication; just data displaced.
 
 ---
 
@@ -142,12 +142,12 @@ The student picked **True** for Q9.
 
 > ✗ Incorrect.
 > Picked: `True`
-> Real Fact: `Routers` belongs to `Network | key devices`, not `Transport | key devices`.
-> Correct Fact: `Transport | key devices → Stateful firewalls, Load balancers`.
+> Real CellFact: `Routers` belongs to `Network | key devices`, not `Transport | key devices`.
+> Correct CellFact: `Transport | key devices → Stateful firewalls, Load balancers`.
 >
-> ⚠ Confusion pair: `Routers ↔ Stateful firewalls`. Swap count: 2. Adding both Facts to review queue, paired.
+> ⚠ Confusion pair: `Routers ↔ Stateful firewalls`. Swap count: 2. Adding both CellFacts to review queue, paired.
 
-**What's shown:** Per-Fact response history at work. The "2nd time" count is real. The pairing of the two Facts in the queue is misconception-aware scheduling — only possible because each Fact has a stable ID and every wrong answer is itself a Fact with an ID. The feedback text uses the same coordinate grammar as the prompts (`Row | Column → Value`) — no English description of the data is generated.
+**What's shown:** Per-CellFact response history at work. The "2nd time" count is real. The pairing of the two CellFacts in the queue is misconception-aware scheduling — only possible because each CellFact has a stable ID and every wrong answer is itself a CellFact with an ID. The feedback text uses the same coordinate grammar as the prompts (`Row | Column → Value`) — no English description of the data is generated.
 
 ---
 
@@ -159,7 +159,7 @@ The student picked **True** for Q9.
 > - a) Switches *(student's prior wrong answer for this prompt — guaranteed in the option set)*
 > - b) Routers ✓
 > - c) Hubs
-> - d) Stateful firewalls *(another Fact they've previously misplaced)*
+> - d) Stateful firewalls *(another CellFact they've previously misplaced)*
 
 **What's shown:** The engine guarantees the student's past wrong answer appears as an option. They cannot pattern-match — they must actually distinguish. This is the loop closing: their own mistake becomes the test.
 
@@ -206,26 +206,26 @@ Notice what's NOT a distractor here: `Reliable`, `Yes` (flow control), and `Yes`
 
 > **Session summary**
 >
-> | Concept | Mastered Facts | Struggling Facts | Confusion Pairs |
+> | Concept | Mastered CellFacts | Struggling CellFacts | Confusion Pairs |
 > |---|---|---|---|
 > | TCP/UDP/SCTP | 9 / 11 cells | `TCP \| max header size`, `SCTP \| ordering` | — |
 > | OSI Layers | 4 / 7 Rows fully mastered | `Network \| key devices`, `Transport \| key devices` | `Routers ↔ Switches` *(3 swaps)*, `Routers ↔ Stateful firewalls` *(2 swaps)* |
 > | TLS Handshake | sequence: 5/5 ✓ | — | — |
-> | BCP Phases | `Phase 5 \| Key Activity`: 2 of 3 Facts (missing `Document responsibilities`) | — | — |
+> | BCP Phases | `Phase 5 \| Key Activity`: 2 of 3 CellFacts (missing `Document responsibilities`) | — | — |
 >
-> **Next session queue:** `Routers ↔ Switches` (confusion-pair drill), `BCP Phase 5 \| Key Activity → Document responsibilities` (single-Fact targeted re-test), one fresh Concept from Domain 4.
+> **Next session queue:** `Routers ↔ Switches` (confusion-pair drill), `BCP Phase 5 \| Key Activity → Document responsibilities` (single-CellFact targeted re-test), one fresh Concept from Domain 4.
 
-**What's shown:** The diagnostic moat. Not a percentage. Specific Facts, specific confusions, a concrete next-session plan — all derived mechanically from per-Fact response history. Nothing here required an LLM. Nothing here required pre-authored remediation content. The data structure carries the diagnostic.
+**What's shown:** The diagnostic moat. Not a percentage. Specific CellFacts, specific confusions, a concrete next-session plan — all derived mechanically from per-CellFact response history. Nothing here required an LLM. Nothing here required pre-authored remediation content. The data structure carries the diagnostic.
 
 ---
 
 ## Behind the Loop — Q9 → DM1 → state writes → Q10
 
-The forward tour showed what the engine *produces*. This section inverts: take the Q9 → Q10 loop and trace every rendered element and every state write back to either a Fact ID, fixed app chrome, or a read/write against a student-state table. If the data model holds, nothing sits between those categories — no generated text, no paraphrase, no per-question authored remediation.
+The forward tour showed what the engine *produces*. This section inverts: take the Q9 → Q10 loop and trace every rendered element and every state write back to either a CellFact ID, fixed app chrome, or a read/write against a student-state table. If the data model holds, nothing sits between those categories — no generated text, no paraphrase, no per-question authored remediation.
 
 ### Stage 1 — Q9 rendered
 
-T/F is a hide-Value prompt where the Value shown is a real Fact from elsewhere in the table, pinned to the wrong Row. The engine reads one Fact, then picks a second coordinate where that Fact's text does *not* belong.
+T/F is a hide-Value prompt where the Value shown is a real CellFact from elsewhere in the table, pinned to the wrong Row. The engine reads one CellFact, then picks a second coordinate where that CellFact's text does *not* belong.
 
 ```
 Transport | key devices → Routers — True or False?
@@ -234,7 +234,7 @@ Transport | key devices → Routers — True or False?
 | Element | Type | Origin |
 |---|---|---|
 | `Transport \| key devices` | Prompt coord | Target coord `(osi-layers, Transport, key_devices)` rendered via `{row} \| {column}` |
-| `Routers` | Fact (literal cell text) | `osi-layers:Network:key_devices` — pulled as a *displaced* Value; real coord retained for grading |
+| `Routers` | CellFact (literal cell text) | `osi-layers:Network:key_devices` — pulled as a *displaced* Value; real coord retained for grading |
 | `→ Routers — True or False?` | Chrome template | T/F format: prepend `→ Value`, append `— True or False?` |
 
 ### Stage 2 — student submits `True`
@@ -248,21 +248,21 @@ asserted_value = "Routers"                                               // from
 is_correct     = (asserted_value ∈ target_values) == picked              // False == True → WRONG
 ```
 
-Three Fact IDs are now in scope for what comes next: the target coord, the displaced Fact (`Routers`), and the target's correct Facts (`Stateful firewalls`, `Load balancers`).
+Three CellFact IDs are now in scope for what comes next: the target coord, the displaced CellFact (`Routers`), and the target's correct CellFacts (`Stateful firewalls`, `Load balancers`).
 
 ### Stage 3 — DM1 rendered
 
-Every line is either fixed chrome or a template filled from the Fact IDs collected in Stage 2. Nothing in this screen is free prose about the data.
+Every line is either fixed chrome or a template filled from the CellFact IDs collected in Stage 2. Nothing in this screen is free prose about the data.
 
 | Line | Type | Origin |
 |---|---|---|
 | `✗ Incorrect.` | Chrome | Fixed on wrong answers |
 | `Picked: True` | Chrome echo | Student input |
-| `Real Fact: Routers belongs to Network \| key devices, not Transport \| key devices.` | Template | `{displaced.text} belongs to {displaced.coord}, not {target.coord}` |
-| `Correct Fact: Transport \| key devices → Stateful firewalls, Load balancers.` | Coord render | `{target.coord} → {values}` — literal cell text joined by `,` |
+| `Real CellFact: Routers belongs to Network \| key devices, not Transport \| key devices.` | Template | `{displaced.text} belongs to {displaced.coord}, not {target.coord}` |
+| `Correct CellFact: Transport \| key devices → Stateful firewalls, Load balancers.` | Coord render | `{target.coord} → {values}` — literal cell text joined by `,` |
 | `⚠ Confusion pair: Routers ↔ Stateful firewalls.` | Template | `{displaced.text} ↔ {first_correct.text}` |
 | `Swap count: 2.` | Counter | Post-Stage-4 read of `confusion_graph[pair]` |
-| `Adding both Facts to review queue, paired.` | Chrome | Fixed description of the queue write |
+| `Adding both CellFacts to review queue, paired.` | Chrome | Fixed description of the queue write |
 
 ### Stage 4 — state writes
 
@@ -290,7 +290,7 @@ review_queue.add_paired(
 
 ### Stage 5 — Q10, the receipt
 
-Q10 (`Network | key devices → ?`) arrives later in the session. Its option set is the closure of the loop: Stage-4 writes dictate which Facts get pinned.
+Q10 (`Network | key devices → ?`) arrives later in the session. Its option set is the closure of the loop: Stage-4 writes dictate which CellFacts get pinned.
 
 ```
 Network | key devices → ?
@@ -300,14 +300,14 @@ Network | key devices → ?
 ( ) Stateful firewalls
 ```
 
-| Option | Fact ID | Set by |
+| Option | CellFact ID | Set by |
 |---|---|---|
 | `Switches` | `osi-layers:Data_Link:key_devices` | History policy — student's past wrong pick for this coord (earlier session) |
 | `Routers` | `osi-layers:Network:key_devices` | Correct answer |
 | `Hubs` | `osi-layers:Physical:key_devices` | Column filler — same Column, far Row, under-tested |
 | `Stateful firewalls` | `osi-layers:Transport:key_devices` | **Confusion-graph policy — pinned because Stage 4 incremented `(Routers, Stateful firewalls)` to ≥ 2** |
 
-The bolded row is the closure. Q9 → DM1 → state write → Q10-pin is a mechanical chain: if any link required generated text, per-question authored content, or a stored string that couldn't be resolved back to a Fact ID, the chain would break. That's what `pre-team-discussion.md §3` means by "the text is not the ID, position is not the ID" — the reverse trace is the test for whether the data shape is good enough.
+The bolded row is the closure. Q9 → DM1 → state write → Q10-pin is a mechanical chain: if any link required generated text, per-question authored content, or a stored string that couldn't be resolved back to a CellFact ID, the chain would break. That's what `pre-team-discussion.md §3` means by "the text is not the ID, position is not the ID" — the reverse trace is the test for whether the data shape is good enough.
 
 ---
 

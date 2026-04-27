@@ -24,6 +24,15 @@ Top-level comparison of the five authentication systems CISSP regularly groups t
 - **FIDO2 as a building block, not a replacement.** CISSP exam framings that pit FIDO2 against SAML or OIDC miss the typical deployment: FIDO2 is the *authenticator* a user presents at the IdP during a SAML or OIDC flow — replacing passwords and legacy MFA methods. The federation layer above is still SAML or OIDC; FIDO2 is what makes Step 4 of a SAML flow or the IdP authentication inside an OIDC flow phishing-resistant.
 - **Out of scope for this Concept:** WS-Federation (covered in `federation-protocols`), LDAP as an authentication protocol (strictly speaking a directory protocol used *for* authentication, not a protocol itself), RADIUS / TACACS+ / DIAMETER (network access authentication, belongs in a separate network-access Concept), Shibboleth (SAML profile), ADFS (Microsoft SAML/WS-Fed implementation).
 
+### Tricky distractors
+
+- **OAuth is authorization-only.** OIDC adds authentication. Wrong-answer pattern: claiming OAuth signs users in.
+- **FIDO2 is not federation.** It authenticates to a single relying party. Wrong-answer pattern: claiming FIDO2 federates identity — SAML/OIDC sit on top of FIDO2.
+- **Kerberos is intranet.** AD environments. Wrong-answer pattern: choosing Kerberos for cross-domain federation in modern web — SAML/OIDC dominate that space.
+- **JSON era ≠ XML era.** SAML uses XML; OAuth/OIDC use JSON. Wrong-answer pattern: claiming SAML uses JSON — XML is its native format.
+- **FIDO2 is below SAML/OIDC.** Authenticator at the IdP, not a federation alternative. Wrong-answer pattern: pitting FIDO2 against SAML/OIDC — they layer.
+- **Tokens, tickets, assertions differ by protocol.** Kerberos = ticket; SAML = assertion; OAuth = access token; OIDC = ID token; FIDO2 = WebAuthn assertion. Wrong-answer pattern: substituting "token" universally — protocol-specific terminology.
+
 ### Values without a direct public citation
 
 All cells in this Concept are synthesis — the per-cell facts are sourced in the dedicated per-system Concepts (`kerberos-flow`, `kerberos-components`, `federation-protocols`, `oauth-grant-types`, `saml-sso-flow`, `mfa-methods`). This Concept's purpose is to surface the cross-system comparison; citations trace through the underlying Concepts rather than being re-cited per cell. An SME validating this Concept should confirm the per-cell Facts against the primary sources in those sibling Concepts (RFC 4120, RFC 6749, RFC 7296, OASIS SAML 2.0 Core, OIDC Core 1.0, W3C WebAuthn L2).

@@ -25,6 +25,15 @@ The six SDLC models CISSP candidates are expected to discriminate by iteration s
 - **Shift-left.** Moving security activities earlier in the lifecycle. Instead of pen testing after release (right-shifted), DevSecOps runs SAST on every commit (maximally left-shifted). Covered at category level here; specific shift-left activities live in `security-activities-by-phase` and `source-code-analysis-types`.
 - **Out of scope for this Concept:** specific Agile ceremonies (separate Concept — `agile-ceremonies`), Waterfall phase-by-phase detail (separate Concept — `waterfall-phases`), CI/CD pipeline stages (separate Concept — `ci-cd-pipeline-stages`), security-activity-per-phase mapping (separate Concept — `security-activities-by-phase`), software maturity models (separate Concept — `software-maturity-models`).
 
+### Tricky distractors
+
+- **Waterfall vs V-Model.** Both are linear; V-Model adds paired test phases. Wrong-answer pattern: claiming V-Model is iterative because of its V-shape — the V is structural pairing, not iteration.
+- **Agile vs DevOps.** Agile = iterative sprints. DevOps = continuous delivery + ops integration. Wrong-answer pattern: treating them as synonyms — Agile can exist without DevOps and DevOps practices apply across iteration styles.
+- **DevOps vs DevSecOps.** DevSecOps adds shift-left security; DevOps alone does not. Wrong-answer pattern: claiming DevOps inherently includes security — only DevSecOps does, hence the *Sec*.
+- **Shift-left meaning.** Moving security activities *earlier* in the lifecycle (design, commit time). Wrong-answer pattern: claiming shift-left means moving security to the *left* organizationally (e.g., to the security team) — it's about timing, not org chart.
+- **Spiral is risk-driven, not just iterative.** Each Spiral loop has explicit risk analysis. Wrong-answer pattern: equating Spiral and Agile — Agile drops the explicit risk-analysis gate.
+- **Linear models discover defects late.** Waterfall and V-Model find issues in test or after release. Wrong-answer pattern: claiming Waterfall provides early defect discovery — it doesn't, that's a key driver toward Agile/DevSecOps.
+
 ### Values without a direct public citation
 
 Most cells in this table reflect widely-accepted CISSP pedagogical framing rather than single traced citations. The foundational model papers (Royce 1970 for Waterfall, Boehm 1988 for Spiral, the Agile Manifesto for Agile, the DevOps Handbook for DevOps, DHS / DISA guidance for DevSecOps) are known authorities but were not fetched primary-source during this research pass. An SME validating this Concept should cross-check against each model's originating source.

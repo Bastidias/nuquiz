@@ -23,6 +23,15 @@ NIST defines a firewall as a device or program that controls the flow of network
 - **WAF layer-7 coverage.** OWASP's language is "HTTP applications" [s3]; HTTPS is included in the cell because WAFs typically terminate TLS to inspect the HTTP payload. If sticking strictly to the OWASP wording, drop HTTPS.
 - **Out of scope for this Concept:** host-based / personal firewalls (covered in NIST SP 800-41 Rev 1 §2.2), kernel vs application-level enforcement, firewall placement architectures (screened subnet, dual-homed host, DMZ variants). These warrant their own Concepts.
 
+### Tricky distractors
+
+- **Packet filter vs Stateful inspection.** Both inspect headers; only stateful tracks connection state. Wrong-answer pattern: claiming packet filters "remember" prior packets — they don't. Each packet is evaluated independently.
+- **Application proxy vs WAF.** Both operate at Layer 7. Application proxies handle multiple protocols (FTP, SMTP, HTTP, etc.) per-protocol; WAFs are HTTP/HTTPS-specific. Wrong-answer pattern: treating them as synonyms.
+- **NGFW vs UTM.** UTM (Unified Threat Management) is the SMB-focused predecessor; NGFW is the enterprise term. Both bundle firewall + IPS + AV + URL filtering. CISSP often tests recognition of NGFW; UTM is rarer on the exam.
+- **Stateful inspection layer.** Operates at Network (L3) AND Transport (L4) — it tracks TCP state. Wrong-answer pattern: placing stateful inspection at L7 because it "watches conversations" (it watches TCP/UDP state, not application-layer dialog).
+- **Circuit-level gateway is not a packet filter.** Operates at Session layer (L5). Validates the TCP handshake before allowing the session. Wrong-answer pattern: confusing it with packet filtering or with stateful inspection — circuit-level is its own category.
+- **WAF defends against application attacks, not network attacks.** WAFs catch SQL injection, XSS, file inclusion. They don't catch DDoS or port scanning. Wrong-answer pattern: claiming WAFs replace traditional perimeter firewalls.
+
 ### Values without a direct public citation
 
 The following cell values are drawn from standard CISSP study material rather than a traced public source. They reflect widely-accepted taxonomy but should be validated by an SME or replaced with a sourced value before the Concept is treated as reference-grade.

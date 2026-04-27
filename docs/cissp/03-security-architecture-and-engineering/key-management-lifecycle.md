@@ -30,6 +30,15 @@ The seven sequential phases a cryptographic key passes through from generation t
 - **Destruction = cryptographic erasure or physical destruction.** For software-stored keys: overwrite the memory holding the key (cryptographic erasure). For HSM-stored keys: zeroize the HSM key slot (the HSM provides this command). For paper-stored keys (rare, archival): physical destruction. Failure to destroy creates persistent risk — the key remains recoverable.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-57 framing.
 
+### Tricky distractors
+
+- **Generation requires high entropy.** Weak RNG produces guessable keys. Wrong-answer pattern: claiming `rand()` is sufficient — approved DRBG or HRNG required.
+- **Distribution is the historic weakness.** Symmetric key transport over insecure channel was the problem PKI solved. Wrong-answer pattern: claiming key generation is the hardest phase — distribution at scale was harder before asymmetric crypto.
+- **HSM stores keys in hardware.** Tamper-resistant; key never leaves cleartext. Wrong-answer pattern: claiming HSM is just encrypted storage — it's hardware-bound and tamper-resistant.
+- **Rotation ≠ Revocation.** Rotation = scheduled replacement. Revocation = unscheduled invalidation. Wrong-answer pattern: collapsing them.
+- **Destruction must be verifiable.** Certificate of destruction. Wrong-answer pattern: claiming "we deleted the key file" without proof — destruction without documentation is just deletion.
+- **Cryptoperiod varies by key type.** Symmetric keys rotate annually; CA roots rotate decades. Wrong-answer pattern: applying one cryptoperiod to all keys.
+
 ## Engine demo opportunities
 
 - `? | Name → Rotation` → Phase 5

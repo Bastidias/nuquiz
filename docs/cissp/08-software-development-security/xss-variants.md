@@ -25,6 +25,15 @@ The three XSS variants CISSP candidates are expected to distinguish [s1]. The di
 - **CSP is variant-agnostic.** A well-tuned Content Security Policy [s2] reduces the attacker's ability to execute scripts even if an XSS injection point exists — for example, blocking inline scripts and restricting script sources. CSP is recommended for all three variants but is itself bypass-prone if poorly configured (unsafe-inline directives, overly broad `script-src` allowlists).
 - **Out of scope for this Concept:** specific encoding rules per HTML context (HTML body, attribute, URL, CSS, JavaScript — covered in OWASP XSS Prevention Cheat Sheet [s1]), CSP directive details, mutation XSS (mXSS), self-XSS, blind XSS, post-message-based XSS in iframes.
 
+### Tricky distractors
+
+- **Reflected vs Stored persistence.** Reflected = per-request URL; Stored = server data store. Wrong-answer pattern: confusing them — Stored is more dangerous because it auto-fires on every visitor.
+- **DOM-based never touches server.** Server-side filtering can't catch it. Wrong-answer pattern: claiming server-side input validation prevents DOM XSS — the server doesn't see the payload.
+- **Output encoding is the universal fix.** All three variants. Wrong-answer pattern: claiming each variant needs different mitigations — encoding at render is the architectural defense.
+- **Stored XSS = wormable.** No social engineering required per victim. Wrong-answer pattern: ranking Stored as less severe than Reflected — Stored is more severe because it self-distributes.
+- **CSP is defense-in-depth, not the primary fix.** Encoding is primary. Wrong-answer pattern: claiming CSP alone prevents XSS — bad encoding still creates injection points.
+- **DOM XSS sources include `location.hash`, `localStorage`, etc.** Client-side input. Wrong-answer pattern: assuming DOM XSS only comes from URL parameters — DOM sources are broader.
+
 ### Values without a direct public citation
 
 No cell in this table relies on inference beyond what OWASP XSS Prevention Cheat Sheet [s1] specifies. Mitigation lists are summarized rather than directly quoted; the canonical defense (output encoding at the rendering boundary) is from [s1].

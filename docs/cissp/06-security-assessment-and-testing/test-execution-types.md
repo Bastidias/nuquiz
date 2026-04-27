@@ -27,6 +27,15 @@ The six test execution types CISSP candidates are expected to discriminate. The 
 - **Security tests at every level.** Input-validation tests at Unit; authentication-flow tests at Integration; full pen testing at System; compliance attestation at Acceptance. Modern security programs embed security tests across all four levels rather than concentrating them at a single phase. Sibling Concept `software-testing-types` covers the security-specific testing methods (SAST, DAST, IAST, etc.).
 - **Out of scope for this Concept:** specific testing frameworks (JUnit, pytest, Jest, Selenium, Cypress), test-driven development (TDD) and behavior-driven development (BDD) practices, exploratory testing, mutation testing (covered in `software-testing-types`), performance testing, chaos engineering.
 
+### Tricky distractors
+
+- **Unit/Integration/System/Acceptance ladder.** Increasing scope. Wrong-answer pattern: confusing the order — unit is smallest, acceptance is broadest.
+- **Acceptance is business-driven.** Verifies requirements, not just technical correctness. Wrong-answer pattern: claiming acceptance tests verify code correctness — they verify business needs.
+- **Smoke vs Regression.** Smoke = critical path only, fast. Regression = full previously-passing suite, slow. Wrong-answer pattern: collapsing them — different scopes and cadences.
+- **Unit tests are developer-owned.** Not QA. Wrong-answer pattern: claiming QA writes unit tests — developers do as part of implementation.
+- **Integration tests pair components.** Multiple-but-not-all. Wrong-answer pattern: confusing integration with system tests — system is end-to-end.
+- **Security tests at every level.** Input validation, auth flow, pen test, compliance. Wrong-answer pattern: concentrating security testing at one phase only — should span the ladder.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

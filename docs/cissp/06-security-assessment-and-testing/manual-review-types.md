@@ -22,6 +22,15 @@ The three manual security-review activities CISSP candidates are expected to dis
 - **Cross-Concept link.** Sibling Concept `code-review-types` in D8 covers code-review styles: Peer review, Tool-assisted review, Pair programming, Formal inspection. That Concept is about *how* code review is conducted; this Concept is about *what* review targets exist (code vs requirements vs architecture).
 - **Out of scope for this Concept:** specific review tooling (Phabricator, Crucible, GitHub PR reviews), review-effectiveness metrics (defect-finding rate, review velocity), pair programming as a review variant, threat modeling methodologies in detail (covered in D1 and D8 sibling Concepts).
 
+### Tricky distractors
+
+- **Three review targets: code, requirements, architecture.** Different artifacts, different phases. Wrong-answer pattern: collapsing them into one — they catch different defect classes.
+- **Misuse case review is at Requirements phase.** Pre-design. Wrong-answer pattern: scheduling misuse cases at Implementation — too late, designs already locked.
+- **Architecture review is at Design phase.** STRIDE per-element. Wrong-answer pattern: deferring architecture review to Testing — design issues are expensive to fix late.
+- **Code review beats SAST for business logic.** Tools miss design-level flaws. Wrong-answer pattern: claiming SAST replaces manual code review — they're complementary.
+- **Manual review is pre-deployment.** Post-deployment review is forensics or audit. Wrong-answer pattern: classifying incident review as manual review — different category.
+- **Code review style is separate from review target.** Style (peer/formal) vs target (code/req/arch). Wrong-answer pattern: confusing them — different axes.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

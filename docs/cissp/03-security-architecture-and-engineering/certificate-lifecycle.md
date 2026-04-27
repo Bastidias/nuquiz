@@ -29,6 +29,15 @@ The six sequential phases an X.509 digital certificate passes through from initi
 - **Short-lived certificates are an emerging pattern.** Let's Encrypt (90-day) and ACME-based automation have made it practical to issue certificates with very short validity, eliminating the need for revocation infrastructure (an attacker can use a compromised certificate only for hours, not years). This shifts the lifecycle: Phase 5 (Revoke) becomes less relevant; Phase 6 (Renew) becomes more frequent.
 - **Gaps marked `[needs source]`:** none — all Facts trace to RFC 5280 or CA/B Forum guidance.
 
+### Tricky distractors
+
+- **Subject generates the keypair, not the CA.** CA only sees the CSR (public key + identity claims). Wrong-answer pattern: claiming the CA generates and distributes private keys — that breaks non-repudiation.
+- **Revocation ≠ Expiration.** Revocation is unscheduled (compromise, role change); expiration is scheduled (notAfter date). Wrong-answer pattern: collapsing them — they're distinct lifecycle events.
+- **CSR is not a certificate.** It's a request signed by the subject's private key proving possession. Wrong-answer pattern: confusing CSR with the issued certificate.
+- **Renewal vs Rekey.** Renewal reuses the keypair; rekey generates new keys. Wrong-answer pattern: claiming "renewal" always generates new keys — it doesn't, that's rekey.
+- **Short-lived certs reduce revocation reliance.** 90-day certs limit compromise window. Wrong-answer pattern: claiming short-lived certs eliminate revocation entirely — they reduce its importance, not eliminate it.
+- **Phase order.** Request → Validate → Issue → Use → Revoke → Renew. Wrong-answer pattern: putting Issue before Validate — RA verification precedes CA signing.
+
 ## Engine demo opportunities
 
 - `? | Name → Validate` → Phase 2

@@ -23,6 +23,15 @@ The four account-management metrics CISSP candidates are expected to track. Each
 - **MFA fatigue introduces a third failure category.** A surge of *successful* MFA challenges followed by user approval may indicate MFA fatigue attacks. Some organizations track MFA-approval rate as a fifth metric; not included here for stub fidelity.
 - **Out of scope for this Concept:** specific identity-protection products (Microsoft Entra Identity Protection, Okta ThreatInsight), risk-scoring algorithms behind impossible-travel and unfamiliar-location alerts, IAM-platform-specific event names, behavioral biometrics as anomaly signal.
 
+### Tricky distractors
+
+- **90 days dormant is dominant default.** PCI DSS, NIST SP 800-53 AC-2 alignment. Wrong-answer pattern: applying universal threshold across all regulations — varies (SOX often 60 days).
+- **Source vs Account-based failed-auth thresholds.** Different attacks. Wrong-answer pattern: claiming one threshold catches both credential stuffing (source-based) and targeted brute-force (account-based) — both are needed.
+- **Spike-detection beats absolute counts.** 3-sigma above baseline. Wrong-answer pattern: setting fixed alert thresholds for creation rate — varies by organization size.
+- **Privilege escalation = correlated with PAM/ticketing.** Authorized vs unauthorized requires context. Wrong-answer pattern: alerting on every privilege change — too noisy without PAM correlation.
+- **MFA fatigue introduces approval-rate metric.** Surge of user approvals after challenges. Wrong-answer pattern: claiming MFA enrollment rate alone tracks MFA effectiveness — fatigue attacks evade enrollment metrics.
+- **All four are KCIs.** Control effectiveness, not risk indicators. Wrong-answer pattern: classifying them as KRIs — they measure control operation.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

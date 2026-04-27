@@ -25,6 +25,15 @@ The five Trust Service Criteria (TSCs) defined by AICPA [s1] for SOC 2 reporting
 - **Cross-Concept link.** Sibling Concept `soc-report-types` covers SOC 1 / 2 / 3 distinctions; this Concept covers the criteria scoped within SOC 2 reports.
 - **Out of scope for this Concept:** specific control objectives within each TSC (the AICPA TSC document specifies dozens), the Common Criteria points-of-focus, the privacy framework's eight criteria, mapping between TSC and other frameworks (NIST CSF, ISO 27001).
 
+### Tricky distractors
+
+- **Security is mandatory; others are optional.** Common Criteria. Wrong-answer pattern: claiming all 5 TSCs are required in every SOC 2 — only Security is.
+- **Confidentiality vs Privacy.** Confidentiality = business-confidential (contracts, IP). Privacy = personal information per privacy notice. Wrong-answer pattern: collapsing them — Privacy is GDPR-relevant; Confidentiality is broader.
+- **Processing Integrity has 4 sub-properties.** Complete, valid, accurate, timely. Wrong-answer pattern: omitting any of the four — exam may test the full list.
+- **Availability maps to SLA.** Uptime commitment. Wrong-answer pattern: claiming Availability covers all reliability concerns — it's SLA-aligned specifically.
+- **TSC ≠ Common Criteria (ISO).** AICPA TSC vs ISO 15408 Common Criteria. Wrong-answer pattern: confusing them — different frameworks despite shared name.
+- **TSC was Trust Services Principles pre-2017.** Renamed in 2017. Wrong-answer pattern: using legacy "Principles" terminology — current is "Criteria."
+
 ### Values without a direct public citation
 
 | Cell | Notes |

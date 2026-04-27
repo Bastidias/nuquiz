@@ -26,6 +26,15 @@ The seven layers of the OSI reference model. Foundational CISSP knowledge — st
 - **TCP/IP equivalent column** lets the engine generate cross-model questions, e.g. `? | TCP/IP equivalent → Network Access` → Physical, Data Link.
 - Memorization mnemonics like "Please Do Not Throw Sausage Pizza Away" can live in study notes — not in the Fact data.
 
+### Tricky distractors
+
+- **PDU naming.** Bit (L1), Frame (L2), Packet (L3), Segment / Datagram (L4), Data (L5-7). Wrong-answer pattern: calling a Layer-3 unit a "frame" or Layer-4 a "packet." The Frame ↔ Packet distinction is a high-yield exam item.
+- **Routers vs Switches.** Routers operate at Layer 3 (Network — IP addresses); Switches operate at Layer 2 (Data Link — MAC addresses). Layer-3 switches exist (do both) but the vanilla "switch" is L2. Wrong-answer pattern: claiming routers operate at Layer 2.
+- **SSL/TLS layer placement.** Officially debated. Most CISSP sources place TLS at L5 (Session) or L6 (Presentation). Some place it at L4 because it sits above TCP. The exam-favored answer is usually L5/L6 — be aware the question may accept multiple. Wrong-answer pattern: insisting on a single layer assignment.
+- **TCP/IP four-layer model mapping.** Network Access = OSI Physical + Data Link. Application = OSI Session + Presentation + Application. Wrong-answer pattern: 1:1 mapping between models — they aren't 1:1.
+- **Hubs vs Switches.** Hubs (L1) broadcast to all ports. Switches (L2) forward based on MAC address. Wrong-answer pattern: calling a switch a "Layer 1 device" because it has physical ports.
+- **Encapsulation direction.** Data flows down the stack on the sender (L7 → L1) and up on the receiver (L1 → L7). Wrong-answer pattern: thinking encapsulation goes "up" the stack on send.
+
 ## Engine demo opportunities
 
 - `Data Link | key devices → ?` → Switches, Bridges. Distractors from Layer 1 (Hubs, Repeaters) and Layer 3 (Routers).

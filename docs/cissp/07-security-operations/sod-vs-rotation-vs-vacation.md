@@ -22,6 +22,15 @@ The three personnel-controls trio that together address fraud and insider-threat
 - **Mandatory vacation cadence.** Two consecutive weeks is the most-cited minimum because it forces enough time for normal monthly cycles (reconciliations, statements) to expose anomalies. Shorter mandatory periods are less effective; longer is fine but operationally costly.
 - **Gaps marked `[needs source]`:** one Fact — SoD's "Continuous structural enforcement" frequency descriptor. Practitioner consensus but not directly cited to a primary publication.
 
+### Tricky distractors
+
+- **SoD is preventive; rotation and vacation are detective.** Different roles in fraud control. Wrong-answer pattern: claiming all three are preventive — only SoD prevents.
+- **Job rotation works via handoff.** The new role-holder reviews predecessor's work. Wrong-answer pattern: claiming rotation alone (without handoff review) provides detection.
+- **Mandatory vacation = at least 2 consecutive weeks.** Forces normal cycles (reconciliations, statements) to expose anomalies. Wrong-answer pattern: claiming any time off counts — short breaks don't expose ongoing fraud.
+- **A complete program runs all three.** They're complementary, not alternatives. Wrong-answer pattern: claiming SoD alone is sufficient — without rotation/vacation, sustained fraud goes undetected.
+- **SoD targets opportunity; rotation/vacation target sustainability.** SoD prevents one person from doing the whole thing; the others limit how long fraud can be hidden. Wrong-answer pattern: collapsing them into one concept.
+- **SoD lives in roles and ACLs.** Continuous, not scheduled. Wrong-answer pattern: claiming SoD is something you "do" periodically — it's structural.
+
 ## Engine demo opportunities
 
 - `? | purpose → Force absence so peers can detect anomalies` → Mandatory vacation

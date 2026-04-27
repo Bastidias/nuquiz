@@ -24,6 +24,15 @@ The five governance document types CISSP courseware uses to classify written sec
 - **Document hierarchy: top-down mandates, bottom-up support.** Policies establish *what* must be true; standards specify *how* to comply; procedures execute *the work*; baselines define *minimum acceptable state*; guidelines suggest *additional good practice*. A complete program has all five layers; missing any layer creates ambiguity.
 - **Gaps marked `[needs source]`:** none — all Facts trace to standard CISSP governance-document framing.
 
+### Tricky distractors
+
+- **Guideline is the only optional document.** Policies, standards, procedures, baselines are all mandatory. Wrong-answer pattern: claiming standards are advisory — only guidelines are.
+- **Policy vs Standard.** Policy = high-level intent ("we require strong authentication"). Standard = specific implementation ("12+ char passwords"). Wrong-answer pattern: collapsing them — they live at different abstraction levels.
+- **Standard vs Baseline.** Standard = requirement that applies broadly. Baseline = mandatory minimum config for a specific asset class. Wrong-answer pattern: treating them as synonyms — baseline is narrower and configuration-specific.
+- **Procedure is step-by-step.** Procedures are how-to instructions. Wrong-answer pattern: confusing procedure with policy — policy says what; procedure says how-to-do.
+- **Senior management approves policy.** Standards and procedures don't need senior sign-off. Wrong-answer pattern: claiming the security team writes and approves policy unilaterally — senior management approval is the mandate's authority.
+- **Document hierarchy is enforcement-driven.** Policies anchor the program; without policy, lower documents lack authority. Wrong-answer pattern: starting a security program with procedures — without policy backing, they're just suggestions.
+
 ## Engine demo opportunities
 
 - `? | required? → Optional` → Guideline (the only non-mandatory row)

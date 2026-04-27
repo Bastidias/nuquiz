@@ -26,6 +26,15 @@ The six time-based metrics that quantify what "recovery" means for a business pr
 - **What is intentionally not on this table.** Maximum Acceptable Outage (MAO) is a near-synonym for MTD used in some references; left out to avoid a near-duplicate row. Recovery Service Level (RSL) — the percentage of normal capacity restored — is sometimes added; could be a future row.
 - **Gaps marked `[needs source]`:** four Facts — MTTR/MTBF target-setter, all three WRT cells. WRT especially is loosely defined across CISSP references; sourcing to NIST or ISO would strengthen the row.
 
+### Tricky distractors
+
+- **RPO measures backward, RTO measures forward.** RPO = how far back in time can we accept data loss (drives backup frequency). RTO = how long until services are back (drives recovery procedures). Wrong-answer pattern: confusing the directions. The most common CISSP wrong-answer mistake.
+- **RTO + WRT ≤ MTD.** Technical recovery (RTO) plus work recovery / validation (WRT) must fit within Maximum Tolerable Downtime. Wrong-answer pattern: equating RTO with MTD — they're related but distinct.
+- **RTO/RPO/MTD are business metrics.** Set by business process owners during BIA. IT executes against them but doesn't define them. Wrong-answer pattern: claiming "IT sets RTO based on infrastructure capability" — that's backward.
+- **MTBF vs MTTR.** MTBF = Mean Time Between Failures (uptime statistic; hardware reliability). MTTR = Mean Time To Repair / Restore (recovery duration). Both feed availability calculation: A = MTBF / (MTBF + MTTR). Wrong-answer pattern: confusing the two — MTBF is *between failures* not *during failure*.
+- **MTD is a ceiling, not a target.** MTD is the *limit* beyond which the disruption causes mission failure. Organizations target RTO+WRT well *below* MTD, not at it. Wrong-answer pattern: setting RTO equal to MTD (no margin for WRT).
+- **Hardware MTBF.** A 50,000-hour MTBF disk is typical. Wrong-answer pattern: thinking "MTBF" means individual disk lifetime — it's a statistical average across a population.
+
 ## Engine demo opportunities
 
 - `? | what it measures → Maximum acceptable data loss measured backward from disruption` → RPO

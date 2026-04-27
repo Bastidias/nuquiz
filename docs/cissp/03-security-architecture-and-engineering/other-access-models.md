@@ -22,6 +22,15 @@ The three additional access-control models CISSP candidates may encounter beyond
 - **CISSP exam coverage.** These models appear less frequently than the four core ones but may be asked at the *recognition* level — "which of these is an access-right propagation analysis model" → Graham-Denning or HRU. "Which model addresses covert channels" → Noninterference.
 - **Out of scope for this Concept:** Goguen-Meseguer formal definition, Sutherland's information flow model, security policy verification techniques, formal-methods application to access control, type-based information flow (e.g., Jif language).
 
+### Tricky distractors
+
+- **HRU safety problem is undecidable.** Famous theoretical result. Wrong-answer pattern: claiming safety can be algorithmically determined for arbitrary systems — only constrained systems are decidable.
+- **Noninterference is information-flow, not access control.** Different policy class. Wrong-answer pattern: classifying noninterference alongside BLP/Biba — different abstraction.
+- **Noninterference catches covert channels.** Stronger than BLP. Wrong-answer pattern: claiming BLP rules cover all info flow — covert channels evade BLP but violate noninterference.
+- **Graham-Denning has 8 primitives.** Foundational ops. Wrong-answer pattern: confusing primitive count or scope.
+- **HRU extends Graham-Denning.** Builds on it. Wrong-answer pattern: claiming HRU is independent — directly extends Graham-Denning's framework.
+- **These models are theoretical.** Less common in production than BLP/Biba. Wrong-answer pattern: claiming Graham-Denning is widely deployed — it informs formal analysis, not implementation.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

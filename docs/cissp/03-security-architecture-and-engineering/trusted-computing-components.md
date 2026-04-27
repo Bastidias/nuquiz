@@ -23,6 +23,15 @@ The three hardware-rooted trusted-computing components CISSP candidates are expe
 - **Cross-Concept link.** Sibling Concept `side-channel-attacks` covers the side-channel attack categories that affect HSMs and enclaves. `pki-components` covers HSM use in CA contexts.
 - **Out of scope for this Concept:** TPM 1.2 vs 2.0 specification differences, FIPS 140-2 / 140-3 Level distinctions, specific HSM products (Thales, Utimaco, AWS CloudHSM, Azure Key Vault HSM), specific enclave products (Intel SGX evolution, AMD SEV-SNP, ARM CCA), confidential computing consortium specifications, sealing-key derivation and attestation protocols.
 
+### Tricky distractors
+
+- **TPM vs HSM.** TPM is platform-embedded, FIPS 140 Level 1-2 typically. HSM is dedicated high-assurance hardware, FIPS 140 Level 3+. Wrong-answer pattern: equating them — TPM is consumer/platform; HSM is enterprise/CA-grade.
+- **Secure Enclaves execute code; HSMs do crypto.** Different abstractions. Wrong-answer pattern: claiming SGX is just an HSM — enclaves protect arbitrary application code.
+- **TPM use case is platform integrity.** BitLocker, measured boot, attestation. Wrong-answer pattern: choosing TPM for high-volume CA signing — that's HSM territory.
+- **HSM is for high-volume cryptographic operations.** CA signing, payment HSMs. Wrong-answer pattern: claiming HSM stores arbitrary application data — they store keys, not bulk data.
+- **Side-channel attacks affect all three.** Microarchitectural attacks (Foreshadow, Plundervolt) target enclaves; cold boot affects TPMs; timing attacks affect HSMs. Wrong-answer pattern: claiming hardware roots of trust are immune to side channels.
+- **Endorsement Key is TPM-specific.** Per-TPM unique key burned at manufacture. Wrong-answer pattern: applying EK terminology to HSMs or enclaves.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

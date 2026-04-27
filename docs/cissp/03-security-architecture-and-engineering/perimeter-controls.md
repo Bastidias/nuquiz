@@ -27,6 +27,15 @@ The six physical perimeter controls CISSP courseware tests. Each pairs a *purpos
 - **What is intentionally not on this table.** CCTV (covered in `detection-systems.md`), security guards (a personnel control rather than physical), motion sensors, glass-break detectors. The six here cover the most-tested CISSP physical-perimeter scope.
 - **Gaps marked `[needs source]`:** none — all Facts trace to ASIS physical-security framing.
 
+### Tricky distractors
+
+- **Lighting is deterrent, not preventive.** Doesn't physically stop. Wrong-answer pattern: classifying lighting as preventive — it enables detection and deters but doesn't block.
+- **Fences are deterrent + preventive.** Combination depends on height/design. Wrong-answer pattern: claiming any fence is preventive — chain-link is deterrent only.
+- **Bollards are vehicle-specific.** K-rated for impact. Wrong-answer pattern: applying bollards to pedestrian crowd control — they target vehicle threats.
+- **Unstaffed gate is just a barrier.** Becomes preventive only when staffed. Wrong-answer pattern: claiming gates are always preventive — staffing matters.
+- **Mantrap = one person at a time.** Two doors in series. Wrong-answer pattern: confusing mantrap with turnstile — mantrap physically isolates; turnstile blocks one-at-a-time but doesn't isolate.
+- **Defense in depth: layered perimeter.** Fence → building → inner access. Wrong-answer pattern: claiming any single perimeter control is sufficient — must layer.
+
 ## Engine demo opportunities
 
 - `? | purpose → Block vehicle approach to building` → Bollards

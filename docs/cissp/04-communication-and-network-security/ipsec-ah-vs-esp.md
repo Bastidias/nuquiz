@@ -22,6 +22,15 @@ The two IPsec data-protection protocols. AH provides authentication, integrity, 
 - **AH + ESP together is permitted.** IPsec allows stacking AH and ESP in a single SA bundle ("belt and suspenders"), but this is rarely deployed because it doubles overhead without providing meaningful additional security over ESP with authentication enabled.
 - **Out of scope for this Concept:** IPsec Transport vs Tunnel mode (separate Concept), IKEv1 vs IKEv2 and IKE phases (separate Concept), SA (Security Association) and SAD/SPD internals, cryptographic suite selection, NAT-Traversal protocol details, IPComp.
 
+### Tricky distractors
+
+- **ESP provides confidentiality; AH does not.** Most-tested discriminator. Wrong-answer pattern: claiming AH encrypts — only ESP does.
+- **IP protocol numbers: ESP=50, AH=51.** Easy to swap. Wrong-answer pattern: assigning 50 to AH or 51 to ESP — memorize the pairing.
+- **AH breaks NAT; ESP survives with NAT-T.** AH covers outer IP header; NAT rewriting invalidates the ICV. Wrong-answer pattern: claiming AH works through NAT — it doesn't, which is why ESP dominates.
+- **AH protects outer IP header; ESP doesn't.** AH ICV covers immutable IP fields. Wrong-answer pattern: claiming ESP authenticates the outer IP — only AH does.
+- **ESP with NULL encryption ≈ AH.** Both authenticate without confidentiality. Wrong-answer pattern: claiming ESP requires encryption — NULL cipher is permitted.
+- **Anti-replay is mandatory for unicast.** Both AH and ESP. Wrong-answer pattern: claiming anti-replay is optional — it's required for unicast SAs.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

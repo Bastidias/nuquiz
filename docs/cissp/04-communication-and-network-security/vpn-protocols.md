@@ -26,6 +26,15 @@ CISSP testing distinguishes VPN protocols by the OSI layer they tunnel at, what 
 - **WireGuard authentication.** The cell lists `Curve25519 public key` because peers authenticate each other via pre-exchanged static Curve25519 public keys — there is no certificate authority, no PSK field, no username/password. This is the single defining difference from IPsec's IKE-negotiated auth set.
 - **Out of scope for this Concept:** SSH tunneling (separate Concept candidate), SSTP (Microsoft-specific, rarely tested), legacy PPP auth protocols (PAP, CHAP — covered by authentication-protocols Concept), IPsec mode details (Transport vs Tunnel, AH vs ESP, IKEv1 vs IKEv2 — warrants its own Concept per the Domain 4 README).
 
+### Tricky distractors
+
+- **PPTP is deprecated.** MS-CHAPv2 is broken; Microsoft removed PPTP from Windows Server in October 2024. Wrong-answer pattern: choosing PPTP for any modern deployment.
+- **L2TP alone has no encryption.** L2TP is a tunneling protocol; encryption requires pairing with IPsec (L2TP/IPsec). Wrong-answer pattern: claiming L2TP encrypts traffic by itself.
+- **IPsec OSI layer.** Network (Layer 3) — IPsec runs directly on IP, not over TCP/UDP. The IKE control channel uses UDP 500/4500, but ESP and AH are IP protocols 50/51. Wrong-answer pattern: placing IPsec at Layer 4.
+- **WireGuard cipher.** ChaCha20-Poly1305 (AEAD); Curve25519 for key agreement; Noise IK handshake. Wrong-answer pattern: claiming WireGuard uses RSA or AES — it uses Curve25519 and ChaCha20.
+- **OpenVPN OSI layer.** Application layer (runs over TLS, user-space). Wrong-answer pattern: placing OpenVPN at Layer 3 — it tunnels L2/L3 traffic but the protocol itself is L7.
+- **SSL/TLS VPN port.** TCP 443 (same as HTTPS). Wrong-answer pattern: assuming SSL VPN uses a different port — it specifically uses 443 to traverse firewalls.
+
 ### Values without a direct public citation
 
 These cell values are drawn from standard CISSP study material or from inference rather than a traced public source. They reflect widely-accepted taxonomy but should be validated by an SME or replaced with a sourced value before the Concept is treated as reference-grade.

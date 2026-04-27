@@ -111,7 +111,7 @@ The native app downloads the Deck, runs the engine offline, queues responses, sy
 
 **Cons**
 - Shipping engine updates means shipping app updates. A bug in the engine waits for Apple review.
-- Content updates have to be reconciled with local student state (what if a Fact ID disappeared since last sync?). Non-trivial but bounded.
+- Content updates have to be reconciled with local student state (what if a CellFact ID disappeared since last sync?). Non-trivial but bounded.
 - Analytics still live server-side — every response event has to travel home to be useful for cohort stats and confusion graphs across users.
 - The "Pro" skew is harder: if the engine runs client-side, entitlement enforcement for pro-only features is on the client first, the server only on reconciliation. Serious Pro features (cross-cohort analytics) still need a server.
 - Web-demo distribution is awkward — bundling the whole engine to render a partial-deck demo is heavy.
@@ -138,7 +138,7 @@ query IOSScreen {
     name
     rows { id, label, facts { id, column { id }, value } }
     currentUserState {
-      reviewDueFactIds
+      reviewDueCellFactIds
       confusionPairs { a { id, value }, b { id, value }, swaps }
     }
   }
@@ -170,7 +170,7 @@ Request/response procedures with a typed contract generated for every client. RE
 
 ```ts
 router.concept.getDrill({ slug, mode: 'drill' })  // typed end-to-end
-router.responses.submit({ factId, pickedFactId, outcome })
+router.responses.submit({ factId, pickedCellFactId, outcome })
 router.me.confusionPairs()
 ```
 
@@ -193,13 +193,64 @@ router.me.confusionPairs()
 
 The two decisions lean on each other. A few specific interactions from `docs/data-shapes.md`:
 
-- **Table-native storage + single REST API** maps cleanly — endpoints per Concept, endpoints per Row, the URL hierarchy mirrors the storage hierarchy. Most conventional combination.
+- **Table-native storage + single REST API** maps cleanly — endpoints per Concept, endpoints per RowHeader, the URL hierarchy mirrors the storage hierarchy. Most conventional combination.
 - **SPO/graph storage + GraphQL** is a very natural pair — GraphQL's selection sets are an excellent match for "return these specific predicates of these specific subjects." If we go SPO eventually, GraphQL on top is an easy lift.
 - **Markdown-source-of-truth + any API** is the content pipeline — markdown compiles to whatever runtime shape the server needs. The API then speaks the runtime shape, not markdown.
 - **Offline engine + whatever storage** flips the question: the *content distribution format* becomes as important as the API shape. The engine ships a content bundle (JSON, SQLite, whatever); the API is the sync surface. Storage shape is largely an internal-to-the-engine decision at that point.
 - **Cross-Concept analytics (v2-ish)** pressure both. The analytics surface wants SPO-shaped events regardless of content storage (see `data-shapes.md` § Data shape × analytics). A BFF or GraphQL endpoint then exposes those analytics to the Pro / admin skews.
 
 The useful framing: **content distribution and mutation sync are different channels, and conflating them costs us later.** Content can be static-ish and cache-heavy; mutations are per-user and authoritative. Designing the two separately from day one makes the offline story tractable.
+
+---
+
+## Functional principle — push data forward
+
+This is a discipline about **how backend functions are written**, not about API request shape. A REST endpoint, a BFF resolver, an RPC procedure, or an engine-as-library entry point all sit *outside* this boundary — they're the loader/shell, and they're free to do whatever fetching the request requires. *Inside*, the engine functions (question generation, distractor selection, scoring) receive their full inputs as arguments at function entry and never reach back to a database while iterating. Inputs are `(Concept data, student stats, policy)`; output is the rendered question.
+
+```ts
+// Push data forward — preferred
+generateQuestion(
+  concept: ConceptData,        // RowHeaders, ColumnHeaders, Cells, CellFacts
+  stats: StudentStats,         // per-CellFact history, confusion graph, mastery
+  policy: GenerationPolicy,    // mode, difficulty, distractor strategy
+): Question
+
+// Pull mid-loop — avoid
+generateQuestion(conceptId, studentId): Question {
+  const concept = db.fetchConcept(conceptId);                  // round trip 1
+  for (const cellFact of concept.cellFacts) {
+    const history = db.fetchHistory(studentId, cellFact);      // round trip per CellFact
+    ...
+  }
+}
+```
+
+**Why it matters here:**
+
+- **Testability.** A pure generator runs against fixture data with zero infrastructure. Every capability in `docs/demo/capabilities.md` becomes a property test of the generator function — given inputs, output is deterministic and inspectable.
+- **N+1 elimination.** A Concept might have 50+ CellFacts. Pulling per-CellFact history mid-loop is N round trips; one upfront fetch is one. Same for cohort stats, confusion graph, distractor pool.
+- **Engine portability.** Option C (engine-as-library) *requires* this — there is no DB at the point of execution; the engine receives a loaded snapshot. Adopting the discipline up front means the same generator runs server-side (Options A/B/D/E) or client-side (Option C) without rewrites.
+- **Cacheability.** A pure `generateQuestion(concept, stats, policy)` is memoizable on its inputs. An impure version that touches the DB is not.
+- **Locality of reasoning.** The signature tells you what the function depends on. No hidden fetches, no temporal coupling between "did you call this first."
+
+**The boundary discipline.**
+
+The application splits into two layers:
+
+- **Loader / repository layer (impure).** Fetches Concept data and student stats from storage. Lives at the API request, BFF endpoint, or session boundary. Knows about the database.
+- **Engine layer (pure).** Takes loaded data, generates questions, scores responses, computes next state. Knows nothing about the database.
+
+Mutations flow back out through the loader. The engine never writes; it *returns the events that should be written* — a response record, a confusion-graph delta, a review-queue update — and the loader commits them.
+
+Standard hexagonal-architecture / pure-core/impure-shell shape. The naming matters because every API option above is more pleasant when it's followed.
+
+**How this interacts with the API options:**
+
+- **A / B / D / E (server-side engine):** the loader lives in the server. Each request fetches Concept + stats once, calls the pure engine, returns the rendered question. No mid-request DB chatter, no N+1.
+- **C (engine-as-library):** the loader is the content tarball + local response store. Same pure engine, different shell.
+- **Mutations everywhere:** the engine returns response events and state deltas as values; the shell commits.
+
+The API option picks the **shell**. The principle here governs the **core**, which is identical across all five.
 
 ---
 

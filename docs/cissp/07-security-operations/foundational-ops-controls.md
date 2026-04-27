@@ -25,6 +25,15 @@ The seven personnel-and-process controls that operations teams apply to limit in
 - **Why "two-person rule" appears in two rows.** The two-person rule is the operational mechanism; *dual control* and *two-person integrity* are two contexts in which it is applied. NIST's TPI definition specifically calls out COMSEC (communications security) keying material [s4] — that is the canonical example. Dual control is the broader business-process variant (vault access, wire transfer authorization).
 - **Gaps marked `[needs source]`:** four Facts — typical examples for least privilege, job rotation, mandatory vacation, and dual control. All are textbook examples but not yet sourced to a primary publication in this research pass.
 
+### Tricky distractors
+
+- **Need-to-know vs Least privilege.** Need-to-know restricts information; least privilege restricts system permissions. Wrong-answer pattern: equating them — clearance + NTK governs data access; LP governs OS rights.
+- **SoD vs Dual Control vs TPI.** SoD splits workflow across time. Dual Control = two people for one action. TPI = two cleared people present. Wrong-answer pattern: collapsing all into "two-person rule" — different operational mechanisms.
+- **Rotation and Vacation are detective.** They expose fraud, not prevent it. Wrong-answer pattern: classifying them as preventive — only SoD prevents.
+- **Two-person integrity is for COMSEC and similar.** Specifically physical/material handling. Wrong-answer pattern: applying TPI to all sensitive operations — Dual Control covers business-process variant.
+- **Need-to-know predates electronic systems.** Originated in classified information handling. Wrong-answer pattern: claiming need-to-know is a modern access-control model — it's an information-clearance principle.
+- **Dual Control is operational; SoD is structural.** Different timing scope. Wrong-answer pattern: confusing process-design SoD with action-time Dual Control.
+
 ## Engine demo opportunities
 
 - `? | purpose → Restrict access to information required for assigned duties` → Need-to-know

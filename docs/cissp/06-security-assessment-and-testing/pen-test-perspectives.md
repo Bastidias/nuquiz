@@ -21,6 +21,15 @@ The three pen test knowledge perspectives CISSP candidates are expected to discr
 - **OSSTMM and PTES use different terms.** OSSTMM (Open Source Security Testing Methodology Manual) uses "Blind / Double Blind / Tandem / Reversal" for similar perspectives at higher granularity. PTES uses "Zero Knowledge / Partial Knowledge / Full Knowledge". CISSP uses the box terminology; SME pass should confirm against current exam outline.
 - **Out of scope for this Concept:** authorization (covered in `penetration-test-phases` Phase 1), red-team vs blue-team vs purple-team distinctions (operational rather than knowledge-based), assumed-breach scenarios (a variant where the tester begins post-foothold), specific OSSTMM / PTES per-method nuance.
 
+### Tricky distractors
+
+- **Box ≠ Hat.** Box = knowledge perspective. Hat = attacker intent (black-hat malicious, white-hat ethical). Wrong-answer pattern: confusing the two — they're orthogonal.
+- **Black box is most expensive.** Reconnaissance from scratch consumes time. Wrong-answer pattern: claiming black box is cheapest because no info is shared — info-sharing reduces cost, not increases it.
+- **White box is fastest, most thorough.** Source code + architecture = efficient targeting. Wrong-answer pattern: claiming white box is unrealistic and therefore not useful — it's most efficient for finding vulnerabilities.
+- **Gray box dominates real engagements.** Most balanced trade-off. Wrong-answer pattern: claiming production pen tests are usually black or white box — gray is most common.
+- **Realism vs efficiency are inversely related.** Black is realistic but inefficient; White is efficient but not realistic. Wrong-answer pattern: claiming you can have both at the same level — the trade-off is structural.
+- **OSSTMM and PTES use different terms.** Blind/Tandem/etc; Zero/Partial/Full Knowledge. Wrong-answer pattern: forcing CISSP "box" terminology into other frameworks.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

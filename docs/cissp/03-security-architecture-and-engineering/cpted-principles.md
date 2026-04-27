@@ -25,6 +25,15 @@ The four core principles of Crime Prevention Through Environmental Design (CPTED
 - **Limitations.** CPTED's effectiveness varies by crime type. It works well against opportunistic crimes (vandalism, theft of opportunity, casual trespass). It works less well against determined or planned crimes (burglary by professionals, targeted attacks) where offenders are not deterred by ambient design cues.
 - **Gaps marked `[needs source]`:** none — all Facts trace to ASIS / DOJ CPTED documentation.
 
+### Tricky distractors
+
+- **CPTED is preventive, not detective.** Design reduces likelihood. Wrong-answer pattern: claiming CPTED detects crime — it shapes the environment to deter.
+- **Maintenance is the broken-windows principle.** Care signals attention. Wrong-answer pattern: dismissing maintenance as cosmetic — it's a deliberate CPTED principle.
+- **Natural surveillance via design, not guards.** Sightlines, lighting. Wrong-answer pattern: collapsing natural surveillance with CCTV — natural means built-in design.
+- **CPTED works against opportunistic crime.** Less effective against determined attacks. Wrong-answer pattern: claiming CPTED stops all crime types — opportunistic vs targeted differs.
+- **Layers with active controls.** CPTED + CCTV + guards + access control. Wrong-answer pattern: claiming CPTED replaces active controls — it complements.
+- **Territorial reinforcement is psychological.** Ownership signals. Wrong-answer pattern: equating territorial reinforcement with physical barriers — fences are part, but signage and paving cues count too.
+
 ## Engine demo opportunities
 
 - `? | typical implementation → Open sightlines and well-lit areas` → Natural surveillance

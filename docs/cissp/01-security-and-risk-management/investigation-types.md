@@ -25,6 +25,15 @@ The five investigation types CISSP courseware distinguishes by *legal forum* and
 - **Right against self-incrimination applies in criminal only.** A subject of a criminal investigation has Fifth Amendment protection (in the U.S.) against being compelled to testify against themselves. This protection does *not* apply to administrative investigations against employees — refusal to cooperate with an internal investigation can be grounds for termination.
 - **Gaps marked `[needs source]`:** four Facts — administrative burden of proof, administrative evidence rules, all three industry-row cells. Internal policies vary by organization; industry standards vary by industry, making generalization harder than for the legally-defined categories.
 
+### Tricky distractors
+
+- **Burden-of-proof ladder.** Criminal (beyond reasonable doubt) > Civil (preponderance) > Administrative (more likely than not). Wrong-answer pattern: applying criminal standards to civil cases — civil only requires >50%.
+- **Collect to highest standard you might need.** If criminal prosecution is possible, use criminal-grade chain of custody from the start. Wrong-answer pattern: starting with administrative-only evidence and switching later — earlier evidence may be inadmissible.
+- **Self-incrimination doesn't apply in administrative.** Employees can be compelled to cooperate or face termination. Fifth Amendment is criminal-only. Wrong-answer pattern: extending criminal protections to internal investigations.
+- **One incident = multiple investigations.** Breach may trigger administrative, criminal, civil, and regulatory simultaneously. Wrong-answer pattern: assuming investigations are mutually exclusive.
+- **Discovery is civil; subpoena/warrant is criminal.** Different procedural mechanisms. Wrong-answer pattern: claiming discovery applies to criminal cases — criminal uses subpoena and warrant under judicial oversight.
+- **Industry investigations are contractual.** PCI, FINRA, ICANN — penalties are loss of certification or contract penalties, not jail or government fines. Wrong-answer pattern: confusing industry penalties with regulatory fines.
+
 ## Engine demo opportunities
 
 - `? | burden of proof → Beyond a reasonable doubt` → Criminal

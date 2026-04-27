@@ -22,6 +22,15 @@ The two pure approaches to risk analysis plus the hybrid that combines them. Qua
 - **Both approaches feed the same downstream decisions.** Risk treatment choices (mitigate / accept / transfer / avoid — see `risk-treatment.md`) are made based on the analysis output, regardless of method. The choice of method affects *how confidently* the decision is made, not *what* decisions are available.
 - **Gaps marked `[needs source]`:** two Facts — hybrid weaknesses and "when used" framing. Practitioner consensus but not yet sourced to a primary publication.
 
+### Tricky distractors
+
+- **Qualitative is fast; Quantitative is comparable.** Qualitative gives H/M/L; Quantitative gives dollar figures. Wrong-answer pattern: claiming Quantitative is faster — it requires more data and time.
+- **Quantitative requires both probability and magnitude.** ALE = ARO × SLE. Wrong-answer pattern: claiming Quantitative analysis only needs SLE — without ARO you have no annualized figure.
+- **Quantitative numbers can be falsely precise.** Rare-event ARO is essentially a guess wearing a number. Wrong-answer pattern: trusting Quantitative output as objective — it's only as good as its inputs.
+- **Hybrid is the practical norm.** Most mature programs triage qualitatively, then quantify the top-tier risks. Wrong-answer pattern: claiming an organization must pick one method — hybrid is standard practice.
+- **Both methods inform the same risk-treatment choices.** Mitigate/accept/transfer/avoid options are unchanged by method. Wrong-answer pattern: claiming Quantitative changes available treatment options — it changes confidence in the choice, not the choice set.
+- **Anchored rating scales blur the line.** A qualitative method with "High = >$1M" is sliding toward Hybrid. Wrong-answer pattern: classifying anchored qualitative as pure qualitative — anchoring imports magnitude data.
+
 ## Engine demo opportunities
 
 - `? | output → Annual expected loss in monetary terms` → Quantitative

@@ -27,6 +27,15 @@ The seven canonical API-specific risk categories from the OWASP API Security Top
 - **SSRF appears in both the web Top 10 (A10) and API Top 10 (API7).** Same vulnerability class, just emphasized again because APIs frequently make outbound calls to URLs derived from request input. Mitigation is identical.
 - **Out of scope for this Concept:** API6 Unrestricted Access to Sensitive Business Flows, API9 Improper Inventory Management, API10 Unsafe Consumption of APIs (the three rows omitted from the seven-row stub), GraphQL-specific risks, gRPC and WebSocket risks, JWT-specific attacks, API gateway / WAF rule design.
 
+### Tricky distractors
+
+- **BOLA, BOPLA, BFLA hierarchy.** Object → Property → Function levels of authorization. Wrong-answer pattern: confusing them — different granularities of access control failure.
+- **BOLA is most common.** Trivially exploitable by changing record IDs. Wrong-answer pattern: ranking other API issues higher in prevalence.
+- **BOPLA is mass assignment.** Modern terminology. Wrong-answer pattern: claiming mass assignment isn't on the OWASP API Top 10 — it's API3:2023 BOPLA.
+- **API Top 10 ≠ Web Top 10.** API list separates auth granularity (BOLA/BOPLA/BFLA); Web list collapses to A01 Broken Access Control. Wrong-answer pattern: applying Web Top 10 categories directly to API security questions.
+- **SSRF appears in both lists.** Same vulnerability class. Wrong-answer pattern: claiming SSRF is API-only or Web-only — it's in both.
+- **Per-request authorization, not just route-level.** Authorization at data-access layer, not just at the entry point. Wrong-answer pattern: claiming route-level RBAC is sufficient — BOLA exploits within authorized routes.
+
 ### Values without a direct public citation
 
 No cell relies on inference beyond what the OWASP API Security Top 10 [s1] specifies. Mitigation lists are paraphrased from the OWASP per-category guidance rather than directly quoted; the canonical defenses are from [s1].

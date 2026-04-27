@@ -25,6 +25,15 @@ The five distinct audiences a security awareness, education, and training progra
 - **IR training requires exercise rotation.** Tabletop exercises (discussion-based) build muscle memory at low cost; live-fire exercises (real systems, real tools, fake adversary) test the muscle memory under pressure. IR teams need both, rotated through the year so different scenarios get exercised. Quarterly cadence is the test-favored frequency.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-50 / SP 800-181 (NICE Framework) framing.
 
+### Tricky distractors
+
+- **Awareness vs Training vs Education.** Awareness changes attitude; Training changes skill; Education changes capability. Wrong-answer pattern: collapsing them — different program goals.
+- **Privileged users need more frequent training.** Higher per-person risk. Wrong-answer pattern: applying same annual cadence — privileged needs role-change refreshers.
+- **Executive training is briefing-style.** Time-constrained, risk-focused. Wrong-answer pattern: claiming executives need full technical training — they need decision-grade summary.
+- **Developer training works best tool-integrated.** IDE plugins, CI/CD scanners. Wrong-answer pattern: claiming classroom secure-coding training is sufficient — fades fast without tool reinforcement.
+- **IR teams rotate exercise types.** Tabletop + live-fire. Wrong-answer pattern: claiming one exercise type is enough — both build different capabilities.
+- **One-size-fits-all training fails.** Different audiences, different needs. Wrong-answer pattern: deploying single training body for all roles — the explicit failure mode this Concept addresses.
+
 ## Engine demo opportunities
 
 - `? | content focus → Strategic risk and governance responsibilities` → Executive

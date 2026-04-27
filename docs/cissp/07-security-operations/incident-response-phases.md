@@ -28,6 +28,15 @@ The seven sequential phases of incident response as expanded from NIST SP 800-61
 - **Preparation is the only phase that runs continuously.** Phases 2-7 execute per-incident; Phase 1 is ongoing — the IR plan, runbooks, training, and tooling must already exist when an incident occurs. The most common CISSP wrong-answer scenario: trying to *prepare* during an active incident.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-61 framing.
 
+### Tricky distractors
+
+- **Containment vs Eradication.** Containment limits damage spread (isolate the affected system). Eradication removes the threat (clean the malware, kill the persistence). Wrong-answer pattern: conflating them — they're sequential, not synonymous.
+- **Eradication vs Recovery.** Eradication cleans the threat; Recovery restores service. Wrong-answer pattern: thinking restoration completes IR. Lessons-learned (Phase 7) closes the loop; without it the next incident reuses the same gaps.
+- **NIST 4-phase vs CISSP 7-phase.** NIST SP 800-61 Rev 2 lists *four* phases (Preparation, Detection & Analysis, Containment/Eradication/Recovery as one, Post-Incident Activity). CISSP courseware decomposes into *seven*. Wrong-answer pattern: insisting on one count. Either is acceptable depending on the framework cited.
+- **Preparation is continuous.** Phase 1 doesn't happen "during an incident" — it must already exist. Wrong-answer pattern: choosing "Prepare the IR team" when an incident is already underway.
+- **Detection requires baseline.** Anomaly detection needs a baseline of normal. Wrong-answer pattern: starting baseline collection during Phase 2 — too late; that's a Phase 1 deliverable.
+- **Lessons learned vs Post-incident.** Some references collapse these into one. CISSP courseware separates because the artifacts differ: post-incident produces the report (descriptive); lessons learned updates the IR plan (corrective).
+
 ## Engine demo opportunities
 
 - `? | Name → Eradication` → Phase 4

@@ -27,6 +27,15 @@ The five sequential steps that produce and verify a digital signature. Steps 1-2
 - **What is intentionally not on this table.** Detached vs. attached signatures (whether the signature accompanies the message or is sent separately), signature formats (PKCS#7, JWS, COSE), countersignatures, and post-quantum signature schemes (ML-DSA, SLH-DSA in FIPS 204/205) could be added in future revisions.
 - **Gaps marked `[needs source]`:** none — all Facts trace to FIPS 186-5 / RFC 8032 framing.
 
+### Tricky distractors
+
+- **The hash is signed, not the message.** Performance and binding via collision resistance. Wrong-answer pattern: claiming the message itself is encrypted with the private key — only the digest is.
+- **Sign with private; verify with public.** Wrong-answer pattern: reversing — you can't sign with a public key (anyone could).
+- **Signing provides authentication, integrity, non-repudiation.** Not confidentiality. Wrong-answer pattern: claiming digital signatures encrypt the message — they don't.
+- **Encryption ≠ signing.** Encryption uses recipient's public key (only recipient decrypts with private). Signing uses sender's private key (anyone verifies with public). Wrong-answer pattern: confusing which key plays which role.
+- **Hash collision breaks signatures.** If two messages produce the same hash, signatures don't bind unique content. Wrong-answer pattern: claiming MD5/SHA-1 are still safe for signatures — collision attacks exist.
+- **HMAC ≠ digital signature.** HMAC is symmetric and provides integrity + authentication but NOT non-repudiation (both parties have the key). Wrong-answer pattern: treating HMAC as a digital signature substitute.
+
 ## Engine demo opportunities
 
 - `? | Name → Encrypt hash with private key` → Step 2

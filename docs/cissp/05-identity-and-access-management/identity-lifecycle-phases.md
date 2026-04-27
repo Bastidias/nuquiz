@@ -27,6 +27,15 @@ The five phases of the identity lifecycle from account creation through terminat
 - **Orphan and dormant accounts.** Accounts that survive past their legitimate deprovisioning point (a user leaves but their account is never disabled) are a top audit finding. The review phase is the compensating control when deprovisioning fails.
 - **Out of scope for this Concept:** SoD (Separation of Duties) control specifics, least-privilege enforcement (belongs more naturally in a D1/D3 governance Concept), account review cadence specifics (separate Concept — `account-review-activities`), account types (separate Concept — `account-types`), provisioning protocols beyond SCIM (LDAP, SPML).
 
+### Tricky distractors
+
+- **JML aligns with Provision/Modify/Deprovision.** Joiner = Provision; Mover = Access Management; Leaver = Deprovision. Wrong-answer pattern: applying JML to non-aligned phases.
+- **HR is usually authoritative source.** Provisioning triggered by HR feed, not by IdP. Wrong-answer pattern: claiming the IdP initiates provisioning without upstream trigger.
+- **Review is recurring.** Quarterly/annually per regulation. Wrong-answer pattern: treating Review as one-time — it's a continuous cadence.
+- **Deprovisioning has urgency tiers.** Active access removal = same-day; archive = longer. Wrong-answer pattern: claiming deprovisioning is one atomic action.
+- **Orphan accounts are review's compensating control.** Review catches what deprovisioning missed. Wrong-answer pattern: claiming deprovisioning alone prevents orphan accounts — review is the safety net.
+- **SCIM is the standard provisioning protocol.** RFC 7643/7644. Wrong-answer pattern: assuming LDAP sync or vendor connectors are the canonical CISSP answer — SCIM is.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

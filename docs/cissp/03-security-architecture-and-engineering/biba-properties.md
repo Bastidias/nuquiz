@@ -23,6 +23,14 @@ The three properties that define the Biba integrity model. Biba is Bell-LaPadula
 - **Trusted Solaris implemented both BLP and Biba.** The trusted variants of Solaris (and Trusted SELinux) enforced both confidentiality and integrity labels on every subject and object. Most modern OSes do not — they typically use DAC and capability-based controls instead.
 - **Gaps marked `[needs source]`:** none — all Facts trace to the original Biba paper.
 
+### Tricky distractors
+
+- **Biba is the inverse of BLP.** "No read down, no write up" — opposite directions of BLP's "no read up, no write down." Wrong-answer pattern: applying BLP rules to Biba (or vice versa). The polarity inverts because confidentiality and integrity have opposite risk directions.
+- **No write up — counterintuitive.** A high-integrity subject cannot write to a *higher*-integrity object. Wrong-answer pattern: claiming Biba prevents writing *down* — that's BLP. Biba's concern is contamination flowing upward.
+- **Biba is integrity-only.** Doesn't address confidentiality. Wrong-answer pattern: claiming Biba protects all CIA properties.
+- **Invocation property.** Often forgotten. Subjects cannot *invoke* (call) higher-integrity subjects. Wrong-answer pattern: only knowing simple-integrity and *-integrity. The invocation property is the third Biba property.
+- **Biba in production.** Widely used implicitly — code signing, signed package repositories, CI/CD trusted-dependency policies all implement Biba-style logic. Wrong-answer pattern: claiming Biba is "only theoretical."
+
 ## Engine demo opportunities
 
 - `? | content → Subject cannot write object at higher integrity` → *-integrity property

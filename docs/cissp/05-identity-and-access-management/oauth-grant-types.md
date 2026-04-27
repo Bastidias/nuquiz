@@ -26,6 +26,15 @@ The six OAuth 2.0 grant types CISSP candidates should discriminate. RFC 6749 [s1
 - **OAuth 2.1 consolidates the recommended set.** Draft OAuth 2.1 keeps Authorization Code (with PKCE mandatory), Client Credentials, Device Code, and Refresh Token. Implicit and Resource Owner Password are removed. CISSP testing that tracks current best practice aligns with this consolidation.
 - **Out of scope for this Concept:** the Authorization Code flow step-by-step (separate Ordered Concept — `oauth-authorization-code-flow`), Refresh Token grant (typically paired with Authorization Code; not a standalone end-user grant), token introspection (RFC 7662), token revocation (RFC 7009), OAuth roles and actors (separate Concept — `oauth-roles`), DPoP and mTLS sender-constrained tokens, OIDC-specific flows.
 
+### Tricky distractors
+
+- **Implicit is deprecated.** OAuth 2.0 Security Best Current Practice and OAuth 2.1 explicitly remove Implicit. Wrong-answer pattern: recommending Implicit for SPAs — use Authorization Code with PKCE instead.
+- **Resource Owner Password is deprecated.** ROPC defeats the OAuth design goal of avoiding password sharing with third-party clients. Wrong-answer pattern: claiming ROPC is fine for "trusted" clients — not recommended for new deployments.
+- **Client Credentials has no user.** Used for machine-to-machine; the client authenticates as itself. Wrong-answer pattern: claiming Client Credentials authenticates a user.
+- **PKCE is for public clients.** Authorization Code with PKCE is for SPAs and mobile apps that can't keep a secret. Confidential clients can use bare Authorization Code with client_secret. Wrong-answer pattern: claiming PKCE is mandatory for confidential clients — it isn't, though OAuth 2.1 recommends it everywhere.
+- **OAuth is not authentication.** OAuth 2.0 is authorization (delegated API access). OIDC adds authentication via the ID Token. Wrong-answer pattern: treating OAuth alone as an authentication protocol.
+- **Device Code requires a second device.** The user authenticates on a *separate* device with a browser. Wrong-answer pattern: claiming Device Code works on any device without a browser, regardless of whether the user has another device.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

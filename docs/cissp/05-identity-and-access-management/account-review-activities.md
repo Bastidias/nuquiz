@@ -24,6 +24,15 @@ The four account-review activities CISSP candidates are expected to discriminate
 - **Cross-Concept link.** Identity lifecycle phases (`identity-lifecycle-phases` in D5) places this Concept's activities in Phase 4 (Review). Account types (`account-types` in D5) covers which accounts each activity targets — privileged review targets the Privileged row; dormant audit targets all rows but is most consequential for User and External.
 - **Out of scope for this Concept:** specific IGA tooling (SailPoint, Saviynt, Microsoft Entra Identity Governance), recertification campaign UX, manager attestation workflows, AI-assisted access reviews, role-mining and role-engineering practices, just-in-time access alternatives to standing privilege.
 
+### Tricky distractors
+
+- **Privileged review is quarterly; access certification is annual.** Different cadences. Wrong-answer pattern: applying same cadence to all reviews — privileged needs more frequent.
+- **Dormant audit is compensating control.** For failed deprovisioning. Wrong-answer pattern: claiming dormant audit replaces deprovisioning — it catches what deprovisioning missed.
+- **SoD review prevents fraud.** No single user holds conflicting privileges. Wrong-answer pattern: claiming SoD review is just compliance overhead — it's a structural fraud control.
+- **Resource owner certifies access.** Not security or audit. Wrong-answer pattern: claiming security teams sign off — they facilitate; resource owners decide.
+- **Reviews must produce change tickets to have value.** Rubber-stamp reviews are worse than none. Wrong-answer pattern: claiming any review is sufficient — only reviews that result in change provide control value.
+- **Cadence is regulation-driven.** PCI 6 months, SOX annual, HIPAA periodic. Wrong-answer pattern: applying one cadence to all reviews — varies by regulatory profile.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

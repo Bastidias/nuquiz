@@ -23,6 +23,15 @@ The five Scrum ceremonies CISSP candidates are expected to recognize — four fo
 - **Kanban has no ceremonies.** Pure Kanban (a different Agile methodology) lacks Scrum's time-boxed events; flow is continuous. This Concept is Scrum-specific; "Agile ceremonies" at the CISSP level generally means "Scrum events" because Scrum dominates the practitioner landscape. If exam framing becomes more methodology-generic, an SME could split into per-methodology Concepts.
 - **Out of scope for this Concept:** SAFe ceremonies (ART PI Planning, Scrum of Scrums), Kanban cadences (replenishment, delivery), XP practices (pair programming, CI), security-specific Agile ceremonies (threat-modeling standups, secure-code review gates), Scrum role definitions (covered implicitly in the attendees column), Definition of Done / Definition of Ready artifacts.
 
+### Tricky distractors
+
+- **Daily standup is 15 min max.** Not 30. Wrong-answer pattern: claiming standups can run 30+ minutes — that violates the timebox.
+- **Backlog refinement is not a formal Scrum event.** Ongoing activity. Wrong-answer pattern: treating backlog refinement as a fifth required ceremony — Scrum Guide names four events.
+- **Sprint review vs Retrospective.** Review demos to stakeholders; Retro reflects on process. Wrong-answer pattern: collapsing them — they have different attendees and different focuses.
+- **Sprint planning has 8-hour max for one-month sprint.** Proportional for shorter. Wrong-answer pattern: applying 8-hour max to all sprint lengths — scales with sprint length.
+- **Kanban has no ceremonies.** Continuous flow. Wrong-answer pattern: applying Scrum events to Kanban — different methodology.
+- **Daily Scrum = Daily standup.** Same event, different vocabulary. Wrong-answer pattern: treating them as different — Scrum Guide says Daily Scrum; practice says standup.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

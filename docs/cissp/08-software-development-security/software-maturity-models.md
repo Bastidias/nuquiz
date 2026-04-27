@@ -23,6 +23,15 @@ The three software maturity models CISSP candidates should discriminate. CMMI is
 - **CMMI is not security-specific.** CMMI emerged from software-engineering process maturity, not application security. CMMI Level 5 says nothing about whether secure-coding practices are followed; it says the organization's *process* is statistically optimized. CMMI + SAMM is a common pairing for organizations that need both engineering-process maturity and security maturity.
 - **Out of scope for this Concept:** CMMI level-by-level detail (separate Concept — `cmmi-maturity-levels`), SAMM business-function detail, BSIMM activity catalogue (~120 activities), ISO/IEC 33000 series (CMMI's ISO equivalent), software-process improvement programs (PSP, TSP).
 
+### Tricky distractors
+
+- **BSIMM is descriptive; SAMM/CMMI are prescriptive.** Most distinctive feature. Wrong-answer pattern: claiming BSIMM tells you what to do — it observes what others do.
+- **CMMI is not security-specific.** Process maturity, not security maturity. Wrong-answer pattern: claiming CMMI Level 5 implies secure software — process optimization ≠ security.
+- **CMMI = 5 levels; SAMM = 4 levels; BSIMM = 3 levels per activity.** Wrong-answer pattern: claiming all use the same level structure.
+- **SAMM has 5 business functions, not 5 levels.** Common confusion. Wrong-answer pattern: claiming SAMM uses 5 maturity levels — it uses 4 levels across 5 business functions.
+- **BSIMM levels are per-activity, not per-organization.** No aggregate BSIMM score. Wrong-answer pattern: claiming an org has a "BSIMM level" — they have a distribution of Level 1/2/3 activities.
+- **CMMI + SAMM is a common pairing.** Engineering maturity + security maturity. Wrong-answer pattern: claiming organizations must pick one model — they layer.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

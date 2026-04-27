@@ -29,6 +29,14 @@ The six-message Kerberos V5 exchange that gets a client from "I have a password"
 - **Clock skew matters.** Authenticators carry timestamps. Kerberos rejects authenticators outside a configured skew window (default five minutes in Windows AD). A large clock drift between client and KDC produces "clock skew too great" errors and is the single most common cause of Kerberos login failures in practice.
 - **Out of scope for this Concept:** PKINIT (public-key initial authentication — replaces the long-term key with an X.509 certificate in Step 1–2), constrained delegation and S4U2Self/S4U2Proxy, Kerberoasting and AS-REP Roasting attacks, cross-realm trusts and referrals, Kerberos FAST (Flexible Authentication Secure Tunneling), Kerberos over TCP vs UDP transport behavior. Each deserves its own Concept.
 
+### Tricky distractors
+
+- **AS vs TGS responsibility.** AS issues TGTs (Step 2); TGS issues service tickets (Step 4). Wrong-answer pattern: claiming the AS issues service tickets directly. The two-step structure is what makes Kerberos scalable — the AS sees the long-term key once, then the TGS handles all subsequent service requests using session keys.
+- **Encryption key per step.** Step 2 (AS_REP) is encrypted with the *client's long-term key*; Steps 3-4 use the *TGS session key*; Steps 5-6 use the *service session key*. Wrong-answer pattern: claiming Step 2 uses a session key (it can't — no session key exists yet at that point).
+- **Mutual authentication is optional.** Wrong-answer pattern: claiming Step 6 (AP_REP) always occurs. It only fires if the client requested mutual authentication via the `MUTUAL-REQUIRED` flag. Without it, the client trusts the service implicitly after Step 5.
+- **Pre-authentication.** Default Microsoft Kerberos requires pre-auth (encrypted timestamp in AS_REQ); base RFC 4120 does not mandate it. Wrong-answer pattern: assuming AS_REQ is always encrypted. AS-REP Roasting attack exploits accounts with pre-auth disabled.
+- **Clock skew.** Authenticators carry timestamps; default ±5-minute window in AD. Wrong-answer pattern: claiming "Kerberos failures are usually password-related." In production they are usually clock-skew or DNS-related.
+
 ### Values without a direct public citation
 
 | Cell | Value | Why unsourced |

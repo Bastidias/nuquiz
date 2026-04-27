@@ -27,6 +27,15 @@ The five-phase lifecycle of a security audit from initial planning through follo
 - **External vs internal lifecycle differences.** External audits typically front-load Planning (engagement letter, scoping decisions, fee negotiation) and have heavier formal Reporting requirements. Internal audits may compress Planning and have more flexibility on Reporting format. The five-phase structure applies to both.
 - **Out of scope for this Concept:** specific audit techniques (sampling, analytical procedures, walkthroughs), audit working-paper retention requirements, auditor independence requirements per phase, audit committee charters and oversight, audit software (TeamMate, AuditBoard, Workiva).
 
+### Tricky distractors
+
+- **Engagement letter is part of Planning.** Sets scope contract. Wrong-answer pattern: skipping engagement letter — leaves scope ambiguous and exposes audit to dispute.
+- **Working papers stay with auditor.** Not shared with audited organization. Wrong-answer pattern: claiming working papers belong to the audited org — auditor retains for AICPA-required period.
+- **Management response is part of the report.** Documents commitment to remediation. Wrong-answer pattern: claiming the report is auditor-only — management response is part of the formal record.
+- **Follow-up verifies closure.** Often skipped. Wrong-answer pattern: assuming all audits include follow-up — many programs stop at reporting.
+- **Phase order.** Planning → Fieldwork → Reporting → Remediation → Follow-up. Wrong-answer pattern: putting Remediation before Reporting — findings precede remediation.
+- **Audit cycle restarts.** Findings feed next year's planning. Wrong-answer pattern: treating audits as one-time events — annual cycle is the norm.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

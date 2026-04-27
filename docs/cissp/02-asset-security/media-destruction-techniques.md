@@ -25,6 +25,15 @@ The five physical media-destruction techniques NIST SP 800-88 Rev 1 [s1] address
 - **Verification matters for compliance.** Destruction without verification is just "we put it in a box marked 'destroyed.'" NIST 800-88 requires a *certificate of destruction* documenting what was destroyed, by whom, when, and by what method, with verification evidence (typically photographs or measurement readouts). Many compliance regimes require third-party-witnessed destruction for high-sensitivity media.
 - **Out of scope for this Concept:** specific NIST 800-88 particle-size requirements per data sensitivity, vendor-specific destruction equipment, environmental regulations on incineration, recycling pathways for shredded electronics, NIST 800-88 guidance on cloud-storage sanitization.
 
+### Tricky distractors
+
+- **Degaussing only works on magnetic media.** Most-tested point. Wrong-answer pattern: applying degauss to SSD or flash — those use non-magnetic storage.
+- **Shredding particle size matters.** P-7 for Top Secret, P-4 for less sensitive. Wrong-answer pattern: claiming any office shredder satisfies high-classification destruction.
+- **Disintegration works on SSDs.** Mechanical, not electromagnetic. Wrong-answer pattern: claiming SSDs cannot be physically destroyed — disintegration handles them.
+- **Incineration is environmentally heaviest.** Emissions, ash disposal. Wrong-answer pattern: claiming incineration is universally best for compliance — environmental cost is real.
+- **Verification produces certificate of destruction.** Documentation required. Wrong-answer pattern: claiming destruction without certificate counts — compliance requires the paper trail.
+- **All five are NIST "Destroy" tier.** Beyond Clear and Purge. Wrong-answer pattern: confusing destroy-tier physical methods with logical sanitization (Clear).
+
 ### Values without a direct public citation
 
 | Cell | Notes |

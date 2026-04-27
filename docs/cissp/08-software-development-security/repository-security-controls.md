@@ -23,6 +23,15 @@ The five repository-side security controls applied at the source-control layer (
 - **These controls live above the pipeline.** CI/CD pipeline stages (covered in `ci-cd-pipeline-stages`) run *after* a commit lands. Repository security controls run *at or before* the commit lands. This temporal split is what makes them complementary — repository controls block bad commits from entering; pipeline controls catch issues that slipped through.
 - **Out of scope for this Concept:** organization-level access controls (SSO integration, IP allow-lists, repository visibility), CODEOWNERS files (a specific GitHub mechanism for required reviewers), Git LFS for large files, repository archiving and deletion, audit log retention, GPG key management for commit signing, sigstore / cosign for artifact signing.
 
+### Tricky distractors
+
+- **Signed commits authenticate the committer, not the code.** Cryptographic signature on author identity. Wrong-answer pattern: claiming signed commits prove code is trustworthy — a malicious dev with a signing key can sign malicious code.
+- **Branch protection vs Required reviewers.** Branch protection is technical; required reviewers is governance. Wrong-answer pattern: collapsing them — they target different threats.
+- **Secrets in git history are forever.** Even after deletion, history retains them. Wrong-answer pattern: claiming `git rm` removes leaked secrets — rotation is required because the secret may already be exfiltrated.
+- **Dependency review runs at PR time.** Pre-merge gate. Wrong-answer pattern: claiming dependency review only runs in CI — it gates PRs.
+- **Repository controls run before pipeline.** At or before commit lands. Wrong-answer pattern: claiming pipeline controls replace repo controls — they're temporally complementary.
+- **Force-push rewrites history.** Branch protection blocks this. Wrong-answer pattern: claiming required reviewers prevent force-push — only branch protection denies the push itself.
+
 ### Values without a direct public citation
 
 | Cell | Notes |

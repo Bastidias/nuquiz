@@ -26,3 +26,12 @@ The four canons of the (ISC)² Code of Ethics, in their official preference orde
   - `? | Intent → Public welfare comes first when interests conflict` → Canon 1.
   - `Canon 3 | Example violation → ?` → Charging for a vulnerability assessment without performing one.
   - Conflict resolution (sequence-derived): `min(Canon n where Canon n ∈ {Canon 1, Canon 2})` → Canon 1. The lower-numbered canon wins; this is a structural Fact carried by the Row order.
+
+### Tricky distractors
+
+- **Canon ordering is priority, not chronology.** Lower-numbered canons outrank higher-numbered ones in conflicts. Wrong-answer pattern: treating the canons as equal weight or alphabetizing them.
+- **Society outranks principals.** Canon 1 (society) > Canon 3 (principals/clients). Wrong-answer pattern: choosing client confidentiality over public safety — society wins.
+- **Honor outranks client duty.** Canon 2 > Canon 3. Wrong-answer pattern: claiming you must follow a client's unethical instruction to fulfill duty — Canon 2 prevails.
+- **Profession is last.** Canon 4 (profession) yields to all three earlier canons. Wrong-answer pattern: protecting the profession's reputation by hiding facts that affect public safety.
+- **Verbatim wording is testable.** Exam may quote a canon and ask which number. Wrong-answer pattern: paraphrasing canon text — recognize the official wording.
+- **Code applies to CISSPs even outside (ISC)² work.** Personal conduct under Canon 2 covers off-the-clock behavior. Wrong-answer pattern: claiming the code only applies during paid engagements.

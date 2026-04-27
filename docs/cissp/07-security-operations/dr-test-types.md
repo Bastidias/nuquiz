@@ -25,6 +25,15 @@ The five disaster recovery / contingency-plan test types from NIST SP 800-84, or
 - **Full interruption is rarely run.** Most organizations stop at parallel because full interruption requires accepting production downtime as the cost of the test. NIST SP 800-34 acknowledges that high-impact systems may require it; in practice it is reserved for new systems pre-launch and for regulated industries with explicit testing mandates.
 - **Gaps marked `[needs source]`:** none — all Facts trace to NIST SP 800-84 framing.
 
+### Tricky distractors
+
+- **Walkthrough vs Tabletop.** Same thing — discussion-based exercise. NIST uses *tabletop*; CISSP courseware often uses *walkthrough*. Wrong-answer pattern: treating them as different test types.
+- **Parallel vs Full Interruption.** Parallel = alternate site runs *in parallel* with production (no production downtime). Full Interruption = production is *halted* and recovery is exercised end-to-end. Wrong-answer pattern: claiming parallel disrupts production — it doesn't, that's the point.
+- **Checklist is the lightest test.** Just verifies that the plan documentation exists and lists all required steps. Doesn't test execution. Wrong-answer pattern: assuming checklist tests anything beyond document completeness.
+- **Simulation vs Walkthrough.** Walkthrough = team discusses scenario in a room. Simulation = team executes documented procedures using simulated systems / data. Simulation is heavier than walkthrough but lighter than parallel. Wrong-answer pattern: equating simulation with parallel testing.
+- **Test ladder ordering.** Checklist → Walkthrough → Simulation → Parallel → Full Interruption. Wrong-answer pattern: putting full interruption before parallel. Increasing disruption is the ordering principle.
+- **Most organizations stop at Parallel.** Full Interruption requires accepting production downtime as test cost. Wrong-answer pattern: assuming all DR programs reach Full Interruption — most don't.
+
 ## Engine demo opportunities
 
 - `? | Name → Walkthrough` → Type 2
