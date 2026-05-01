@@ -2,6 +2,17 @@
 
 > A walking tour of what becomes possible when knowledge is stored as atomic CellFacts in well-formed tables, every CellFact has a stable identity, and every wrong answer the student picks is a real CellFact from elsewhere in the dataset. Each capability below is paired with a worked example using actual demo content from `docs/cissp/`. Engine vocabulary (`Concept`, `TableName`, `Pattern`, `RowHeader`, `ColumnHeader`, `Cell`, `CellFact`) is defined in `docs/glossary.md`.
 
+## Status (2026-04-30) — v1 scope
+
+- **§§1–6, §8 in v1 scope. §7 (pedagogical moves) out of v1. §9 (author-side flex) is v2** — authoring tooling lands after the quiz surface (`pre-team-discussion.md` Decisions).
+- **Adaptivity (§4):** student response history is **on.** Adaptive distractors, confusion-pair tracking (§5), and history-dependent modes (Spaced / Cram / Random Walk in §8) all enabled.
+- **Question shapes (§§1, 2, 6):** all in scope. Build priority: **MC → SATA → Ordering → T/F → Comparison.** "Comparison" = MC/SATA variation on *shared* / *not-in* queries (e.g., "Which protocols share `Reliable`?"). Structural reasoning (§6 — outlier / missing-Row / equivalence) in scope; ranking relative to the above TBD.
+- **Modes (§8):** all six on the table; lead modes will be tuned during build.
+- **Misconception feedback (§5):** deterministic only — coordinate grammar, no LLM-written prose. All four variants in: trace, confusion-pair count + paired re-test, confusion graph shown to student, phantom-fact flag.
+- **Distractor pool (§3):** **same-Column other Rows only.** Cross-Column "clearly not a device" distractors are out. Difficulty is modulated by student response history (favor previously-confused CellFacts to dial up, less-confused Rows to dial down). Near-string distractors **out** of v1.
+- **Pedagogical moves (§7): OUT of v1.** No progressive hints, no confidence elicitation, no easier-version-on-failure, no hot-streak suspend.
+- **Still open:** ranking of structural reasoning (§6) within the build priority list.
+
 ## The substrate (read this first)
 
 Three properties carry everything that follows:

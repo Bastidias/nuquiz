@@ -45,7 +45,7 @@ Starter set (~26 Concepts). Each will become a file in this folder. Tags column 
 ### 1.1 Advance Directives
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
-| Advance directive types | Dimensions | Living will, Durable power of attorney for healthcare, POLST/MOLST, DNR/DNI, Healthcare proxy | what it specifies, when it activates, who executes, revocability, statutory basis | 1.1, IP-CD | ~25 |
+| Advance directive types | Dimensions | Living will, Durable power of attorney for healthcare, POLST/MOLST, DNR, DNI, Healthcare proxy | what it specifies, when it activates, who executes, revocability, statutory basis | 1.1, IP-CD | ~30 |
 
 ### 1.2 Advocacy
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
@@ -68,7 +68,7 @@ Starter set (~26 Concepts). Each will become a file in this folder. Tags column 
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Patient Bill of Rights elements | Dimensions | Information disclosure, Choice of providers, Access to emergency services, Participation in treatment decisions, Respect/non-discrimination, Confidentiality, Complaints/appeals | what it guarantees, nurse's obligation, common violation example | 1.5, 1.2 | ~21 |
-| Restraint use rules | Dimensions | Physical, Chemical, Seclusion, Behavioral emergency restraint | indication, order requirement, monitoring frequency, max order duration, documentation | 1.5, 1.14 | ~20 |
+| Restraint use rules | Dimensions | Physical, Chemical, Seclusion, Behavioral emergency restraint (adult ≥18), Behavioral emergency restraint (age 9-17), Behavioral emergency restraint (under 9) | indication, order requirement, monitoring frequency, max order duration, documentation | 1.5, 1.14 | ~30 |
 
 ### 1.6 Collaboration with Interdisciplinary Team
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
@@ -109,7 +109,7 @@ Starter set (~26 Concepts). Each will become a file in this folder. Tags column 
 ### 1.12 Informed Consent
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
-| Informed consent roles | Dimensions | Provider (MD/NP/PA performing procedure), RN (witnessing), Client, Legal representative, Interpreter | responsibility, must be present?, must sign? | 1.12, IP-CD | ~20 |
+| Informed consent roles | Dimensions | Practitioner performing procedure, RN witnessing, Client, Legal representative, Interpreter | responsibility, must be present?, must sign? | 1.12, IP-CD | ~20 |
 | Consent edge cases | Dimensions | Minor, Emancipated minor, Unconscious adult emergency, Cognitively impaired, Mental-health hold, Non-English speaker | who consents, exception condition, documentation | 1.12, 1.14, IP-CS | ~24 |
 
 ### 1.13 Information Technology
@@ -127,8 +127,8 @@ Starter set (~26 Concepts). Each will become a file in this folder. Tags column 
 ### 1.15 Performance Improvement (Quality Improvement)
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
-| Quality improvement cycle | Ordered | Plan, Do, Study/Check, Act | Activity, Tool, Output | 1.15 | ~12 |
-| Sentinel/never event examples | Dimensions | Wrong-site surgery, Retained foreign object, Patient suicide in care, Medication error causing death, Severe pressure injury (stage 3+) | category, mandatory action, reporting timeline | 1.15, 1.14 | ~20 |
+| Quality improvement cycle | Ordered | Plan, Do, Study, Act | Activity, Tool, Output | 1.15 | ~12 |
+| Sentinel/never event examples | Dimensions | Wrong-site surgery, Retained foreign object, Patient suicide in care, Medication error causing death, Stage 3+ pressure injury | category, mandatory action, reporting timeline | 1.15, 1.14 | ~20 |
 
 ### 1.16 Referrals
 Folded into 1.6 "Interdisciplinary team members" — referral triggers are captured there. No standalone Concept.

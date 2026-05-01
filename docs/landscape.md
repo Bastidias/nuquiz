@@ -2,6 +2,13 @@
 
 > A background doc, not a roadmap. Surveys the terrain — what the engine can teach, which markets it plausibly fits, what the tradeoffs look like. Choices get made elsewhere; this is here to argue with.
 
+## Status (2026-04-30)
+
+- **Target student locked: professional-certification candidates.**
+- **v1 vertical locked: CISSP.** NCLEX is "later" — still on the table as a future vertical, not part of v1 scope.
+- **Skews:** web (Next.js) confirmed for v1. iOS native named as a planned client; v1 vs later TBD.
+- The rest of this doc remains the working material for skew-mix and adjacent-vertical decisions.
+
 ## What the engine is built to teach
 
 The engine generates questions programmatically from author-curated tables — atomic facts arranged in rows (comparable items) and columns (dimensions / steps / aspects). Every question is provably correct by construction and traces to specific source facts.

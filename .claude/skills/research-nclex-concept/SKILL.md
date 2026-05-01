@@ -84,7 +84,8 @@ Initial research pass. Read the Topic README for the relevant sub-objective. Fet
 - **Pattern:** Dimensions / Ordered / Aspects (use the picker in `knowledge-map.md`).
 - **Suggested columns:** 4–8 columns for a typical Concept. Lean toward the columns the source structure suggests AND the columns proposed in the Topic README's Concept table (the README is the prior agreement; deviate only with explicit reason).
 - **Source list:** the public sources you intend to draw from for cell-filling.
-- **Tags:** sub-objective ID, any Integrated Process Tags (`IP-*`), any cross-cutting Tags (`dc-*`, `sys-*`, etc.) from the Tag registry.
+- **Tags:** sub-objective ID, any Integrated Process Tags (`IP-*`), any cross-cutting Tags (`dc-*`, `sys-*`, `state-variance`, `3-cross-aging`, etc.) from the Tag registry.
+- **Tag flexibility.** The Topic README's Tag set is a proposal, not a contract. If the Concept's content is fundamentally about a process named in `IP-*` (a documentation artifact → `IP-CD`; a clinical-judgment framework → `IP-CJ`; a teaching artifact → `IP-TL`), the skill MAY add the relevant Tag beyond the README spec. Same applies to other registered cross-cutting Tags when the content warrants. Document the addition in Notes. Unknown / unregistered Tags still fail the format gate per decision 10 — only registered Tags may be added.
 
 Surface to user:
 

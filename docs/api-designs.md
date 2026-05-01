@@ -1,6 +1,14 @@
 # API Designs for NuQuiz
 
-> Background doc. Not a decision. Surveys traditional single-API setups, backend-for-frontend (BFF), and the in-between options (GraphQL, tRPC, engine-as-library + thin sync). Assumes the skew landscape from `docs/landscape.md` — free web demo, paid native app, pro upgrade, deferred B2B — and the storage tradeoffs in `docs/data-shapes.md`. Meant to be argued with.
+> Background doc. Surveys traditional single-API setups, backend-for-frontend (BFF), and the in-between options (GraphQL, tRPC, engine-as-library + thin sync). Assumes the skew landscape from `docs/landscape.md` — free web demo, paid native app, pro upgrade, deferred B2B — and the storage tradeoffs in `docs/data-shapes.md`. Meant to be argued with.
+
+## Status (2026-04-30)
+
+- **Stack locked: Vercel / Next.js + Supabase server-only + BFF pattern.** The client never holds Supabase credentials.
+- **Engine architecture locked: standalone API service** (not a library). The engine is its own service, owns the Supabase connection, and is called by every client through that client's BFF. This is **Option B** below — the diagram with `core / engine-service ─ web-bff / ios-bff / ...`.
+- **Clients named so far:** Next.js web (with a BFF inside the Next app), iOS native (timing — v1 vs later — TBD).
+- **Option C (engine-as-library + offline) is ruled out** by the engine-as-service decision. Native iOS, when it lands, is online-only against the engine API unless we revisit.
+- **Sub-decisions still open:** Web BFF surface inside Next.js (Route Handlers vs Server Actions vs separate Node service); engine hosting (Vercel functions, separate Node service, somewhere else); per-platform vs per-skew BFF (see "Variant" under Option B); auth provider and where auth lives (engine vs BFF vs separate); BFF ↔ client contract (typed RPC, OpenAPI, hand-rolled fetch + zod); whether to prototype the engine before any UI.
 
 The question underneath the API question is: **where does the engine run, and how much does each client need to know?**
 

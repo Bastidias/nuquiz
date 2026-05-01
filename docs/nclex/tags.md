@@ -70,11 +70,32 @@ Single-purpose cross-cutting Tag for geriatric atypical-presentation pattern, in
 
 ---
 
+## State-variance Tag (`state-variance`)
+
+Cross-cutting Tag for Concepts where the federal floor is thin and the operative legal duty / pedagogical content is state-defined (state Nurse Practice Acts, state mandatory-reporting laws, state minor-consent frameworks, state restraint codes, state BON discipline thresholds, state-specific tort frameworks). Tag the Concept; cells lacking a federal/NCSBN primary citation may also be enumerated in the Concept's `Values without a direct public citation` table with `state-variance` listed as the reason.
+
+| Tag | Use |
+|---|---|
+| `state-variance` | Mark Concepts where federal/NCSBN content is thin and US state law or state board determines the operative rule. NCLEX still tests these via predominant US convention. |
+
+Currently used by: `mandatory-reporting-categories` (T1), `consent-edge-cases` (T1). Likely future users: `tort-categories-in-nursing` (T1), `scope-of-practice-by-role` (T1, retroactively if SME confirms).
+
+---
+
 ## Cross-Topic placeholder convention
 
 When a Concept references a Topic whose README has not yet been authored, use a placeholder Tag of the form `<topic-#>-cross-tag` (e.g., `4-cross-tag`). Tighten to a real sub-objective ID once that Topic's README is populated.
 
-Currently outstanding placeholders: **none.**
+Currently outstanding placeholders:
+
+| Placeholder | Used in (proposed) | Resolves to (when known) |
+|---|---|---|
+| `3-cross-tag` | T2 `home-safety-by-population` | T3 sub-objective covering developmental anticipatory guidance |
+| `5-cross-tag` | T2 `pressure-injury-staging` | T5 sub-objective covering skin integrity / pressure injury prevention |
+| `6-cross-tag` | T2 `chemotherapy-handling` | T6 sub-objective covering high-alert medication handling |
+| `7-cross-tag` | T2 `never-events-clinical` | T7 sub-objective covering sentinel-event prevention |
+
+These placeholders are valid Tags per the convention above; agents may use them in T2 Concept files. Resolve in a final sweep once all 8 Topic READMEs and Concept stubs are authored.
 
 Resolved placeholders (historical record):
 

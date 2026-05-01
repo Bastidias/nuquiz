@@ -1,6 +1,15 @@
 # Data Shapes for NuQuiz Content
 
-> Background doc. Not a decision. Surveys three storage shapes — table-native, SPO triples, graph — plus hybrids, against the one constraint that isn't negotiable: every atomic CellFact has a stable, durable ID that survives text edits and reorders (see `pre-team-discussion.md` §3). Meant to be argued with.
+> Background doc. Surveys three storage shapes — table-native, SPO triples, graph — plus hybrids, against the one constraint that isn't negotiable: every atomic CellFact has a stable, durable ID that survives text edits and reorders (see `pre-team-discussion.md` §3). Meant to be argued with.
+
+## Status (2026-04-30)
+
+- **Authoring / conceptual model: table-native (locked).** Rows × Columns × cells, matching the author view used in `docs/cissp/knowledge-map.md` and Concept files. UI, engine grammar, and SME workflow assume this.
+- **Physical storage shape: open, and expected to evolve.** Whether the runtime DB stores rows-and-columns, SPO triples, a graph, or a hybrid is a data-architect call — and not a once-and-forever pick. **Design for migration, not lock-in.** The "Markdown-as-source-of-truth, DB-as-projection" hybrid (Shape 4 below) and SPO-shaped event logging (see "What logging shape this implies") become more attractive under this lens because they keep the runtime shape replaceable.
+- The **CellFact-ID invariant is the bridge** that carries data across shape migrations. Get IDs right and the shape can change later; lose them and migrations corrupt history.
+- Postgres (via Supabase) is the chosen substrate (`pre-team-discussion.md` Decisions). Postgres doesn't pick the shape — all four shapes fit Postgres, and shape changes within Postgres are migrations rather than rewrites.
+
+The rest of this doc remains the survey the data architect will work from.
 
 The engine's prompt grammar — `Row | Column → Value` — is shape-agnostic. The same Concept can be stored four different ways and still feed the same operators. But the storage choice cascades into the authoring UI, the DB schema, the API, migration ergonomics, and which questions are cheap vs. expensive. The shapes are not equivalent in practice. They also drag in their own vocabularies, which collide with ours — see the terminology section next.
 

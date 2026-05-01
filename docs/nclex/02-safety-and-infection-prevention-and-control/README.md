@@ -34,13 +34,13 @@ Starter set (~22 Concepts).
 |---|---|---|---|---|---|
 | Fall risk factors and mitigations | Dimensions | Age >65, History of falls, Sedating meds, Orthostatic hypotension, Visual impairment, Gait instability, Toileting urgency, Cognitive impairment | risk mechanism, screening tool, mitigation, environmental control | 2.1, IP-CJ | ~32 |
 | Pressure injury staging | Ordered | Stage 1, Stage 2, Stage 3, Stage 4, Unstageable, Deep tissue injury | Visual finding, Tissue layers involved, Reversibility, Documentation | 2.1, 5-cross-tag | ~24 |
-| Never events (clinical category) | Dimensions | Wrong-site surgery, Retained foreign object, Wrong-patient procedure, Hospital-acquired pressure injury (stage 3+), Medication error causing death, Inpatient suicide | category, mandatory action, reporting timeline, prevention bundle | 2.1, 1.15, 7-cross-tag | ~24 |
+| Never events (clinical category) | Dimensions | Wrong-site surgery, Retained foreign object, Wrong-patient procedure, Hospital-acquired stage 3+ pressure injury, Medication error causing death, Inpatient suicide | category, mandatory action, reporting timeline, prevention bundle | 2.1, 1.15, 7-cross-tag | ~24 |
 
 ### 2.2 Emergency Response Plan
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
 | Hospital emergency codes | Dimensions | Code Blue, Code Red, Code Pink, Code Silver, Code Black, Code Orange, Code Gray | trigger, immediate nurse action, who responds, escalation | 2.2, IP-CD | ~28 |
-| Disaster triage (START/JumpSTART) | Ordered | Black (deceased/expectant), Red (immediate), Yellow (delayed), Green (minor) | Decision criteria, Treatment priority, Example presentation | 2.2, 1.10 | ~16 |
+| Disaster triage (START/JumpSTART) | Ordered | Black expectant, Red immediate, Yellow delayed, Green minor | Decision criteria, Treatment priority, Example presentation | 2.2, 1.10 | ~16 |
 | Fire response (RACE / PASS) | Ordered | Rescue, Alarm/Activate, Confine/Close, Extinguish/Evacuate; Pull, Aim, Squeeze, Sweep | Step name, Action, Common error | 2.2 | ~16 |
 
 ### 2.3 Ergonomic Principles
@@ -51,7 +51,7 @@ Starter set (~22 Concepts).
 ### 2.4 Handling Hazardous and Infectious Materials
 | Concept | Pattern | Rows | Columns | Tags | Est. facts |
 |---|---|---|---|---|---|
-| Hazardous material categories | Dimensions | Chemotherapy waste, Sharps, Biohazard (red bag), Radiation source, Mercury, Hazardous drug spill | container/disposal, PPE required, spill protocol, regulatory standard | 2.4 | ~24 |
+| Hazardous material categories | Dimensions | Chemotherapy waste, Sharps, Biohazardous waste, Radiation source, Mercury, Hazardous drug spill | container/disposal, PPE required, spill protocol, regulatory standard | 2.4 | ~24 |
 | Chemotherapy handling precautions | Aspects | Chemotherapy handling | PPE, route-specific protocol, spill kit use, exposure response, pregnancy precaution | 2.4, 6-cross-tag | ~10 |
 
 ### 2.5 Home Safety

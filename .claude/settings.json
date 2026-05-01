@@ -72,7 +72,23 @@
       "WebFetch(domain:enisa.europa.eu)",
       "WebFetch(domain:www.enisa.europa.eu)",
       "WebFetch(domain:isc2.org)",
-      "WebFetch(domain:www.isc2.org)"
+      "WebFetch(domain:www.isc2.org)",
+
+      "WebFetch(domain:hhs.gov)",
+      "WebFetch(domain:www.hhs.gov)",
+      "WebFetch(domain:effectivehealthcare.ahrq.gov)",
+      "WebFetch(domain:federalregister.gov)",
+      "WebFetch(domain:www.federalregister.gov)",
+      "WebFetch(domain:unblock.federalregister.gov)",
+      "WebFetch(domain:healthit.gov)",
+      "WebFetch(domain:www.healthit.gov)",
+      "WebFetch(domain:law.cornell.edu)",
+      "WebFetch(domain:www.law.cornell.edu)",
+      "WebFetch(domain:aorn.org)",
+      "WebFetch(domain:www.aorn.org)",
+      "WebFetch(domain:osha.gov)",
+      "WebFetch(domain:www.osha.gov)",
+      "WebFetch(domain:usfa.fema.gov)"
     ]
   }
 }
