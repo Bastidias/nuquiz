@@ -1,6 +1,6 @@
 # What This Engine Can Do — Capabilities Tour
 
-> A walking tour of what becomes possible when knowledge is stored as atomic CellFacts in well-formed tables, every CellFact has a stable identity, and every wrong answer the student picks is a real CellFact from elsewhere in the dataset. Each capability below is paired with a worked example using actual demo content from `docs/cissp/`. Engine vocabulary (`Concept`, `TableName`, `Pattern`, `RowHeader`, `ColumnHeader`, `Cell`, `CellFact`) is defined in `docs/glossary.md`.
+> A walking tour of what becomes possible when knowledge is stored as atomic CellFacts in well-formed tables, every CellFact has a stable identity, and every wrong answer the student picks is a real CellFact from elsewhere in the dataset. Each capability below is paired with a worked example using actual demo content from `decks/cissp/`. Engine vocabulary (`Concept`, `TableName`, `Pattern`, `RowHeader`, `ColumnHeader`, `Cell`, `CellFact`) is defined in `docs/glossary.md`.
 
 ## Status (2026-04-30) — v1 scope
 
@@ -17,7 +17,7 @@
 
 Three properties carry everything that follows:
 
-1. **Atomicity.** Each cell value is one independently addressable CellFact. No "and"-joined compounds. (`docs/cissp/knowledge-map.md` § Atomicity Rules.)
+1. **Atomicity.** Each cell value is one independently addressable CellFact. No "and"-joined compounds. (`decks/cissp/knowledge-map.md` § Atomicity Rules.)
 2. **Traceability.** Every question's prompt, correct answer, and distractor maps back to specific CellFact IDs.
 3. **Per-CellFact response history.** We know which CellFacts each student saw, got right, got wrong, and *which CellFact they confused it with*.
 
@@ -29,7 +29,7 @@ Three properties carry everything that follows:
 
 The same cell of data can yield two very different question shapes, just by changing how CellFacts are bundled into answer options.
 
-**Demo source:** `docs/cissp/01-security-and-risk-management/bcp-phases.md`, Phase 5 (Develop ISCP) → Key Activity cell holds three CellFacts: `Document procedures`, `Document roles`, `Document responsibilities`.
+**Demo source:** `decks/cissp/01-security-and-risk-management/bcp-phases.md`, Phase 5 (Develop ISCP) → Key Activity cell holds three CellFacts: `Document procedures`, `Document roles`, `Document responsibilities`.
 
 **Shape A — one CellFact per option (Select All):**
 > `Phase 5 | Key Activity → ?`
@@ -54,7 +54,7 @@ The chunk size is a dial. N=1 gives Select All. N=cell-size gives composite MC. 
 
 Ordered Concepts (rows = steps in sequence) unlock question types that don't exist for Dimensions tables.
 
-**Demo source:** `docs/cissp/04-communication-and-network-security/tls-handshake.md`, 5 ordered steps.
+**Demo source:** `decks/cissp/04-communication-and-network-security/tls-handshake.md`, 5 ordered steps.
 
 **Variant A — sequence recall:**
 > Order the following by Step number:
@@ -88,7 +88,7 @@ The engine's notion of order is just the integer in the first column. Every orde
 
 Default distractor source is "same Column, different Row" (most plausible, hardest to eliminate). But the engine has more levers:
 
-**Demo source:** `docs/cissp/04-communication-and-network-security/osi-layers.md`, Layer 3 (Network) → key devices: `Routers`, `Layer 3 switches`.
+**Demo source:** `decks/cissp/04-communication-and-network-security/osi-layers.md`, Layer 3 (Network) → key devices: `Routers`, `Layer 3 switches`.
 
 | Distractor type | Picks for a `Network | key devices` question | Difficulty |
 |---|---|---|
@@ -105,7 +105,7 @@ The engine can pick from any of these pools. Difficulty is tunable per student, 
 
 This is the one only possible because every wrong answer is itself a CellFact with an ID.
 
-**Demo source:** `docs/cissp/04-communication-and-network-security/tcp-udp-sctp.md`. Student previously answered `TCP | ordering → ?` and picked `Unordered` — UDP's Value, CellFact ID `tcp-udp-sctp:UDP:ordering`.
+**Demo source:** `decks/cissp/04-communication-and-network-security/tcp-udp-sctp.md`. Student previously answered `TCP | ordering → ?` and picked `Unordered` — UDP's Value, CellFact ID `tcp-udp-sctp:UDP:ordering`.
 
 **Next encounter:** the engine generates `TCP | ordering → ?` again, and *guarantees* `Unordered` is in the option set. Plus `Partially ordered` (SCTP's Value — the third Row in the same Column, which they haven't yet been tested on). The student is forced to actually distinguish among three real Values, not pattern-match. *(Note: this only works on Columns where the Rows have distinct Values. On a Column like `reliability` where TCP and SCTP both = `Reliable`, the engine knows that's a shared Value — see Section 6 — and won't generate it as a distractor against TCP.)*
 
@@ -119,7 +119,7 @@ This is the one only possible because every wrong answer is itself a CellFact wi
 
 Wrong-answer feedback isn't a generic "incorrect." It's a trace.
 
-**Demo source:** `docs/cissp/04-communication-and-network-security/osi-layers.md`. Student answers `Network | PDU → ?` and picks `Frame`.
+**Demo source:** `decks/cissp/04-communication-and-network-security/osi-layers.md`. Student answers `Network | PDU → ?` and picks `Frame`.
 
 **Engine response:**
 > ✗ Incorrect.
@@ -147,7 +147,7 @@ The graph is itself diagnostic content — show it to the student as "confusion 
 
 Atomic, addressable CellFacts mean we can ask questions about the table's *shape*, not just its contents.
 
-**Demo source:** `docs/cissp/04-communication-and-network-security/osi-layers.md`.
+**Demo source:** `decks/cissp/04-communication-and-network-security/osi-layers.md`.
 
 **Variant A — find the outlier:**
 > Pick the CellFact from a different Column than the others. (UI: "Outlier mode.")

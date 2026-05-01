@@ -5,7 +5,7 @@ This repo is **demo content only**. App code, strategy, roadmap, stories, and ag
 ## What's here
 
 ```
-docs/cissp/                                         — CISSP demo content
+decks/cissp/                                         — CISSP demo content
 .claude/skills/research-cissp-concept/SKILL.md      — Skill: research and author one CISSP Concept from public sources
 .claude/                                            — settings (agents and commands removed)
 ```
@@ -16,7 +16,7 @@ docs/cissp/                                         — CISSP demo content
 
 ## Conventions when editing demo content
 
-The conventions live inside `docs/cissp/knowledge-map.md`. Read it before editing Concept files. Key points:
+The conventions live inside `decks/cissp/knowledge-map.md`. Read it before editing Concept files. Key points:
 
 - **Hierarchy:** Deck → Topic → Concept → Fact.
 - **Atomicity:** each `<br>`-separated item in a cell is one Fact. No "and"-joined compounds, no comma-joined lists.

@@ -1,6 +1,6 @@
 # Sample Quiz — Demo Walkthrough
 
-> A 12-screen walk-through to show the team what comes out of the engine. Every prompt is a deterministic coordinate (`Row | Column → ?`, shorthand for `RowHeader | ColumnHeader → ?`); every option is literal cell text from `docs/cissp/`. No LLM in the loop. Worked content sources cited per question. Engine vocabulary defined in `docs/glossary.md`.
+> A 12-screen walk-through to show the team what comes out of the engine. Every prompt is a deterministic coordinate (`Row | Column → ?`, shorthand for `RowHeader | ColumnHeader → ?`); every option is literal cell text from `decks/cissp/`. No LLM in the loop. Worked content sources cited per question. Engine vocabulary defined in `docs/glossary.md`.
 
 The sequence is deliberately varied so the team sees the range. Watch for the **Diagnostic Moment** screens between questions — those are the differentiator.
 

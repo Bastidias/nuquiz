@@ -4,7 +4,7 @@
 
 ## Status (2026-04-30)
 
-- **Authoring / conceptual model: table-native (locked).** Rows × Columns × cells, matching the author view used in `docs/cissp/knowledge-map.md` and Concept files. UI, engine grammar, and SME workflow assume this.
+- **Authoring / conceptual model: table-native (locked).** Rows × Columns × cells, matching the author view used in `decks/cissp/knowledge-map.md` and Concept files. UI, engine grammar, and SME workflow assume this.
 - **Physical storage shape: open, and expected to evolve.** Whether the runtime DB stores rows-and-columns, SPO triples, a graph, or a hybrid is a data-architect call — and not a once-and-forever pick. **Design for migration, not lock-in.** The "Markdown-as-source-of-truth, DB-as-projection" hybrid (Shape 4 below) and SPO-shaped event logging (see "What logging shape this implies") become more attractive under this lens because they keep the runtime shape replaceable.
 - The **CellFact-ID invariant is the bridge** that carries data across shape migrations. Get IDs right and the shape can change later; lose them and migrations corrupt history.
 - Postgres (via Supabase) is the chosen substrate (`pre-team-discussion.md` Decisions). Postgres doesn't pick the shape — all four shapes fit Postgres, and shape changes within Postgres are migrations rather than rewrites.
@@ -77,7 +77,7 @@ The earlier draft of this section flagged three naming problems. Two are now res
 
 ## The running example
 
-Throughout this doc we use the TCP/UDP/SCTP Concept from `docs/cissp/04-communication-and-network-security/tcp-udp-sctp.md`. Three Rows, eleven Columns, one or more atomic CellFacts per cell. A representative slice:
+Throughout this doc we use the TCP/UDP/SCTP Concept from `decks/cissp/04-communication-and-network-security/tcp-udp-sctp.md`. Three Rows, eleven Columns, one or more atomic CellFacts per cell. A representative slice:
 
 | Protocol | connection type | reliability | ordering | typical use cases |
 |---|---|---|---|---|
@@ -164,7 +164,7 @@ What Wikidata's experience tells us:
 - **Provenance travels with the triple.** Every statement can carry references and qualifiers — `(Earth, population, "8.1B")` with qualifier `(as of, 2026)` and reference `(source, UN DESA)`. This maps cleanly onto our per-CellFact citation requirement.
 - **The cost Wikidata pays.** Statement-level editing is granular to the point of being tedious without tooling; infobox display on Wikipedia requires a projection layer (Lua modules pulling from Wikidata). The "what does this item look like as a page?" view is rendered, not stored.
 
-The Wikidata lesson for us: SPO gives you CellFact-level addressability, cross-item queries, and provenance natively. You pay for it in authoring ergonomics. Whether that bill is affordable depends on how table-shaped our content really is — and ours is very table-shaped (see `docs/cissp/knowledge-map.md`).
+The Wikidata lesson for us: SPO gives you CellFact-level addressability, cross-item queries, and provenance natively. You pay for it in authoring ergonomics. Whether that bill is affordable depends on how table-shaped our content really is — and ours is very table-shaped (see `decks/cissp/knowledge-map.md`).
 
 ---
 

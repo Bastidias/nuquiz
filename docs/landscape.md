@@ -13,7 +13,7 @@
 
 The engine generates questions programmatically from author-curated tables — atomic facts arranged in rows (comparable items) and columns (dimensions / steps / aspects). Every question is provably correct by construction and traces to specific source facts.
 
-Three table patterns cover most certification content (see `docs/cissp/knowledge-map.md`):
+Three table patterns cover most certification content (see `decks/cissp/knowledge-map.md`):
 
 - **Dimensions** — rows are comparable entities, columns are attributes. Fits compare-and-contrast.
 - **Ordered** — rows are steps in sequence, columns are step attributes. Fits processes and hierarchies.

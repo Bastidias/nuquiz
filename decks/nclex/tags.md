@@ -1,6 +1,6 @@
 # NCLEX Tag Registry
 
-> Single source of truth for every Tag used across `docs/nclex/`. Concepts carry a comma-separated Tag list; Tags are flat strings (no engine namespace semantics — the prefix is authoring convention only).
+> Single source of truth for every Tag used across `decks/nclex/`. Concepts carry a comma-separated Tag list; Tags are flat strings (no engine namespace semantics — the prefix is authoring convention only).
 
 ---
 

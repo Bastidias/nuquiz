@@ -8,7 +8,7 @@
 ## Folder Structure → NuQuiz Hierarchy
 
 ```
-docs/nclex/                                              (Deck: "NCLEX-RN")
+decks/nclex/                                              (Deck: "NCLEX-RN")
   knowledge-map.md                                       (this file)
   01-management-of-care/                                 (Topic: Client Needs sub-category)
     README.md                                            (sub-category overview, Concept index)
@@ -24,7 +24,7 @@ docs/nclex/                                              (Deck: "NCLEX-RN")
 ```
 
 Mapping:
-- `docs/nclex/` = **Deck**
+- `decks/nclex/` = **Deck**
 - Each Client Needs sub-category folder = **Topic**
 - Each `.md` file inside a Topic folder = **Concept**
 - Each cell in a Concept's table holds one or more atomic **Facts** (multi-item cells use `<br>` to separate)
@@ -37,7 +37,7 @@ The four NCSBN top-level Client Needs **categories** (Safe and Effective Care En
 
 | NCLEX term | NuQuiz term | File/folder | Expected count |
 |---|---|---|---|
-| Exam | Deck | `docs/nclex/` | 1 |
+| Exam | Deck | `decks/nclex/` | 1 |
 | Client Needs sub-category | Topic | numbered subfolder | 8 |
 | Sub-objective (Related Content statement) | Tag (referenced in files) | — | TBD per Topic |
 | Comparable group | Concept | individual `.md` file | ~200-300 (estimate) |
@@ -158,7 +158,7 @@ Each Concept is one `.md` file in its Topic folder. Required fields:
 
 - **Concept name** — the comparable group (file H1 heading)
 - **Pattern** — Dimensions | Ordered | Aspects (see picker below)
-- **Tags** — Related Content / sub-objective references, Integrated Process tags, and any cross-cutting Tags (e.g., `dc-*` drug classes). Full registry of valid Tags lives in `docs/nclex/tags.md` — add new Tags there before using them in a Concept file.
+- **Tags** — Related Content / sub-objective references, Integrated Process tags, and any cross-cutting Tags (e.g., `dc-*` drug classes). Full registry of valid Tags lives in `decks/nclex/tags.md` — add new Tags there before using them in a Concept file.
 - **Status** — draft / SME-reviewed / complete
 - **Layout convention** — one-line note about how rows and columns are organized for this Concept
 - **The table itself** — rows × columns of atomic facts (multi-fact cells use `<br>`)

@@ -36,7 +36,7 @@ The six alternate-site options NIST SP 800-34 and standard CISSP teaching cover 
 
 ### Source provenance caveat
 
-Direct read of the NIST SP 800-34 Rev 1 PDF was not performed. Cell values cited as `[s1]` were drawn from a ScienceDirect topic page that summarizes NIST SP 800-34 with quoted phrasing; the URL is recorded in the registry but the source document was not independently parsed. This matches the provenance limitation noted in `docs/cissp/knowledge-map.md` § Source Provenance for D4 and D5 Concepts. SME pass should fetch and verify against the NIST PDF directly.
+Direct read of the NIST SP 800-34 Rev 1 PDF was not performed. Cell values cited as `[s1]` were drawn from a ScienceDirect topic page that summarizes NIST SP 800-34 with quoted phrasing; the URL is recorded in the registry but the source document was not independently parsed. This matches the provenance limitation noted in `decks/cissp/knowledge-map.md` § Source Provenance for D4 and D5 Concepts. SME pass should fetch and verify against the NIST PDF directly.
 
 ### Values without a direct public citation
 

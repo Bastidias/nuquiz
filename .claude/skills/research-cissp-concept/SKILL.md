@@ -1,11 +1,11 @@
 ---
 name: research-cissp-concept
-description: Research and author ONE CISSP Concept (one .md file under docs/cissp/) from public sources, with per-Cell citations, format-lint pass, and exam-coverage review. Branches into edit mode if the Concept already exists. Use when the user asks to research, draft, author, expand, refresh-citations, or restructure a CISSP Concept. Do NOT use for non-CISSP content, for batch authoring multiple Concepts at once, or for editing the knowledge-map / demo / strategy files.
+description: Research and author ONE CISSP Concept (one .md file under decks/cissp/) from public sources, with per-Cell citations, format-lint pass, and exam-coverage review. Branches into edit mode if the Concept already exists. Use when the user asks to research, draft, author, expand, refresh-citations, or restructure a CISSP Concept. Do NOT use for non-CISSP content, for batch authoring multiple Concepts at once, or for editing the knowledge-map / demo / strategy files.
 ---
 
 # Research a CISSP Concept
 
-Research-and-author skill for filling out CISSP demo content one Concept at a time. Operates against the rules in `docs/cissp/knowledge-map.md` (atomicity, no parens-masking-shared-Values, deterministic prompt notation) and the Pattern picker (Dimensions / Ordered / Aspects).
+Research-and-author skill for filling out CISSP demo content one Concept at a time. Operates against the rules in `decks/cissp/knowledge-map.md` (atomicity, no parens-masking-shared-Values, deterministic prompt notation) and the Pattern picker (Dimensions / Ordered / Aspects).
 
 ## Foundational decisions baked in
 
@@ -48,7 +48,7 @@ Inputs (from user invocation):
 
 Skill derives:
 - **Domain folder:** map Concept to one of `01-…` through `08-…` based on (ISC)² outline. If ambiguous, ask.
-- **File path:** `docs/cissp/<domain-folder>/<concept-name-kebab>.md`.
+- **File path:** `decks/cissp/<domain-folder>/<concept-name-kebab>.md`.
 - **Existing-file check:** does the file already exist?
   - **Yes** → branch to Phase 2a (existing-file mode).
   - **No** → proceed to Phase 2b (new-Concept).
@@ -150,16 +150,16 @@ User addresses gaps by pasting sources, accepting marked gaps, or scope-adjustin
 
 On approval:
 
-1. Write the file to `docs/cissp/<domain-folder>/<concept-name-kebab>.md`.
+1. Write the file to `decks/cissp/<domain-folder>/<concept-name-kebab>.md`.
 2. Include the citation registry at the bottom (Sources section, format below).
 3. Include a Notes section if any context was stripped from cells (mechanism details, abbreviations) per the parens rules. Lead with a `**Cell convention:**` bullet (this is the convention across the existing Concept set).
 4. If any cells carry `[needs source]` markers OR rely on pedagogical-consensus framing with no traced primary citation, convert those inline gaps into a `### Values without a direct public citation` table inside Notes (columns: Cell | Value | Why unsourced). This is the canonical SME-review punch list — it must be present whenever the draft has unsourced cells, even if only one. If every cell is fully cited, include the table with a `(none)` row so the all-cited status is visible.
 5. **Do NOT** stage or commit. The user owns git operations — they may want to bundle multiple Concepts into one commit.
-6. Surface a one-line summary: "Wrote `docs/cissp/01-…/bcp-phases.md` (7 rows × 4 columns, 8 sources cited, 2 cells in the unsourced-values table)."
+6. Surface a one-line summary: "Wrote `decks/cissp/01-…/bcp-phases.md` (7 rows × 4 columns, 8 sources cited, 2 cells in the unsourced-values table)."
 
 ## Reference: Concept file format
 
-Match the format of existing Concepts in `docs/cissp/04-communication-and-network-security/`. Required sections:
+Match the format of existing Concepts in `decks/cissp/04-communication-and-network-security/`. Required sections:
 
 ```markdown
 # <Concept Name>

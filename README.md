@@ -23,6 +23,6 @@ CLAUDE.md                       — Conventions for working in this repo
 - [`docs/landscape.md`](docs/landscape.md) — background on what the engine teaches, which verticals fit, and the CISSP-vs-NCLEX tradeoffs. Read if you want the strategic context first.
 - [`docs/demo/sample-quiz.md`](docs/demo/sample-quiz.md) — 12-screen walk-through built from real demo content. Shows what makes the engine different.
 - [`docs/demo/capabilities.md`](docs/demo/capabilities.md) — the longer tour: chunking, ordering, adaptive distractors, misconception surfacing, structural reasoning.
-- [`docs/cissp/knowledge-map.md`](docs/cissp/knowledge-map.md) — how content is organized and the rules authors follow.
-- [`docs/cissp/01-security-and-risk-management/README.md`](docs/cissp/01-security-and-risk-management/README.md) — most-developed domain so far.
-- [`docs/cissp/04-communication-and-network-security/README.md`](docs/cissp/04-communication-and-network-security/README.md) — Concept examples covering all three Patterns.
+- [`decks/cissp/knowledge-map.md`](decks/cissp/knowledge-map.md) — how content is organized and the rules authors follow.
+- [`decks/cissp/01-security-and-risk-management/README.md`](decks/cissp/01-security-and-risk-management/README.md) — most-developed domain so far.
+- [`decks/cissp/04-communication-and-network-security/README.md`](decks/cissp/04-communication-and-network-security/README.md) — Concept examples covering all three Patterns.

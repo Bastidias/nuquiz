@@ -1,11 +1,11 @@
 ---
 name: research-nclex-concept
-description: Research and author ONE NCLEX Concept (one .md file under docs/nclex/) from public nursing sources, with per-Cell citations, format-lint pass, and exam-coverage review. Branches into edit mode if the Concept already exists. Use when the user asks to research, draft, author, expand, refresh-citations, or restructure an NCLEX Concept. Do NOT use for non-NCLEX content, for batch authoring multiple Concepts at once, or for editing the knowledge-map / tag-registry / Topic README files.
+description: Research and author ONE NCLEX Concept (one .md file under decks/nclex/) from public nursing sources, with per-Cell citations, format-lint pass, and exam-coverage review. Branches into edit mode if the Concept already exists. Use when the user asks to research, draft, author, expand, refresh-citations, or restructure an NCLEX Concept. Do NOT use for non-NCLEX content, for batch authoring multiple Concepts at once, or for editing the knowledge-map / tag-registry / Topic README files.
 ---
 
 # Research an NCLEX Concept
 
-Research-and-author skill for filling out NCLEX demo content one Concept at a time. Operates against the rules in `docs/nclex/knowledge-map.md` (atomicity, no parens-masking-shared-Values, deterministic prompt notation), the Pattern picker (Dimensions / Ordered / Aspects), and the Tag registry in `docs/nclex/tags.md`.
+Research-and-author skill for filling out NCLEX demo content one Concept at a time. Operates against the rules in `decks/nclex/knowledge-map.md` (atomicity, no parens-masking-shared-Values, deterministic prompt notation), the Pattern picker (Dimensions / Ordered / Aspects), and the Tag registry in `decks/nclex/tags.md`.
 
 This is a sibling of `research-cissp-concept` — same workflow shape, different exam, different source allowlist. Universal authoring rules (atomicity, prompt notation, parens-safety) live in each Deck's knowledge-map; if the two skills drift on those rules over time, they will be factored out to a shared file.
 
@@ -24,7 +24,7 @@ These were settled during skill design and should not be re-litigated mid-flow w
 | 7 | Citation format | Numbered source IDs in cells (`[s1]`, `[s2]`); full registry at file bottom |
 | 8 | Existing-file handling | Detect existing → ask which mode (overwrite / add column / add row / re-cite / restructure) |
 | 9 | Source insufficiency | Draft what's covered; mark gaps with `[needs source]`; coverage report flags how much is unsourced |
-| 10 | Tag handling | Every Tag a Concept carries must be a valid sub-objective ID for its Topic OR registered in `docs/nclex/tags.md`. Unknown Tags fail the format gate. |
+| 10 | Tag handling | Every Tag a Concept carries must be a valid sub-objective ID for its Topic OR registered in `decks/nclex/tags.md`. Unknown Tags fail the format gate. |
 
 ## Source allowlist (defaults)
 
@@ -57,12 +57,12 @@ Inputs (from user invocation):
 
 Skill derives:
 - **Topic folder:** map Concept to one of `01-…` through `08-…` based on the proposed Concept lists in each Topic README. If ambiguous, ask.
-- **File path:** `docs/nclex/<topic-folder>/<concept-name-kebab>.md`.
+- **File path:** `decks/nclex/<topic-folder>/<concept-name-kebab>.md`.
 - **Existing-file check:** does the file already exist?
   - **Yes** → branch to Phase 2a (existing-file mode).
   - **No** → proceed to Phase 2b (new-Concept).
 
-Read `docs/nclex/knowledge-map.md` and `docs/nclex/tags.md` once at the start so atomicity rules and the Tag registry are in working memory.
+Read `decks/nclex/knowledge-map.md` and `decks/nclex/tags.md` once at the start so atomicity rules and the Tag registry are in working memory.
 
 ### Phase 2a — Existing-file branch
 
@@ -121,7 +121,7 @@ Run all lints from `knowledge-map.md`:
 - Atomicity (no "and", no comma-lists, no parens — apply the parenthetical safety check)
 - Pattern declared in metadata line
 - Topic ID and sub-objective Tags declared
-- All Tags valid (every Tag must be a sub-objective ID matching the Topic's README, OR registered in `docs/nclex/tags.md`)
+- All Tags valid (every Tag must be a sub-objective ID matching the Topic's README, OR registered in `decks/nclex/tags.md`)
 - Status field present
 - Layout convention noted (especially for Ordered)
 - Engine demo opportunities use coordinate notation (no English question words)
@@ -134,7 +134,7 @@ If any lint fails, **flag and pause**. Surface the violation with a proposed fix
 
 Tag-registry lint example:
 
-> Lint: Tag `dc-statins` used in row Atorvastatin is not in `docs/nclex/tags.md`. Either (a) add it to the registry now, or (b) remove from the Concept. Tags must be registered before use.
+> Lint: Tag `dc-statins` used in row Atorvastatin is not in `decks/nclex/tags.md`. Either (a) add it to the registry now, or (b) remove from the Concept. Tags must be registered before use.
 
 Do not advance to Phase 4b until format passes. Format is qualitatively different from content reviews — a malformed Concept can't be evaluated for content.
 
@@ -171,16 +171,16 @@ User addresses gaps by pasting sources, accepting marked gaps, or scope-adjustin
 
 On approval:
 
-1. Write the file to `docs/nclex/<topic-folder>/<concept-name-kebab>.md`.
+1. Write the file to `decks/nclex/<topic-folder>/<concept-name-kebab>.md`.
 2. Include the citation registry at the bottom (Sources section, format below).
 3. Include a Notes section. Lead with a `**Cell convention:**` bullet (this is the convention across the existing Concept set).
 4. If any cells carry `[needs source]` markers OR rely on pedagogical-consensus framing with no traced primary citation, convert those inline gaps into a `### Values without a direct public citation` table inside Notes (columns: Cell | Value | Why unsourced). This is the canonical SME-review punch list — it must be present whenever the draft has unsourced cells, even if only one. If every cell is fully cited, include the table with a `(none)` row so the all-cited status is visible.
 5. **Do NOT** stage or commit. The user owns git operations — they may want to bundle multiple Concepts into one commit.
-6. Surface a one-line summary: "Wrote `docs/nclex/06-…/iv-solution-tonicity.md` (7 rows × 6 columns, 4 sources cited, 1 cell in the unsourced-values table)."
+6. Surface a one-line summary: "Wrote `decks/nclex/06-…/iv-solution-tonicity.md` (7 rows × 6 columns, 4 sources cited, 1 cell in the unsourced-values table)."
 
 ## Reference: Concept file format
 
-Until NCLEX has reference Concepts of its own, model after `docs/cissp/04-communication-and-network-security/tcp-udp-sctp.md` and the format below. The metadata line uses **Topic** (NuQuiz term for NCLEX sub-categories) instead of CISSP's **Domain**. Required sections:
+Until NCLEX has reference Concepts of its own, model after `decks/cissp/04-communication-and-network-security/tcp-udp-sctp.md` and the format below. The metadata line uses **Topic** (NuQuiz term for NCLEX sub-categories) instead of CISSP's **Domain**. Required sections:
 
 ```markdown
 # <Concept Name>

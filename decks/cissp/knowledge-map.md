@@ -8,7 +8,7 @@
 ## Folder Structure → NuQuiz Hierarchy
 
 ```
-docs/cissp/                                     (Deck: "CISSP")
+decks/cissp/                                     (Deck: "CISSP")
   knowledge-map.md                              (this file)
   01-security-and-risk-management/              (Topic: Domain 1)
     README.md                                   (domain overview, Concept index)
@@ -21,7 +21,7 @@ docs/cissp/                                     (Deck: "CISSP")
 ```
 
 Mapping:
-- `docs/cissp/` = **Deck**
+- `decks/cissp/` = **Deck**
 - Each domain folder = **Topic**
 - Each `.md` file inside a domain folder = **Concept**
 - Each cell in a Concept's table holds one or more atomic **Facts** (multi-item cells use `<br>` to separate)
@@ -32,7 +32,7 @@ Mapping:
 
 | CISSP term | NuQuiz term | File/folder | Expected count |
 |---|---|---|---|
-| Exam | Deck | `docs/cissp/` | 1 |
+| Exam | Deck | `decks/cissp/` | 1 |
 | Domain | Topic | numbered subfolder | 8 |
 | Sub-objective | Tag (referenced in files) | — | ~70-80 |
 | Comparable group | Concept | individual `.md` file | ~200-300 |

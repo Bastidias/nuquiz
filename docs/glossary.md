@@ -46,7 +46,7 @@ Cell        1..m  CellFact
 
 ## Worked example
 
-`docs/cissp/04-communication-and-network-security/tcp-udp-sctp.md`:
+`decks/cissp/04-communication-and-network-security/tcp-udp-sctp.md`:
 
 - **TableName:** `TCP vs UDP vs SCTP`
 - **Pattern:** Dimensions
@@ -74,7 +74,7 @@ Engine vocabulary lives in code, schemas, and authoring tools. Pedagogical vocab
 
 ## Renamed from older docs
 
-`docs/cissp/knowledge-map.md` and `docs/nclex/knowledge-map.md` predate this glossary and use an earlier vocabulary; they will be reconciled when authoring work in those verticals resumes.
+`decks/cissp/knowledge-map.md` and `decks/nclex/knowledge-map.md` predate this glossary and use an earlier vocabulary; they will be reconciled when authoring work in those verticals resumes.
 
 | Older term | Current term |
 |---|---|
